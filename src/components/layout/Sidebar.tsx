@@ -1,10 +1,11 @@
 // src/components/layout/Sidebar.tsx
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { useSidebar } from "@/contexts/SidebarContext";
 
 // Iconos SVG personalizados
 const ModuleIcon = ({ className }: { className?: string }) => (
@@ -87,7 +88,7 @@ const AccountingIcon = ({ className }: { className?: string }) => (
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const { isCollapsed, toggleSidebar } = useSidebar();
 
   // Secciones principales
   const mainNavigation = [
@@ -98,10 +99,6 @@ const Sidebar: React.FC = () => {
     { name: "Facturación", href: "/accounting", icon: AccountingIcon },
     { name: "Configuración", href: "/settings", icon: SettingsIcon },
   ];
-
-  const toggleSidebar = () => {
-    setIsCollapsed(!isCollapsed);
-  };
 
   return (
     <aside

@@ -1,9 +1,10 @@
 // src/app/campaigns/page.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
+import { useSidebar } from "@/contexts/SidebarContext";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import StatusBadge from "@/components/ui/StatusBadge";
@@ -226,6 +227,7 @@ const mockCampaigns: Campaign[] = [
 export default function CampaignsListPage() {
   const router = useRouter();
   const { user, isLoading, isAuthenticated } = useAuth();
+  const { isCollapsed } = useSidebar();
   const [campaigns, setCampaigns] = useState<Campaign[]>(mockCampaigns);
   const [filteredCampaigns, setFilteredCampaigns] =
     useState<Campaign[]>(mockCampaigns);
@@ -241,6 +243,16 @@ export default function CampaignsListPage() {
       router.push("/login");
     }
   }, [isLoading, isAuthenticated, router]);
+
+  // Ajustar el tamaño de truncado de texto basado en el estado del sidebar
+  const nameTruncateLength = useMemo(
+    () => (isCollapsed ? 30 : 25),
+    [isCollapsed]
+  );
+  const orgTruncateLength = useMemo(
+    () => (isCollapsed ? 28 : 22),
+    [isCollapsed]
+  );
 
   // Función para aplicar filtros
   const applyFilters = () => {
@@ -324,12 +336,13 @@ export default function CampaignsListPage() {
 
   // Función para formatear montos
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("es-MX", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
+    return (
+      "$" +
+      amount.toLocaleString("es-MX", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      })
+    );
   };
 
   // Función para formatear números
@@ -390,13 +403,13 @@ export default function CampaignsListPage() {
       <Sidebar />
 
       {/* Contenido principal */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden transition-all duration-300 ease-in-out">
         {/* Header */}
         <Header userName={user?.name || "Usuario"} />
 
         {/* Contenedor principal */}
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6">
-          <div className="container mx-auto">
+          <div className="container mx-auto transition-all duration-300 ease-in-out">
             <div className="mb-8 flex justify-between items-center">
               <div>
                 <h1 className="text-3xl font-bold text-gray-800 mb-2">
@@ -439,131 +452,151 @@ export default function CampaignsListPage() {
               campaigns={campaigns}
             />
 
-            {/* Tabla de campañas */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mt-6">
+            {/* Tabla de campañas con transición suave */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mt-6 transition-all duration-300 ease-in-out">
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
+                <table className="min-w-full divide-y divide-gray-200 transition-all duration-300 ease-in-out table-fixed">
                   <thead className="bg-gray-50">
                     <tr>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-20"
                         onClick={() => handleSort("id")}
                       >
-                        ID
-                        {sortField === "id" && (
-                          <span className="ml-1">
-                            {sortDirection === "asc" ? "↑" : "↓"}
-                          </span>
-                        )}
+                        <div className="whitespace-nowrap flex items-center">
+                          ID
+                          {sortField === "id" && (
+                            <span className="ml-1">
+                              {sortDirection === "asc" ? "↑" : "↓"}
+                            </span>
+                          )}
+                        </div>
                       </th>
                       <th
                         scope="col"
                         className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-48"
                         onClick={() => handleSort("name")}
                       >
-                        Campaña
-                        {sortField === "name" && (
-                          <span className="ml-1">
-                            {sortDirection === "asc" ? "↑" : "↓"}
-                          </span>
-                        )}
+                        <div className="whitespace-nowrap flex items-center">
+                          Campaña
+                          {sortField === "name" && (
+                            <span className="ml-1">
+                              {sortDirection === "asc" ? "↑" : "↓"}
+                            </span>
+                          )}
+                        </div>
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-56"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-44"
                         onClick={() => handleSort("organizationName")}
                       >
-                        Organización
-                        {sortField === "organizationName" && (
-                          <span className="ml-1">
-                            {sortDirection === "asc" ? "↑" : "↓"}
-                          </span>
-                        )}
+                        <div className="whitespace-nowrap flex items-center">
+                          Organización
+                          {sortField === "organizationName" && (
+                            <span className="ml-1">
+                              {sortDirection === "asc" ? "↑" : "↓"}
+                            </span>
+                          )}
+                        </div>
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-28"
                         onClick={() => handleSort("organizationType")}
                       >
-                        Tipo
-                        {sortField === "organizationType" && (
-                          <span className="ml-1">
-                            {sortDirection === "asc" ? "↑" : "↓"}
-                          </span>
-                        )}
+                        <div className="whitespace-nowrap flex items-center">
+                          Tipo
+                          {sortField === "organizationType" && (
+                            <span className="ml-1">
+                              {sortDirection === "asc" ? "↑" : "↓"}
+                            </span>
+                          )}
+                        </div>
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-28"
                         onClick={() => handleSort("startDate")}
                       >
-                        Fecha Inicio
-                        {sortField === "startDate" && (
-                          <span className="ml-1">
-                            {sortDirection === "asc" ? "↑" : "↓"}
-                          </span>
-                        )}
+                        <div className="whitespace-nowrap flex items-center">
+                          F. Inicio
+                          {sortField === "startDate" && (
+                            <span className="ml-1">
+                              {sortDirection === "asc" ? "↑" : "↓"}
+                            </span>
+                          )}
+                        </div>
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-24"
                         onClick={() => handleSort("endDate")}
                       >
-                        Fecha Fin
-                        {sortField === "endDate" && (
-                          <span className="ml-1">
-                            {sortDirection === "asc" ? "↑" : "↓"}
-                          </span>
-                        )}
+                        <div className="whitespace-nowrap flex items-center">
+                          F. Fin
+                          {sortField === "endDate" && (
+                            <span className="ml-1">
+                              {sortDirection === "asc" ? "↑" : "↓"}
+                            </span>
+                          )}
+                        </div>
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-24"
                         onClick={() => handleSort("units")}
                       >
-                        Units
-                        {sortField === "units" && (
-                          <span className="ml-1">
-                            {sortDirection === "asc" ? "↑" : "↓"}
-                          </span>
-                        )}
+                        <div className="whitespace-nowrap flex items-center">
+                          Units
+                          {sortField === "units" && (
+                            <span className="ml-1">
+                              {sortDirection === "asc" ? "↑" : "↓"}
+                            </span>
+                          )}
+                        </div>
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-24"
                         onClick={() => handleSort("budget")}
                       >
-                        Budget
-                        {sortField === "budget" && (
-                          <span className="ml-1">
-                            {sortDirection === "asc" ? "↑" : "↓"}
-                          </span>
-                        )}
+                        <div className="whitespace-nowrap flex items-center">
+                          Budget
+                          {sortField === "budget" && (
+                            <span className="ml-1">
+                              {sortDirection === "asc" ? "↑" : "↓"}
+                            </span>
+                          )}
+                        </div>
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-20"
                         onClick={() => handleSort("grossMargin")}
                       >
-                        % GM
-                        {sortField === "grossMargin" && (
-                          <span className="ml-1">
-                            {sortDirection === "asc" ? "↑" : "↓"}
-                          </span>
-                        )}
+                        <div className="whitespace-nowrap flex items-center">
+                          % GM
+                          {sortField === "grossMargin" && (
+                            <span className="ml-1">
+                              {sortDirection === "asc" ? "↑" : "↓"}
+                            </span>
+                          )}
+                        </div>
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-28"
                         onClick={() => handleSort("status")}
                       >
-                        Estado
-                        {sortField === "status" && (
-                          <span className="ml-1">
-                            {sortDirection === "asc" ? "↑" : "↓"}
-                          </span>
-                        )}
+                        <div className="whitespace-nowrap flex items-center">
+                          Estado
+                          {sortField === "status" && (
+                            <span className="ml-1">
+                              {sortDirection === "asc" ? "↑" : "↓"}
+                            </span>
+                          )}
+                        </div>
                       </th>
                     </tr>
                   </thead>
@@ -576,17 +609,20 @@ export default function CampaignsListPage() {
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
                           {campaign.id}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-800 max-w-[12rem] overflow-hidden">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-800 max-w-[12rem] overflow-hidden transition-all duration-300 ease-in-out">
                           <span
                             title={campaign.name}
                             className="hover:underline"
                           >
-                            {truncateText(campaign.name, 25)}
+                            {truncateText(campaign.name, nameTruncateLength)}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 max-w-[14rem] overflow-hidden">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 max-w-[14rem] overflow-hidden transition-all duration-300 ease-in-out">
                           <span title={campaign.organizationName}>
-                            {truncateText(campaign.organizationName, 22)}
+                            {truncateText(
+                              campaign.organizationName,
+                              orgTruncateLength
+                            )}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -623,7 +659,7 @@ export default function CampaignsListPage() {
               </div>
 
               {/* Paginación */}
-              <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+              <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 transition-all duration-300 ease-in-out">
                 <div className="flex-1 flex justify-between sm:hidden">
                   <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
                     Anterior
