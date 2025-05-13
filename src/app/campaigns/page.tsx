@@ -11,7 +11,7 @@ import StatusBadge from "@/components/ui/StatusBadge";
 import SearchFilter from "@/components/campaigns/SearchFilter";
 import Link from "next/link";
 
-// Tipos para las campañas
+// Types for campaigns
 interface Campaign {
   id: string;
   name: string;
@@ -40,7 +40,7 @@ interface Campaign {
   grossMargin: number;
 }
 
-// Datos de ejemplo hardcodeados para campañas con estados más variados
+// Hardcoded example data for campaigns with varied statuses
 const mockCampaigns: Campaign[] = [
   {
     id: "23810",
@@ -236,15 +236,18 @@ export default function CampaignsListPage() {
   const [selectedStatus, setSelectedStatus] = useState<string>("");
   const [sortField, setSortField] = useState<string>("startDate");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+  const [startDateFilter, setStartDateFilter] = useState<string>("");
+  const [endDateFilter, setEndDateFilter] = useState<string>("");
+  const [selectedOwner, setSelectedOwner] = useState<string>("");
 
-  // Redirección si no está autenticado
+  // Redirect if not authenticated
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       router.push("/login");
     }
   }, [isLoading, isAuthenticated, router]);
 
-  // Ajustar el tamaño de truncado de texto basado en el estado del sidebar
+  // Adjust truncation size based on sidebar state
   const nameTruncateLength = useMemo(
     () => (isCollapsed ? 30 : 25),
     [isCollapsed]
@@ -254,11 +257,11 @@ export default function CampaignsListPage() {
     [isCollapsed]
   );
 
-  // Función para aplicar filtros
+  // Function to apply filters
   const applyFilters = () => {
     let filtered = [...campaigns];
 
-    // Filtrar por término de búsqueda
+    // Filter by search term
     if (searchTerm) {
       filtered = filtered.filter(
         (campaign) =>
@@ -270,21 +273,45 @@ export default function CampaignsListPage() {
       );
     }
 
-    // Filtrar por organización
+    // Filter by organization
     if (selectedOrganization) {
       filtered = filtered.filter(
         (campaign) => campaign.organizationName === selectedOrganization
       );
     }
 
-    // Filtrar por estado
+    // Filter by status
     if (selectedStatus) {
       filtered = filtered.filter(
         (campaign) => campaign.status === selectedStatus
       );
     }
 
-    // Ordenar los resultados
+    // Filter by start date
+    if (startDateFilter) {
+      filtered = filtered.filter(
+        (campaign) => new Date(campaign.startDate) >= new Date(startDateFilter)
+      );
+    }
+
+    // Filter by end date
+    if (endDateFilter) {
+      filtered = filtered.filter(
+        (campaign) => new Date(campaign.endDate) <= new Date(endDateFilter)
+      );
+    }
+
+    // Filter by owner (in a real app, this would filter by the owner property)
+    if (selectedOwner) {
+      // For demo purposes we're just filtering random campaigns
+      // In a real app you would do: campaign.owner === selectedOwner
+      filtered = filtered.filter(
+        (campaign) =>
+          campaign.id.charCodeAt(0) % 10 === selectedOwner.charCodeAt(0) % 10
+      );
+    }
+
+    // Sort results
     filtered.sort((a, b) => {
       let comparison = 0;
 
@@ -301,7 +328,7 @@ export default function CampaignsListPage() {
       } else if (sortField === "grossMargin") {
         comparison = a.grossMargin - b.grossMargin;
       } else {
-        // Ordenar por nombre por defecto
+        // Sort by name by default
         comparison = a.name.localeCompare(b.name);
       }
 
@@ -311,7 +338,7 @@ export default function CampaignsListPage() {
     setFilteredCampaigns(filtered);
   };
 
-  // Aplicar filtros cuando cambian los criterios
+  // Apply filters when criteria change
   useEffect(() => {
     applyFilters();
   }, [
@@ -320,54 +347,57 @@ export default function CampaignsListPage() {
     selectedStatus,
     sortField,
     sortDirection,
+    startDateFilter,
+    endDateFilter,
+    selectedOwner,
   ]);
 
-  // Manejador para cambiar el campo de ordenación
+  // Handler to change sort field
   const handleSort = (field: string) => {
     if (sortField === field) {
-      // Si ya estamos ordenando por este campo, cambiamos la dirección
+      // If already sorting by this field, change direction
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
-      // Si ordenamos por un nuevo campo, establecemos ese campo y dirección descendente por defecto
+      // If sorting by a new field, set that field and default to descending
       setSortField(field);
       setSortDirection("desc");
     }
   };
 
-  // Función para formatear montos
+  // Function to format currency amounts
   const formatCurrency = (amount: number) => {
     return (
       "$" +
-      amount.toLocaleString("es-MX", {
+      amount.toLocaleString("en-US", {
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
       })
     );
   };
 
-  // Función para formatear números
+  // Function to format numbers
   const formatNumber = (num: number) => {
-    return new Intl.NumberFormat("es-MX").format(num);
+    return new Intl.NumberFormat("en-US").format(num);
   };
 
-  // Función para formatear fechas
+  // Function to format dates
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
-    return date.toLocaleDateString("es-MX", {
+    return date.toLocaleDateString("en-US", {
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
     });
   };
 
-  // Función para truncar texto con ellipsis
+  // Function to truncate text with ellipsis
   const truncateText = (text: string, maxLength: number) => {
     return text.length > maxLength
       ? text.substring(0, maxLength) + "..."
       : text;
   };
 
-  // Función para obtener el color de fondo según el tipo de organización
+  // Function to get background color based on organization type
   const getOrganizationTypeStyles = (type: string) => {
     switch (type) {
       case "Agencia":
@@ -385,13 +415,13 @@ export default function CampaignsListPage() {
     }
   };
 
-  // Renderizar loading mientras se carga la autenticación
+  // Render loading while authentication loads
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Cargando...</p>
+          <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>
     );
@@ -402,25 +432,25 @@ export default function CampaignsListPage() {
       {/* Sidebar */}
       <Sidebar />
 
-      {/* Contenido principal */}
+      {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden transition-all duration-300 ease-in-out">
         {/* Header */}
-        <Header userName={user?.name || "Usuario"} />
+        <Header userName={user?.name || "User"} />
 
-        {/* Contenedor principal */}
+        {/* Main Container */}
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6">
           <div className="container mx-auto transition-all duration-300 ease-in-out">
             <div className="mb-8 flex justify-between items-center">
               <div>
                 <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                  Campañas
+                  Campaigns
                 </h1>
                 <p className="text-gray-600">
-                  Gestiona todas tus campañas publicitarias en un solo lugar
+                  Manage all your advertising campaigns in one place
                 </p>
               </div>
 
-              {/* Botón de nueva campaña (ahora en la vista principal) */}
+              {/* New Campaign Button (now in main view) */}
               <Link
                 href="/campaigns/new"
                 className="flex items-center px-4 py-2.5 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors shadow-md"
@@ -437,11 +467,11 @@ export default function CampaignsListPage() {
                     clipRule="evenodd"
                   />
                 </svg>
-                Nueva Campaña
+                New Campaign
               </Link>
             </div>
 
-            {/* Filtros de búsqueda */}
+            {/* Search Filters */}
             <SearchFilter
               searchTerm={searchTerm}
               onSearchChange={setSearchTerm}
@@ -450,9 +480,15 @@ export default function CampaignsListPage() {
               selectedStatus={selectedStatus}
               onStatusChange={setSelectedStatus}
               campaigns={campaigns}
+              startDateFilter={startDateFilter}
+              endDateFilter={endDateFilter}
+              onStartDateChange={setStartDateFilter}
+              onEndDateChange={setEndDateFilter}
+              selectedOwner={selectedOwner}
+              onOwnerChange={setSelectedOwner}
             />
 
-            {/* Tabla de campañas con transición suave */}
+            {/* Campaigns table with smooth transition */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mt-6 transition-all duration-300 ease-in-out">
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200 transition-all duration-300 ease-in-out table-fixed">
@@ -478,7 +514,7 @@ export default function CampaignsListPage() {
                         onClick={() => handleSort("name")}
                       >
                         <div className="whitespace-nowrap flex items-center">
-                          Campaña
+                          Campaign
                           {sortField === "name" && (
                             <span className="ml-1">
                               {sortDirection === "asc" ? "↑" : "↓"}
@@ -492,7 +528,7 @@ export default function CampaignsListPage() {
                         onClick={() => handleSort("organizationName")}
                       >
                         <div className="whitespace-nowrap flex items-center">
-                          Organización
+                          Organization
                           {sortField === "organizationName" && (
                             <span className="ml-1">
                               {sortDirection === "asc" ? "↑" : "↓"}
@@ -506,7 +542,7 @@ export default function CampaignsListPage() {
                         onClick={() => handleSort("organizationType")}
                       >
                         <div className="whitespace-nowrap flex items-center">
-                          Tipo
+                          Type
                           {sortField === "organizationType" && (
                             <span className="ml-1">
                               {sortDirection === "asc" ? "↑" : "↓"}
@@ -520,7 +556,7 @@ export default function CampaignsListPage() {
                         onClick={() => handleSort("startDate")}
                       >
                         <div className="whitespace-nowrap flex items-center">
-                          F. Inicio
+                          Start Date
                           {sortField === "startDate" && (
                             <span className="ml-1">
                               {sortDirection === "asc" ? "↑" : "↓"}
@@ -534,7 +570,7 @@ export default function CampaignsListPage() {
                         onClick={() => handleSort("endDate")}
                       >
                         <div className="whitespace-nowrap flex items-center">
-                          F. Fin
+                          End Date
                           {sortField === "endDate" && (
                             <span className="ml-1">
                               {sortDirection === "asc" ? "↑" : "↓"}
@@ -590,7 +626,7 @@ export default function CampaignsListPage() {
                         onClick={() => handleSort("status")}
                       >
                         <div className="whitespace-nowrap flex items-center">
-                          Estado
+                          Status
                           {sortField === "status" && (
                             <span className="ml-1">
                               {sortDirection === "asc" ? "↑" : "↓"}
@@ -658,28 +694,28 @@ export default function CampaignsListPage() {
                 </table>
               </div>
 
-              {/* Paginación */}
+              {/* Pagination */}
               <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 transition-all duration-300 ease-in-out">
                 <div className="flex-1 flex justify-between sm:hidden">
                   <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                    Anterior
+                    Previous
                   </button>
                   <button className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                    Siguiente
+                    Next
                   </button>
                 </div>
                 <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                   <div>
                     <p className="text-sm text-gray-700">
-                      Mostrando <span className="font-medium">1</span> a{" "}
+                      Showing <span className="font-medium">1</span> to{" "}
                       <span className="font-medium">
                         {filteredCampaigns.length}
                       </span>{" "}
-                      de{" "}
+                      of{" "}
                       <span className="font-medium">
                         {filteredCampaigns.length}
                       </span>{" "}
-                      resultados
+                      results
                     </p>
                   </div>
                   <div>
@@ -688,14 +724,14 @@ export default function CampaignsListPage() {
                       aria-label="Pagination"
                     >
                       <button className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                        <span className="sr-only">Anterior</span>
+                        <span className="sr-only">Previous</span>
                         &laquo;
                       </button>
                       <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-indigo-600 hover:bg-indigo-50">
                         1
                       </button>
                       <button className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                        <span className="sr-only">Siguiente</span>
+                        <span className="sr-only">Next</span>
                         &raquo;
                       </button>
                     </nav>

@@ -17,35 +17,35 @@ const Header: React.FC<HeaderProps> = ({ userName }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const notificationRef = useRef<HTMLDivElement>(null);
 
-  // Notificaciones de ejemplo
+  // Example notifications
   const notifications = [
     {
       id: 1,
-      content: 'Se ha aprobado la campaña "LiveNation_Brasil_Bad Bunny"',
+      content: 'Campaign "LiveNation_Brasil_Bad Bunny" has been approved',
       time: "10 min",
       read: false,
     },
     {
       id: 2,
-      content: 'Vence hoy: "Mercedes Benz_GLE 400 EQ TECH"',
+      content: 'Expires today: "Mercedes Benz_GLE 400 EQ TECH"',
       time: "30 min",
       read: false,
     },
     {
       id: 3,
-      content: 'Nueva campaña creada: "Coca Cola_Panama_Share a Coke"',
+      content: 'New campaign created: "Coca Cola_Panama_Share a Coke"',
       time: "2 h",
       read: true,
     },
     {
       id: 4,
-      content: 'El límite de presupuesto "Embratur_Americas" está al 90%',
+      content: 'Budget limit "Embratur_Americas" is at 90%',
       time: "5 h",
       read: true,
     },
   ];
 
-  // Cierra los menús desplegables cuando se hace clic fuera de ellos
+  // Close dropdowns when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -73,23 +73,23 @@ const Header: React.FC<HeaderProps> = ({ userName }) => {
     try {
       await logout();
     } catch (error) {
-      console.error("Error al cerrar sesión:", error);
+      console.error("Error logging out:", error);
     }
   };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Implementar la búsqueda global en el futuro
-    console.log("Buscando:", searchQuery);
+    // Implement global search in the future
+    console.log("Searching:", searchQuery);
   };
 
   return (
     <header className="bg-white border-b border-gray-100 shadow-sm z-10">
       <div className="flex items-center justify-between px-6 py-3">
-        {/* Espacio para equilibrar el diseño - eliminado el logo y texto */}
+        {/* Space to balance design - logo and text removed */}
         <div className="w-10"></div>
 
-        {/* Barra de búsqueda global */}
+        {/* Global search bar */}
         <div className="flex-1 mx-8">
           <form onSubmit={handleSearch} className="w-full">
             <div className="relative">
@@ -112,16 +112,16 @@ const Header: React.FC<HeaderProps> = ({ userName }) => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-full bg-gray-50 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm !text-gray-900 placeholder-gray-500"
-                placeholder="Buscar en toda la aplicación..."
+                placeholder="Search across the application..."
                 style={{ color: "#1f2937" }}
               />
             </div>
           </form>
         </div>
 
-        {/* Controles de usuario */}
+        {/* User controls */}
         <div className="flex items-center">
-          {/* Botón de notificaciones */}
+          {/* Notifications button */}
           <div className="relative mr-4" ref={notificationRef}>
             <button
               onClick={() => {
@@ -147,12 +147,12 @@ const Header: React.FC<HeaderProps> = ({ userName }) => {
               <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>
             </button>
 
-            {/* Menú de notificaciones */}
+            {/* Notifications menu */}
             {openNotifications && (
               <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-20">
                 <div className="py-2 px-4 bg-gradient-to-r from-indigo-700 to-indigo-500 rounded-t-md">
                   <h3 className="text-sm font-medium text-white">
-                    Notificaciones
+                    Notifications
                   </h3>
                 </div>
                 <div className="max-h-96 overflow-y-auto">
@@ -171,14 +171,14 @@ const Header: React.FC<HeaderProps> = ({ userName }) => {
                             {notification.content}
                           </p>
                           <p className="text-xs text-gray-500 mt-1">
-                            Hace {notification.time}
+                            {notification.time} ago
                           </p>
                         </div>
                       ))}
                     </div>
                   ) : (
                     <div className="py-4 px-4 text-sm text-gray-700 text-center">
-                      No tienes notificaciones
+                      You have no notifications
                     </div>
                   )}
                 </div>
@@ -187,14 +187,14 @@ const Header: React.FC<HeaderProps> = ({ userName }) => {
                     href="/notifications"
                     className="text-xs text-indigo-600 hover:text-indigo-800 font-medium"
                   >
-                    Ver todas las notificaciones
+                    View all notifications
                   </Link>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Botón de perfil */}
+          {/* Profile button */}
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => {
@@ -210,7 +210,7 @@ const Header: React.FC<HeaderProps> = ({ userName }) => {
                 <div className="text-sm font-medium text-gray-800">
                   {userName}
                 </div>
-                <div className="text-xs text-gray-500">Administrador</div>
+                <div className="text-xs text-gray-500">Administrator</div>
               </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -226,7 +226,7 @@ const Header: React.FC<HeaderProps> = ({ userName }) => {
               </svg>
             </button>
 
-            {/* Menú desplegable de perfil */}
+            {/* Profile dropdown menu */}
             {openProfile && (
               <div className="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-20">
                 <div className="py-1">
@@ -234,20 +234,20 @@ const Header: React.FC<HeaderProps> = ({ userName }) => {
                     href="/profile"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
                   >
-                    Mi Perfil
+                    My Profile
                   </Link>
                   <Link
                     href="/settings"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
                   >
-                    Configuración
+                    Settings
                   </Link>
                   <div className="border-t border-gray-100 my-1"></div>
                   <button
                     onClick={handleLogout}
                     className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
                   >
-                    Cerrar Sesión
+                    Log Out
                   </button>
                 </div>
               </div>

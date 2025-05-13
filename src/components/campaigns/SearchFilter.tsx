@@ -1,7 +1,7 @@
 // src/components/campaigns/SearchFilter.tsx
 import React, { useState, useEffect, useRef } from "react";
 
-// Tipo para los posibles estados de campaña
+// Type for possible campaign statuses
 type StatusType =
   | "Pending"
   | "Negotiating"
@@ -14,7 +14,7 @@ type StatusType =
   | "HUR"
   | "Invoiced";
 
-// Tipo para las organizaciones
+// Type for organizations
 type OrganizationType =
   | "Agencia"
   | "Advertiser"
@@ -22,7 +22,7 @@ type OrganizationType =
   | "Holding Agency"
   | "Holding Advertiser";
 
-// Tipo para las campañas
+// Type for campaigns
 interface Campaign {
   id: string;
   name: string;
@@ -34,6 +34,7 @@ interface Campaign {
   units: number;
   budget: number;
   grossMargin: number;
+  owner?: string; // Optional owner field
 }
 
 interface SearchFilterProps {
@@ -44,6 +45,12 @@ interface SearchFilterProps {
   selectedStatus: string;
   onStatusChange: (value: string) => void;
   campaigns: Campaign[];
+  startDateFilter?: string;
+  endDateFilter?: string;
+  onStartDateChange?: (value: string) => void;
+  onEndDateChange?: (value: string) => void;
+  selectedOwner?: string;
+  onOwnerChange?: (value: string) => void;
 }
 
 const SearchFilter: React.FC<SearchFilterProps> = ({
@@ -54,8 +61,14 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   selectedStatus,
   onStatusChange,
   campaigns,
+  startDateFilter = "",
+  endDateFilter = "",
+  onStartDateChange = () => {},
+  onEndDateChange = () => {},
+  selectedOwner = "",
+  onOwnerChange = () => {},
 }) => {
-  // Extraer organizaciones únicas de las campañas
+  // Extract unique organizations from campaigns
   const [organizations, setOrganizations] = useState<string[]>([]);
   const [orgSearchTerm, setOrgSearchTerm] = useState<string>("");
   const [showOrgDropdown, setShowOrgDropdown] = useState<boolean>(false);
@@ -65,7 +78,14 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   const [showFilters, setShowFilters] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Lista de estados posibles
+  // Owner filter state
+  const [owners, setOwners] = useState<string[]>([]);
+  const [ownerSearchTerm, setOwnerSearchTerm] = useState<string>("");
+  const [showOwnerDropdown, setShowOwnerDropdown] = useState<boolean>(false);
+  const [filteredOwners, setFilteredOwners] = useState<string[]>([]);
+  const ownerDropdownRef = useRef<HTMLDivElement>(null);
+
+  // List of possible statuses
   const statusOptions: StatusType[] = [
     "Pending",
     "Negotiating",
@@ -79,7 +99,21 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     "Invoiced",
   ];
 
-  // Extraer organizaciones únicas
+  // Sample campaign owners (in a real app, this would come from the data)
+  const sampleOwners = [
+    "John Smith",
+    "Maria Garcia",
+    "David Johnson",
+    "Sofia Rodriguez",
+    "Michael Brown",
+    "Emma Martinez",
+    "James Wilson",
+    "Isabella Lopez",
+    "Robert Taylor",
+    "Olivia Lee",
+  ];
+
+  // Extract unique organizations
   useEffect(() => {
     const uniqueOrganizations = Array.from(
       new Set(campaigns.map((campaign) => campaign.organizationName))
@@ -87,9 +121,13 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
 
     setOrganizations(uniqueOrganizations);
     setFilteredOrganizations(uniqueOrganizations);
+
+    // Set sample owners (in a real app, you would extract from campaigns)
+    setOwners(sampleOwners);
+    setFilteredOwners(sampleOwners);
   }, [campaigns]);
 
-  // Filtrar organizaciones cuando se escribe en el campo de búsqueda
+  // Filter organizations when typing in search field
   useEffect(() => {
     if (orgSearchTerm) {
       const filtered = organizations.filter((org) =>
@@ -101,7 +139,19 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     }
   }, [orgSearchTerm, organizations]);
 
-  // Cerrar el dropdown cuando se hace clic fuera de él
+  // Filter owners when typing in search field
+  useEffect(() => {
+    if (ownerSearchTerm) {
+      const filtered = owners.filter((owner) =>
+        owner.toLowerCase().includes(ownerSearchTerm.toLowerCase())
+      );
+      setFilteredOwners(filtered);
+    } else {
+      setFilteredOwners(owners);
+    }
+  }, [ownerSearchTerm, owners]);
+
+  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -109,6 +159,13 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
         !dropdownRef.current.contains(event.target as Node)
       ) {
         setShowOrgDropdown(false);
+      }
+
+      if (
+        ownerDropdownRef.current &&
+        !ownerDropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowOwnerDropdown(false);
       }
     }
 
@@ -118,18 +175,28 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     };
   }, []);
 
-  // Función para limpiar todos los filtros
+  // Function to clear all filters
   const handleClearFilters = () => {
     onSearchChange("");
     onOrganizationChange("");
     onStatusChange("");
     setOrgSearchTerm("");
+    onStartDateChange("");
+    onEndDateChange("");
+    onOwnerChange("");
+    setOwnerSearchTerm("");
   };
 
-  // Verificar si hay algún filtro activo
-  const hasActiveFilters = searchTerm || selectedOrganization || selectedStatus;
+  // Check if there are any active filters
+  const hasActiveFilters =
+    searchTerm ||
+    selectedOrganization ||
+    selectedStatus ||
+    startDateFilter ||
+    endDateFilter ||
+    selectedOwner;
 
-  // Obtener color para badge de estado
+  // Get color for status badge
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Pending":
@@ -160,7 +227,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   return (
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
       <div className="flex flex-col space-y-4">
-        {/* Barra de búsqueda principal y botón de filtros */}
+        {/* Main search bar and filters button */}
         <div className="flex space-x-2">
           <div className="flex-1 relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -182,7 +249,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
               className="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 placeholder-gray-500 bg-gray-50"
-              placeholder="Buscar por nombre, ID o organización..."
+              placeholder="Search by name, ID or organization..."
             />
           </div>
 
@@ -206,12 +273,15 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
                 clipRule="evenodd"
               />
             </svg>
-            Filtros
+            Filters
             {hasActiveFilters && (
               <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-100 text-xs font-medium text-indigo-800">
                 {(searchTerm ? 1 : 0) +
                   (selectedOrganization ? 1 : 0) +
-                  (selectedStatus ? 1 : 0)}
+                  (selectedStatus ? 1 : 0) +
+                  (startDateFilter ? 1 : 0) +
+                  (endDateFilter ? 1 : 0) +
+                  (selectedOwner ? 1 : 0)}
               </span>
             )}
           </button>
@@ -234,170 +304,233 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
                   clipRule="evenodd"
                 />
               </svg>
-              Limpiar
+              Clear
             </button>
           )}
         </div>
 
-        {/* Filtros avanzados (ocultos por defecto) */}
+        {/* Advanced filters (hidden by default) */}
         {showFilters && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-100 mt-2">
-            {/* Filtro por organización */}
-            <div className="relative" ref={dropdownRef}>
-              <label
-                htmlFor="organization-search"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Organización
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  id="organization-search"
-                  value={orgSearchTerm}
-                  onChange={(e) => {
-                    setOrgSearchTerm(e.target.value);
-                    setShowOrgDropdown(true);
-                    if (e.target.value === "") {
-                      onOrganizationChange("");
-                    }
-                  }}
-                  onClick={() => setShowOrgDropdown(true)}
-                  className="block w-full py-2.5 px-3 border border-gray-200 bg-gray-50 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 placeholder-gray-500"
-                  placeholder="Buscar organización..."
-                />
-                <div className="absolute inset-y-0 right-0 flex items-center pr-2">
-                  <button
-                    type="button"
-                    onClick={() => setShowOrgDropdown(!showOrgDropdown)}
-                    className="text-gray-400 hover:text-gray-500 focus:outline-none"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
+          <div className="grid grid-cols-1 gap-4 pt-4 border-t border-gray-100 mt-2">
+            {/* Top row filters: Organization, Date Range, Owner */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Filter by organization */}
+              <div className="relative" ref={dropdownRef}>
+                <label
+                  htmlFor="organization-search"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Organization
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    id="organization-search"
+                    className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 bg-gray-50"
+                    placeholder="Select or search organization"
+                    value={orgSearchTerm}
+                    onChange={(e) => setOrgSearchTerm(e.target.value)}
+                    onFocus={() => setShowOrgDropdown(true)}
+                    readOnly={!!selectedOrganization}
+                  />
+                  {selectedOrganization && (
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          onOrganizationChange("");
+                          setOrgSearchTerm("");
+                        }}
+                        className="text-gray-400 hover:text-gray-500 focus:outline-none"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  )}
                 </div>
-              </div>
 
-              {/* Dropdown de organizaciones */}
-              {showOrgDropdown && (
-                <div className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-lg overflow-auto border border-gray-200">
-                  <ul
-                    tabIndex={-1}
-                    role="listbox"
-                    className="py-1 text-base leading-6 overflow-auto focus:outline-none sm:text-sm sm:leading-5"
-                  >
-                    {filteredOrganizations.length > 0 ? (
+                {/* Organizations dropdown */}
+                {showOrgDropdown && !selectedOrganization && (
+                  <div className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base overflow-auto focus:outline-none sm:text-sm border border-gray-200">
+                    <div className="px-2 py-1 bg-gray-50 text-xs font-medium text-gray-500">
+                      {filteredOrganizations.length} organizations found
+                    </div>
+                    {filteredOrganizations.length === 0 ? (
+                      <div className="text-gray-500 text-sm px-4 py-2">
+                        No organizations found
+                      </div>
+                    ) : (
                       filteredOrganizations.map((org) => (
-                        <li
+                        <div
                           key={org}
-                          role="option"
+                          className="cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-gray-50 text-gray-900 text-sm"
                           onClick={() => {
                             onOrganizationChange(org);
                             setOrgSearchTerm(org);
                             setShowOrgDropdown(false);
                           }}
-                          className={`cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-indigo-50 ${
-                            selectedOrganization === org
-                              ? "bg-indigo-50 text-indigo-700"
-                              : "text-gray-900"
-                          }`}
                         >
-                          <span className="block truncate">{org}</span>
-                          {selectedOrganization === org && (
-                            <span className="absolute inset-y-0 right-0 flex items-center pr-4">
-                              <svg
-                                className="h-5 w-5 text-indigo-600"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                            </span>
-                          )}
-                        </li>
+                          {org}
+                        </div>
                       ))
-                    ) : (
-                      <li className="cursor-default select-none relative py-2 pl-3 pr-9 text-gray-700">
-                        No se encontraron resultados
-                      </li>
                     )}
-                  </ul>
-                </div>
-              )}
+                  </div>
+                )}
+              </div>
 
-              {/* Mostrar la organización seleccionada */}
-              {selectedOrganization && (
-                <div className="mt-2 flex">
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-800 border border-indigo-100">
-                    {selectedOrganization}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        onOrganizationChange("");
-                        setOrgSearchTerm("");
-                      }}
-                      className="ml-1.5 inline-flex items-center justify-center h-4 w-4 rounded-full text-indigo-400 hover:text-indigo-600 focus:outline-none"
-                    >
-                      <svg
-                        className="h-3 w-3"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </button>
-                  </span>
+              {/* Filter by date range */}
+              <div>
+                <label
+                  htmlFor="date-filter"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Date Range
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label htmlFor="start-date" className="sr-only">
+                      Start Date
+                    </label>
+                    <input
+                      type="date"
+                      id="start-date"
+                      value={startDateFilter}
+                      onChange={(e) => onStartDateChange(e.target.value)}
+                      className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 bg-gray-50"
+                      placeholder="Start date"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="end-date" className="sr-only">
+                      End Date
+                    </label>
+                    <input
+                      type="date"
+                      id="end-date"
+                      value={endDateFilter}
+                      onChange={(e) => onEndDateChange(e.target.value)}
+                      className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 bg-gray-50"
+                      placeholder="End date"
+                    />
+                  </div>
                 </div>
-              )}
+              </div>
+
+              {/* Filter by campaign owner */}
+              <div className="relative" ref={ownerDropdownRef}>
+                <label
+                  htmlFor="owner-search"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Campaign Owner
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    id="owner-search"
+                    className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 bg-gray-50"
+                    placeholder="Select campaign owner"
+                    value={ownerSearchTerm}
+                    onChange={(e) => setOwnerSearchTerm(e.target.value)}
+                    onFocus={() => setShowOwnerDropdown(true)}
+                    readOnly={!!selectedOwner}
+                  />
+                  {selectedOwner && (
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          onOwnerChange("");
+                          setOwnerSearchTerm("");
+                        }}
+                        className="text-gray-400 hover:text-gray-500 focus:outline-none"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Owners dropdown */}
+                {showOwnerDropdown && !selectedOwner && (
+                  <div className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base overflow-auto focus:outline-none sm:text-sm border border-gray-200">
+                    <div className="px-2 py-1 bg-gray-50 text-xs font-medium text-gray-500">
+                      {filteredOwners.length} owners found
+                    </div>
+                    {filteredOwners.length === 0 ? (
+                      <div className="text-gray-500 text-sm px-4 py-2">
+                        No owners found
+                      </div>
+                    ) : (
+                      filteredOwners.map((owner) => (
+                        <div
+                          key={owner}
+                          className="cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-gray-50 text-gray-900 text-sm"
+                          onClick={() => {
+                            onOwnerChange(owner);
+                            setOwnerSearchTerm(owner);
+                            setShowOwnerDropdown(false);
+                          }}
+                        >
+                          {owner}
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
-            {/* Filtro por estado */}
+            {/* Filter by campaign status */}
             <div>
               <label
                 htmlFor="status-filter"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Estado
+                Status
               </label>
-              <div className="space-y-2">
-                <div className="flex flex-wrap gap-2">
-                  {statusOptions.map((status) => (
-                    <button
-                      key={status}
-                      onClick={() =>
-                        onStatusChange(selectedStatus === status ? "" : status)
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+                {statusOptions.map((status) => (
+                  <div
+                    key={status}
+                    className={`cursor-pointer rounded-md px-3 py-1.5 text-sm border ${
+                      selectedStatus === status
+                        ? getStatusColor(status)
+                        : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
+                    }`}
+                    onClick={() => {
+                      if (selectedStatus === status) {
+                        onStatusChange("");
+                      } else {
+                        onStatusChange(status);
                       }
-                      className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium shadow-sm border ${
-                        selectedStatus === status
-                          ? getStatusColor(status)
-                          : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
-                      }`}
-                      type="button"
-                    >
-                      {status === "Materials & Creatives OK"
-                        ? "Materials OK"
-                        : status}
-                    </button>
-                  ))}
-                </div>
+                    }}
+                  >
+                    {status}
+                  </div>
+                ))}
               </div>
             </div>
           </div>

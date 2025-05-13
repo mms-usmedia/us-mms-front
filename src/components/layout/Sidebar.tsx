@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { useSidebar } from "@/contexts/SidebarContext";
 
-// Iconos SVG personalizados
+// Custom SVG icons
 const ModuleIcon = ({ className }: { className?: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -90,14 +90,14 @@ const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const { isCollapsed, toggleSidebar } = useSidebar();
 
-  // Secciones principales
+  // Main sections
   const mainNavigation = [
     { name: "Dashboard", href: "/dashboard", icon: ModuleIcon },
-    { name: "Campañas", href: "/campaigns", icon: CampaignIcon },
-    { name: "Organizaciones", href: "/organizations", icon: OrganizationIcon },
-    { name: "Reportes", href: "/reports", icon: ReportIcon },
-    { name: "Facturación", href: "/accounting", icon: AccountingIcon },
-    { name: "Configuración", href: "/settings", icon: SettingsIcon },
+    { name: "Campaigns", href: "/campaigns", icon: CampaignIcon },
+    { name: "Organizations", href: "/organizations", icon: OrganizationIcon },
+    { name: "Reports", href: "/reports", icon: ReportIcon },
+    { name: "Billing", href: "/accounting", icon: AccountingIcon },
+    { name: "Settings", href: "/settings", icon: SettingsIcon },
   ];
 
   return (
@@ -107,7 +107,7 @@ const Sidebar: React.FC = () => {
       }`}
     >
       <div className="h-full flex flex-col">
-        {/* Logo y nombre del sistema */}
+        {/* Logo and system name */}
         <div className="flex items-center justify-between p-4 border-b border-gray-100">
           <div className="flex items-center min-w-0">
             <div
@@ -136,7 +136,7 @@ const Sidebar: React.FC = () => {
           </div>
         </div>
 
-        {/* Secciones de navegación */}
+        {/* Navigation sections */}
         <nav className="flex-1 overflow-y-auto py-6">
           <div className={`space-y-1.5 ${isCollapsed ? "px-2" : "px-4"}`}>
             <div
@@ -145,7 +145,7 @@ const Sidebar: React.FC = () => {
               }`}
             >
               <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider pl-3">
-                Principal
+                Main
               </h2>
             </div>
 
@@ -182,16 +182,16 @@ const Sidebar: React.FC = () => {
           </div>
         </nav>
 
-        {/* Versión del sistema */}
+        {/* System version */}
         <div className="p-4 text-xs text-gray-400 text-center transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden">
           {isCollapsed ? "v2.0" : "Media Management System v2.0"}
         </div>
 
-        {/* Botón para expandir/colapsar (siempre visible) */}
+        {/* Button to expand/collapse (always visible) */}
         <button
           onClick={toggleSidebar}
           className="absolute -right-4 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md border border-gray-200 text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 transition-colors z-10"
-          aria-label={isCollapsed ? "Expandir menú" : "Colapsar menú"}
+          aria-label={isCollapsed ? "Expand menu" : "Collapse menu"}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
