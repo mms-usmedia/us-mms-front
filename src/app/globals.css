@@ -3,8 +3,8 @@
 @import "tailwindcss";
 
 /* Importaciones para React-Slick */
-@import 'slick-carousel/slick/slick.css';
-@import 'slick-carousel/slick/slick-theme.css';
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";
 
 :root {
   --background: #ffffff;
@@ -58,9 +58,14 @@ body {
 
 /* Asegúrate de que los inputs tengan el color correcto en ambos modos */
 input {
-  color: var(--foreground);
+  color: #1f2937 !important; /* Gris muy oscuro para mejor visibilidad */
 }
 
 input::placeholder {
   color: #9ca3af;
+}
+
+/* Asegurar que los inputs en fondo oscuro también tengan contraste adecuado */
+.dark input {
+  color: #e5e7eb !important;
 }
