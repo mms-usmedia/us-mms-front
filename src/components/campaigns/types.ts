@@ -4,7 +4,6 @@
 export interface Campaign {
   id: string;
   name: string;
-  organizationName: string;
   organizationType:
     | "Agencia"
     | "Advertiser"
@@ -27,7 +26,7 @@ export interface Campaign {
   units: number;
   budget: number;
   grossMargin: number;
-  // Campos adicionales para el detalle
+  // Campos comunes para el detalle
   salesperson?: string;
   trafficker?: string;
   customer?: string;
@@ -39,6 +38,17 @@ export interface Campaign {
   adOpsLeader: string;
   industry: string;
   adUnits?: AdUnit[];
+
+  // Campos específicos para campañas programáticas
+  commissionRate?: number;
+  dspUsed?: string;
+  programmaticType?: "Standard" | "PMP" | "PG";
+
+  // Campos específicos para campañas IO-based
+  mediaOwner?: string;
+  paymentTerms?: string;
+  targetMarket?: string;
+  isCrossBorder?: boolean;
 }
 
 export interface AdUnit {

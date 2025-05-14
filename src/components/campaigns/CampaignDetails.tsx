@@ -1,9 +1,11 @@
 // /src/components/campaigns/CampaignDetails.tsx
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import StatusBadge from "@/components/ui/StatusBadge";
 import { Campaign } from "./types";
 import { formatCurrency, formatDate, formatNumber } from "./utils";
+// Importar marketOptions desde types
+import { marketOptions } from "./types";
 // Importaciones para gráficos
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 // Importaciones para iconos
@@ -14,24 +16,102 @@ import {
   FaCalculator,
   FaChartPie,
   FaFilePdf,
+  FaSearch,
 } from "react-icons/fa";
 
 interface CampaignDetailsProps {
   campaign: Campaign;
   onSave?: (updatedCampaign: Campaign) => void;
+  editMode?: boolean; // Prop para controlar si comienza en modo edición
 }
 
 const CampaignDetails: React.FC<CampaignDetailsProps> = ({
   campaign,
   onSave = () => {}, // Valor predeterminado para evitar errores
+  editMode = false, // Por defecto no está en modo edición
 }) => {
   const [showCalculator, setShowCalculator] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(editMode); // Inicializar según prop
   const [editedCampaign, setEditedCampaign] = useState<Campaign>(campaign);
   const [activeTab, setActiveTab] = useState<"info" | "charts">("info");
 
+  // Estados para los dropdowns de búsqueda
+  const [clientSearch, setClientSearch] = useState("");
+  const [industrySearch, setIndustrySearch] = useState("");
+  const [billingPartySearch, setBillingPartySearch] = useState("");
+
+  // Datos para los dropdowns
+  const clients = [
+    "Apple",
+    "Microsoft",
+    "Google",
+    "Amazon",
+    "Samsung",
+    "Ford",
+    "Toyota",
+    "IBM",
+    "Coca-Cola",
+    "Nike",
+  ];
+  const industries = [
+    "Technology",
+    "Automotive",
+    "Entertainment",
+    "Food & Beverage",
+    "Retail",
+    "Healthcare",
+    "Financial Services",
+    "Travel",
+    "Telecommunications",
+    "Education",
+  ];
+  const billingParties = [
+    "Media Agency",
+    "Creative Agency",
+    "Direct Client",
+    "PR Agency",
+    "Digital Agency",
+    "Full Service Agency",
+  ];
+  const billingOffices = [
+    "Miami",
+    "New York",
+    "Chicago",
+    "Los Angeles",
+    "Dallas",
+    "San Francisco",
+    "Atlanta",
+    "Boston",
+    "Seattle",
+    "Houston",
+  ];
+
+  // Listas filtradas basadas en búsqueda
+  const filteredClients = clients.filter((client) =>
+    client.toLowerCase().includes(clientSearch.toLowerCase())
+  );
+  const filteredIndustries = industries.filter((industry) =>
+    industry.toLowerCase().includes(industrySearch.toLowerCase())
+  );
+  const filteredBillingParties = billingParties.filter((party) =>
+    party.toLowerCase().includes(billingPartySearch.toLowerCase())
+  );
+
+  // Actualizar isEditing cuando cambia editMode
+  useEffect(() => {
+    setIsEditing(editMode);
+  }, [editMode]);
+
+  // Actualizar el estado local cuando cambia la campaña
+  useEffect(() => {
+    setEditedCampaign(campaign);
+  }, [campaign]);
+
   // Función para manejar cambios en los campos editables
-  const handleChange = (field: keyof Campaign, value: string | number) => {
+  const handleChange = (
+    field: keyof Campaign,
+    value: string | number | boolean
+  ) => {
     setEditedCampaign((prev) => ({
       ...prev,
       [field]: value,
@@ -41,13 +121,19 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
   // Función para guardar los cambios
   const handleSave = () => {
     onSave(editedCampaign);
-    setIsEditing(false);
+    // Solo cambiar el modo de edición si no estamos forzando el modo edición con editMode
+    if (!editMode) {
+      setIsEditing(false);
+    }
   };
 
   // Función para cancelar la edición
   const handleCancel = () => {
     setEditedCampaign(campaign);
-    setIsEditing(false);
+    // Solo cambiar el modo de edición si no estamos forzando el modo edición con editMode
+    if (!editMode) {
+      setIsEditing(false);
+    }
   };
 
   // Función para generar el CIO (Customer Insertion Order)
@@ -87,11 +173,13 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <div>
           <h2 className="text-xl font-semibold text-gray-900">
-            Campaign Details
+            Detalles de la Campaña
           </h2>
-          <p className="text-sm text-gray-500">
-            ID: <span className="font-medium">{campaign.id}</span>
-          </p>
+          {campaign.id !== "new" && (
+            <p className="text-sm text-gray-500">
+              ID: <span className="font-medium">{campaign.id}</span>
+            </p>
+          )}
         </div>
 
         <div className="flex items-center gap-2">
@@ -102,39 +190,45 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
               >
                 <FaSave className="h-4 w-4" />
-                Save Changes
+                Guardar Cambios
               </button>
-              <button
-                onClick={handleCancel}
-                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
-              >
-                <FaTimes className="h-4 w-4" />
-                Cancel
-              </button>
+              {!editMode && (
+                <button
+                  onClick={handleCancel}
+                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
+                >
+                  <FaTimes className="h-4 w-4" />
+                  Cancelar
+                </button>
+              )}
             </>
           ) : (
             <>
-              <button
-                onClick={handleGeneratePIO}
-                className="px-4 py-2 bg-blue-500 hover:!bg-blue-900 text-white rounded-md text-sm font-medium transition-all duration-200 flex items-center gap-2 shadow-sm active:bg-blue-900"
-                style={{ transition: "background-color 0.3s ease" }}
-              >
-                <FaFilePdf className="h-4 w-4" />
-                Generate PIO
-              </button>
-              <button
-                onClick={handleGenerateCIO}
-                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
-              >
-                <FaFilePdf className="h-4 w-4" />
-                Generate CIO
-              </button>
+              {campaign.id !== "new" && (
+                <>
+                  <button
+                    onClick={handleGeneratePIO}
+                    className="px-4 py-2 bg-blue-500 hover:!bg-blue-900 text-white rounded-md text-sm font-medium transition-all duration-200 flex items-center gap-2 shadow-sm active:bg-blue-900"
+                    style={{ transition: "background-color 0.3s ease" }}
+                  >
+                    <FaFilePdf className="h-4 w-4" />
+                    Generar PIO
+                  </button>
+                  <button
+                    onClick={handleGenerateCIO}
+                    className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
+                  >
+                    <FaFilePdf className="h-4 w-4" />
+                    Generar CIO
+                  </button>
+                </>
+              )}
               <button
                 onClick={() => setIsEditing(true)}
                 className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
               >
                 <FaEdit className="h-4 w-4" />
-                Edit Details
+                Editar Detalles
               </button>
             </>
           )}
@@ -152,7 +246,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
             }`}
           >
-            Campaign Information
+            Información de Campaña
           </button>
           <button
             onClick={() => setActiveTab("charts")}
@@ -162,7 +256,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
             }`}
           >
-            <FaChartPie className="h-4 w-4" /> Performance Charts
+            <FaChartPie className="h-4 w-4" /> Gráficos de Rendimiento
           </button>
         </div>
       </div>
@@ -192,12 +286,34 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
               <div>
                 <p className="text-sm font-medium text-indigo-600">Client</p>
                 {isEditing ? (
-                  <input
-                    type="text"
-                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 text-gray-900 transition-colors focus:ring-0"
-                    value={editedCampaign.customer || ""}
-                    onChange={(e) => handleChange("customer", e.target.value)}
-                  />
+                  <div className="relative mt-1">
+                    <div className="flex items-center border-2 border-indigo-100 focus-within:border-indigo-300 rounded bg-white">
+                      <input
+                        type="text"
+                        className="text-sm w-full p-2 bg-white rounded text-gray-900 focus:ring-0 border-0 focus:outline-none"
+                        value={clientSearch}
+                        onChange={(e) => setClientSearch(e.target.value)}
+                        placeholder="Buscar cliente..."
+                      />
+                      <FaSearch className="mr-2 text-gray-400" />
+                    </div>
+                    {clientSearch && (
+                      <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
+                        {filteredClients.map((client) => (
+                          <div
+                            key={client}
+                            className="px-4 py-2 hover:bg-indigo-50 cursor-pointer text-sm"
+                            onClick={() => {
+                              handleChange("customer", client);
+                              setClientSearch("");
+                            }}
+                          >
+                            {client}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 ) : (
                   <p className="mt-1 text-sm text-gray-900 font-medium">
                     {campaign.customer || "-"}
@@ -338,12 +454,34 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
               <div>
                 <p className="text-sm font-medium text-indigo-600">Industry</p>
                 {isEditing ? (
-                  <input
-                    type="text"
-                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 text-gray-900 transition-colors focus:ring-0"
-                    value={editedCampaign.industry}
-                    onChange={(e) => handleChange("industry", e.target.value)}
-                  />
+                  <div className="relative mt-1">
+                    <div className="flex items-center border-2 border-indigo-100 focus-within:border-indigo-300 rounded bg-white">
+                      <input
+                        type="text"
+                        className="text-sm w-full p-2 bg-white rounded text-gray-900 focus:ring-0 border-0 focus:outline-none"
+                        value={industrySearch}
+                        onChange={(e) => setIndustrySearch(e.target.value)}
+                        placeholder="Buscar industria..."
+                      />
+                      <FaSearch className="mr-2 text-gray-400" />
+                    </div>
+                    {industrySearch && (
+                      <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
+                        {filteredIndustries.map((industry) => (
+                          <div
+                            key={industry}
+                            className="px-4 py-2 hover:bg-indigo-50 cursor-pointer text-sm"
+                            onClick={() => {
+                              handleChange("industry", industry);
+                              setIndustrySearch("");
+                            }}
+                          >
+                            {industry}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 ) : (
                   <p className="mt-1 text-sm text-gray-900">
                     {campaign.industry}
@@ -355,14 +493,34 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                   Billing Party
                 </p>
                 {isEditing ? (
-                  <input
-                    type="text"
-                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 text-gray-900 transition-colors focus:ring-0"
-                    value={editedCampaign.billingParty}
-                    onChange={(e) =>
-                      handleChange("billingParty", e.target.value)
-                    }
-                  />
+                  <div className="relative mt-1">
+                    <div className="flex items-center border-2 border-indigo-100 focus-within:border-indigo-300 rounded bg-white">
+                      <input
+                        type="text"
+                        className="text-sm w-full p-2 bg-white rounded text-gray-900 focus:ring-0 border-0 focus:outline-none"
+                        value={billingPartySearch}
+                        onChange={(e) => setBillingPartySearch(e.target.value)}
+                        placeholder="Buscar parte de facturación..."
+                      />
+                      <FaSearch className="mr-2 text-gray-400" />
+                    </div>
+                    {billingPartySearch && (
+                      <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
+                        {filteredBillingParties.map((party) => (
+                          <div
+                            key={party}
+                            className="px-4 py-2 hover:bg-indigo-50 cursor-pointer text-sm"
+                            onClick={() => {
+                              handleChange("billingParty", party);
+                              setBillingPartySearch("");
+                            }}
+                          >
+                            {party}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 ) : (
                   <p className="mt-1 text-sm text-gray-900">
                     {campaign.billingParty}
@@ -374,20 +532,245 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                   Billing Office
                 </p>
                 {isEditing ? (
-                  <input
-                    type="text"
-                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 text-gray-900 transition-colors focus:ring-0"
-                    value={editedCampaign.billingOffice}
-                    onChange={(e) =>
-                      handleChange("billingOffice", e.target.value)
-                    }
-                  />
+                  <div className="relative mt-1">
+                    <select
+                      className="text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
+                      value={editedCampaign.billingOffice || ""}
+                      onChange={(e) =>
+                        handleChange("billingOffice", e.target.value)
+                      }
+                    >
+                      <option value="">Seleccionar oficina...</option>
+                      {billingOffices.map((office) => (
+                        <option key={office} value={office}>
+                          {office}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                      <svg
+                        className="h-5 w-5 text-indigo-500"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </div>
                 ) : (
                   <p className="mt-1 text-sm text-gray-900">
                     {campaign.billingOffice}
                   </p>
                 )}
               </div>
+
+              {/* Campos específicos para campañas programáticas */}
+              {campaign.organizationType === "Publisher" && (
+                <>
+                  <div>
+                    <p className="text-sm font-medium text-indigo-600">
+                      Commission Rate (%)
+                    </p>
+                    {isEditing ? (
+                      <input
+                        type="number"
+                        className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                        value={editedCampaign.commissionRate || 15}
+                        onChange={(e) =>
+                          handleChange("commissionRate", Number(e.target.value))
+                        }
+                        min="0"
+                        max="100"
+                        step="0.5"
+                      />
+                    ) : (
+                      <p className="mt-1 text-sm text-gray-900 font-medium">
+                        {campaign.commissionRate || 15}%
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-indigo-600">
+                      DSP Used
+                    </p>
+                    {isEditing ? (
+                      <div className="relative mt-1">
+                        <select
+                          className="text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
+                          value={editedCampaign.dspUsed || ""}
+                          onChange={(e) =>
+                            handleChange("dspUsed", e.target.value)
+                          }
+                        >
+                          <option value="">Seleccionar DSP...</option>
+                          <option value="DV360">DV360</option>
+                          <option value="The Trade Desk">The Trade Desk</option>
+                          <option value="MediaMath">MediaMath</option>
+                          <option value="Amazon DSP">Amazon DSP</option>
+                          <option value="Xandr">Xandr</option>
+                          <option value="Verizon Media">Verizon Media</option>
+                        </select>
+                        <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                          <svg
+                            className="h-5 w-5 text-indigo-500"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="mt-1 text-sm text-gray-900">
+                        {campaign.dspUsed || "-"}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-indigo-600">
+                      Programmatic Type
+                    </p>
+                    {isEditing ? (
+                      <div className="relative mt-1">
+                        <select
+                          className="text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
+                          value={editedCampaign.programmaticType || "Standard"}
+                          onChange={(e) =>
+                            handleChange("programmaticType", e.target.value)
+                          }
+                        >
+                          <option value="Standard">Standard</option>
+                          <option value="PMP">PMP (Private Marketplace)</option>
+                          <option value="PG">
+                            PG (Programmatic Guaranteed)
+                          </option>
+                        </select>
+                        <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                          <svg
+                            className="h-5 w-5 text-indigo-500"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="mt-1 text-sm text-gray-900">
+                        {campaign.programmaticType || "Standard"}
+                      </p>
+                    )}
+                  </div>
+                </>
+              )}
+
+              {/* Campos específicos para campañas IO-based (cuando no es Publisher) */}
+              {campaign.organizationType !== "Publisher" && (
+                <>
+                  <div>
+                    <p className="text-sm font-medium text-indigo-600">
+                      Media Owner
+                    </p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                        value={editedCampaign.mediaOwner || ""}
+                        onChange={(e) =>
+                          handleChange("mediaOwner", e.target.value)
+                        }
+                        placeholder="Propietario del medio"
+                      />
+                    ) : (
+                      <p className="mt-1 text-sm text-gray-900">
+                        {campaign.mediaOwner || "-"}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-indigo-600">
+                      Target Market
+                    </p>
+                    {isEditing ? (
+                      <div className="relative mt-1">
+                        <select
+                          className="text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
+                          value={editedCampaign.targetMarket || ""}
+                          onChange={(e) =>
+                            handleChange("targetMarket", e.target.value)
+                          }
+                        >
+                          <option value="">Seleccionar mercado...</option>
+                          {marketOptions.map((market) => (
+                            <option key={market} value={market}>
+                              {market}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                          <svg
+                            className="h-5 w-5 text-indigo-500"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="mt-1 text-sm text-gray-900">
+                        {campaign.targetMarket || "-"}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-indigo-600">
+                      Cross Border
+                    </p>
+                    {isEditing ? (
+                      <div className="mt-1 flex items-center">
+                        <label className="inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                            checked={editedCampaign.isCrossBorder || false}
+                            onChange={(e) =>
+                              handleChange("isCrossBorder", e.target.checked)
+                            }
+                          />
+                          <span className="ml-2 text-sm text-gray-700">
+                            Es una campaña cross-border
+                          </span>
+                        </label>
+                      </div>
+                    ) : (
+                      <p className="mt-1 text-sm text-gray-900">
+                        {campaign.isCrossBorder ? "Sí" : "No"}
+                      </p>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
           </div>
 
@@ -522,7 +905,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                   {isEditing ? (
                     <input
                       type="text"
-                      className="mt-1 text-sm w-full border-2 border-emerald-100 rounded p-2 bg-emerald-50 text-gray-700"
+                      className="mt-1 text-sm w-full border-2 border-emerald-100 rounded p-2 bg-white text-gray-700"
                       value={`${editedCampaign.grossMargin}%`}
                       disabled
                     />

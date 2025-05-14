@@ -6,7 +6,6 @@ export const mockCampaigns: Campaign[] = [
   {
     id: "23810",
     name: "LiveNation_Brasil_Bad Bunny_Vevo_MaioJunho25",
-    organizationName: "Live Nation Brasil Entretenimento LTDA",
     organizationType: "Advertiser",
     startDate: "2025-05-13",
     endDate: "2025-06-11",
@@ -68,7 +67,6 @@ export const mockCampaigns: Campaign[] = [
   {
     id: "23809",
     name: "Alpura_Deslactosada_Podcast ads_Mex_Jun25",
-    organizationName: "Havas Media Mexico City",
     organizationType: "Agencia",
     startDate: "2025-06-01",
     endDate: "2025-06-30",
@@ -111,7 +109,6 @@ export const mockCampaigns: Campaign[] = [
   {
     id: "23796",
     name: "FANDOM | MAX (ARG) | FINAL | Mayo 25",
-    organizationName: "Fandom",
     organizationType: "Publisher",
     startDate: "2025-05-19",
     endDate: "2025-06-25",
