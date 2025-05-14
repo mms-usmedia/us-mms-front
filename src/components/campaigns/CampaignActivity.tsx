@@ -82,7 +82,7 @@ const CampaignActivity: React.FC<CampaignActivityProps> = ({ campaign }) => {
               <div className="text-sm font-medium text-gray-900">
                 Status updated to{" "}
                 <span className="font-semibold text-emerald-600">
-                  "{campaign.status}"
+                  &quot;{campaign.status}&quot;
                 </span>
               </div>
               <div className="mt-1 text-sm text-gray-500">

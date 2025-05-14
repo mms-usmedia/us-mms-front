@@ -5,19 +5,7 @@ import StatusBadge from "@/components/ui/StatusBadge";
 import { Campaign } from "./types";
 import { formatCurrency, formatDate, formatNumber } from "./utils";
 // Importaciones para gráficos
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  Tooltip,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Legend,
-} from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 // Importaciones para iconos
 import {
   FaEdit,
@@ -25,8 +13,6 @@ import {
   FaTimes,
   FaCalculator,
   FaChartPie,
-  FaExternalLinkAlt,
-  FaFileDownload,
   FaFilePdf,
 } from "react-icons/fa";
 
@@ -95,38 +81,6 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
 
   // Colores para el gráfico circular
   const COLORS = ["#6366F1", "#10B981", "#F59E0B"];
-
-  // Datos para el gráfico de barras de rendimiento mensual
-  const generatePerformanceData = () => {
-    // Simulación de datos de rendimiento mensual
-    return [
-      {
-        name: "Jan",
-        units: campaign.units * 0.1,
-        budget: campaign.budget * 0.1,
-      },
-      {
-        name: "Feb",
-        units: campaign.units * 0.15,
-        budget: campaign.budget * 0.15,
-      },
-      {
-        name: "Mar",
-        units: campaign.units * 0.25,
-        budget: campaign.budget * 0.25,
-      },
-      {
-        name: "Apr",
-        units: campaign.units * 0.2,
-        budget: campaign.budget * 0.2,
-      },
-      {
-        name: "May",
-        units: campaign.units * 0.3,
-        budget: campaign.budget * 0.3,
-      },
-    ];
-  };
 
   return (
     <div className="bg-white shadow-sm border border-gray-100 rounded-b-xl p-6">

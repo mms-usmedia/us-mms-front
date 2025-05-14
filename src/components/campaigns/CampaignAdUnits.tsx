@@ -31,10 +31,10 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
   const [selectedAdUnit, setSelectedAdUnit] = useState<AdUnit | null>(null);
 
   // Función para calcular valores dependientes cuando cambia la inversión o las unidades
-  const calculateDependentValues = (field: string, value: any) => {
+  const calculateDependentValues = (field: string, value: number) => {
     if (!editedAdUnit) return;
 
-    let updatedUnit = { ...editedAdUnit };
+    const updatedUnit = { ...editedAdUnit };
 
     if (field === "units") {
       // Si cambian las units, recalculamos unit cost
@@ -64,7 +64,7 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
   };
 
   // Función para manejar cambios en los campos editables
-  const handleAdUnitChange = (field: keyof AdUnit, value: any) => {
+  const handleAdUnitChange = (field: keyof AdUnit, value: string | number) => {
     if (editedAdUnit) {
       const updatedAdUnit = {
         ...editedAdUnit,
@@ -74,7 +74,10 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
       setEditedAdUnit(updatedAdUnit);
 
       // Si cambia units o investment, recalcular los valores dependientes
-      if (field === "units" || field === "investment") {
+      if (
+        (field === "units" || field === "investment") &&
+        typeof value === "number"
+      ) {
         calculateDependentValues(field, value);
       }
     }
@@ -147,7 +150,6 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
       <AdUnitForm
         adUnit={selectedAdUnit || undefined}
         campaignId={campaign.id}
-        campaignName={campaign.name}
         existingLines={campaign.adUnits?.length || 0}
         onSave={handleSaveFromForm}
         onCancel={handleCancelForm}

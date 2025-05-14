@@ -12,14 +12,17 @@ import Link from "next/link";
 import { PublisherInsertionOrder } from "@/components/campaigns/types";
 import { getMockCampaignById } from "@/components/campaigns/mockData";
 
+// Importamos o definimos el tipo Campaign
+import { Campaign } from "@/components/campaigns/types";
+
 export default function PublisherInsertionOrderPage() {
   const router = useRouter();
   const params = useParams();
   const { user, isLoading, isAuthenticated } = useAuth();
-  const { isCollapsed } = useSidebar();
-  const [campaignData, setCampaignData] = useState(null);
+  const {} = useSidebar();
+  const [campaignData, setCampaignData] = useState<Campaign | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   // Obtener el ID de la campaña de los parámetros de la URL
   const campaignId = Array.isArray(params.id) ? params.id[0] : params.id;

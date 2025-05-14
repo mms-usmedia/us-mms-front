@@ -3,9 +3,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import LoginCarousel from "@/components/auth/LoginCarousel";
 import { useAuth } from "@/contexts/AuthContext";
+import LoginCarousel from "@/components/auth/LoginCarousel";
 
 // Datos del carrusel
 const carouselItems = [
@@ -33,7 +32,6 @@ const carouselItems = [
 ];
 
 export default function LoginPage() {
-  const router = useRouter();
   const { login, loginWithGoogle, isLoading: authLoading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -49,8 +47,12 @@ export default function LoginPage() {
     try {
       await login(email, password);
       // La redirección se maneja en el contexto de autenticación
-    } catch (err: any) {
-      setError(err.message || "Failed to login. Please try again.");
+    } catch (err: Error | unknown) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to login. Please try again."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -60,8 +62,12 @@ export default function LoginPage() {
     try {
       await loginWithGoogle();
       // La redirección se maneja por el flujo OAuth
-    } catch (err: any) {
-      setError(err.message || "Google login failed. Please try again.");
+    } catch (err: Error | unknown) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Google login failed. Please try again."
+      );
     }
   };
 
@@ -274,7 +280,7 @@ export default function LoginPage() {
           </div>
 
           <p className="mt-8 text-center text-sm text-gray-600">
-            Don't have an account yet?{" "}
+            Don&apos;t have an account yet?{" "}
             <Link
               href="/register"
               className="font-medium text-blue-600 hover:text-blue-500"

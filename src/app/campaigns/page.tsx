@@ -228,7 +228,7 @@ export default function CampaignsListPage() {
   const router = useRouter();
   const { user, isLoading, isAuthenticated } = useAuth();
   const { isCollapsed } = useSidebar();
-  const [campaigns, setCampaigns] = useState<Campaign[]>(mockCampaigns);
+  const [campaigns] = useState<Campaign[]>(mockCampaigns);
   const [filteredCampaigns, setFilteredCampaigns] =
     useState<Campaign[]>(mockCampaigns);
   const [searchTerm, setSearchTerm] = useState("");
@@ -257,89 +257,89 @@ export default function CampaignsListPage() {
     [isCollapsed]
   );
 
-  // Function to apply filters
-  const applyFilters = () => {
-    let filtered = [...campaigns];
-
-    // Filter by search term
-    if (searchTerm) {
-      filtered = filtered.filter(
-        (campaign) =>
-          campaign.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          campaign.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          campaign.organizationName
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase())
-      );
-    }
-
-    // Filter by organization
-    if (selectedOrganization) {
-      filtered = filtered.filter(
-        (campaign) => campaign.organizationName === selectedOrganization
-      );
-    }
-
-    // Filter by status
-    if (selectedStatus) {
-      filtered = filtered.filter(
-        (campaign) => campaign.status === selectedStatus
-      );
-    }
-
-    // Filter by start date
-    if (startDateFilter) {
-      filtered = filtered.filter(
-        (campaign) => new Date(campaign.startDate) >= new Date(startDateFilter)
-      );
-    }
-
-    // Filter by end date
-    if (endDateFilter) {
-      filtered = filtered.filter(
-        (campaign) => new Date(campaign.endDate) <= new Date(endDateFilter)
-      );
-    }
-
-    // Filter by owner (in a real app, this would filter by the owner property)
-    if (selectedOwner) {
-      // For demo purposes we're just filtering random campaigns
-      // In a real app you would do: campaign.owner === selectedOwner
-      filtered = filtered.filter(
-        (campaign) =>
-          campaign.id.charCodeAt(0) % 10 === selectedOwner.charCodeAt(0) % 10
-      );
-    }
-
-    // Sort results
-    filtered.sort((a, b) => {
-      let comparison = 0;
-
-      if (sortField === "startDate") {
-        comparison =
-          new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
-      } else if (sortField === "endDate") {
-        comparison =
-          new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
-      } else if (sortField === "budget") {
-        comparison = a.budget - b.budget;
-      } else if (sortField === "units") {
-        comparison = a.units - b.units;
-      } else if (sortField === "grossMargin") {
-        comparison = a.grossMargin - b.grossMargin;
-      } else {
-        // Sort by name by default
-        comparison = a.name.localeCompare(b.name);
-      }
-
-      return sortDirection === "asc" ? comparison : -comparison;
-    });
-
-    setFilteredCampaigns(filtered);
-  };
-
   // Apply filters when criteria change
   useEffect(() => {
+    const applyFilters = () => {
+      let filtered = [...campaigns];
+
+      // Filter by search term
+      if (searchTerm) {
+        filtered = filtered.filter(
+          (campaign) =>
+            campaign.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            campaign.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            campaign.organizationName
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())
+        );
+      }
+
+      // Filter by organization
+      if (selectedOrganization) {
+        filtered = filtered.filter(
+          (campaign) => campaign.organizationName === selectedOrganization
+        );
+      }
+
+      // Filter by status
+      if (selectedStatus) {
+        filtered = filtered.filter(
+          (campaign) => campaign.status === selectedStatus
+        );
+      }
+
+      // Filter by start date
+      if (startDateFilter) {
+        filtered = filtered.filter(
+          (campaign) =>
+            new Date(campaign.startDate) >= new Date(startDateFilter)
+        );
+      }
+
+      // Filter by end date
+      if (endDateFilter) {
+        filtered = filtered.filter(
+          (campaign) => new Date(campaign.endDate) <= new Date(endDateFilter)
+        );
+      }
+
+      // Filter by owner (in a real app, this would filter by the owner property)
+      if (selectedOwner) {
+        // For demo purposes we're just filtering random campaigns
+        // In a real app you would do: campaign.owner === selectedOwner
+        filtered = filtered.filter(
+          (campaign) =>
+            campaign.id.charCodeAt(0) % 10 === selectedOwner.charCodeAt(0) % 10
+        );
+      }
+
+      // Sort results
+      filtered.sort((a, b) => {
+        let comparison = 0;
+
+        if (sortField === "startDate") {
+          comparison =
+            new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+        } else if (sortField === "endDate") {
+          comparison =
+            new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
+        } else if (sortField === "budget") {
+          comparison = a.budget - b.budget;
+        } else if (sortField === "units") {
+          comparison = a.units - b.units;
+        } else if (sortField === "grossMargin") {
+          comparison = a.grossMargin - b.grossMargin;
+        } else {
+          // Sort by name by default
+          comparison = a.name.localeCompare(b.name);
+        }
+
+        return sortDirection === "asc" ? comparison : -comparison;
+      });
+
+      setFilteredCampaigns(filtered);
+    };
+
     applyFilters();
   }, [
     searchTerm,
@@ -350,6 +350,7 @@ export default function CampaignsListPage() {
     startDateFilter,
     endDateFilter,
     selectedOwner,
+    campaigns,
   ]);
 
   // Handler to change sort field
@@ -637,7 +638,7 @@ export default function CampaignsListPage() {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-100">
-                    {filteredCampaigns.map((campaign, index) => (
+                    {filteredCampaigns.map((campaign) => (
                       <tr
                         key={campaign.id}
                         className="hover:bg-gray-50 transition-colors cursor-pointer"

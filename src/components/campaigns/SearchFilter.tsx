@@ -99,22 +99,23 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     "Invoiced",
   ];
 
-  // Sample campaign owners (in a real app, this would come from the data)
-  const sampleOwners = [
-    "John Smith",
-    "Maria Garcia",
-    "David Johnson",
-    "Sofia Rodriguez",
-    "Michael Brown",
-    "Emma Martinez",
-    "James Wilson",
-    "Isabella Lopez",
-    "Robert Taylor",
-    "Olivia Lee",
-  ];
-
-  // Extract unique organizations
+  // Initialize organizations and owners when component mounts or campaigns change
   useEffect(() => {
+    // Sample campaign owners (en una app real, esto vendría de los datos)
+    const sampleOwners = [
+      "John Smith",
+      "Maria Garcia",
+      "David Johnson",
+      "Sofia Rodriguez",
+      "Michael Brown",
+      "Emma Martinez",
+      "James Wilson",
+      "Isabella Lopez",
+      "Robert Taylor",
+      "Olivia Lee",
+    ];
+
+    // Get unique organization names
     const uniqueOrganizations = Array.from(
       new Set(campaigns.map((campaign) => campaign.organizationName))
     ).sort();

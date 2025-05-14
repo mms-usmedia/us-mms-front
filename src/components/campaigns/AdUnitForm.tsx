@@ -1,6 +1,6 @@
 // /src/components/campaigns/AdUnitForm.tsx
 import React, { useState, useEffect } from "react";
-import { AdUnit, Campaign, samplePublishers, Publisher } from "./types";
+import { AdUnit, samplePublishers, Publisher } from "./types";
 import {
   marketOptions,
   channelOptions,
@@ -8,12 +8,11 @@ import {
   sizeOptions,
   modelOptions,
 } from "./types";
-import { formatCurrency, formatNumber } from "./utils";
+import { formatCurrency } from "./utils";
 
 interface AdUnitFormProps {
   adUnit?: AdUnit; // Si es null, estamos creando una nueva ad unit
   campaignId: string;
-  campaignName: string;
   existingLines: number; // Número de líneas existentes para asignar automáticamente
   onSave: (adUnit: AdUnit) => void;
   onCancel: () => void;
@@ -22,7 +21,6 @@ interface AdUnitFormProps {
 const AdUnitForm: React.FC<AdUnitFormProps> = ({
   adUnit,
   campaignId,
-  campaignName,
   existingLines,
   onSave,
   onCancel,
@@ -85,7 +83,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
 
   // Función principal para calcular todos los valores financieros
   const calculateFinancials = (data: AdUnit): AdUnit => {
-    let updated = { ...data };
+    const updated = { ...data };
 
     // Si tenemos una tarifa abierta para el publisher, calculamos el costo neto del publisher
     if (updated.publisherOpenRate && updated.units) {
@@ -171,7 +169,10 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
   };
 
   // Función para manejar cambios en los campos del formulario
-  const handleChange = (field: keyof AdUnit, value: any) => {
+  const handleChange = (
+    field: keyof AdUnit,
+    value: string | number | boolean
+  ) => {
     setFormData((prev) => {
       const updated = {
         ...prev,

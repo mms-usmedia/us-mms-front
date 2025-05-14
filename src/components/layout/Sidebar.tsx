@@ -4,7 +4,6 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
 import { useSidebar } from "@/contexts/SidebarContext";
 
 // Custom SVG icons

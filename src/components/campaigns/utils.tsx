@@ -56,7 +56,7 @@ export const formatFileSize = (bytes: number) => {
 /**
  * Obtiene el icono según el tipo de archivo
  */
-export const getFileIcon = (fileType: string): JSX.Element => {
+export const getFileIcon = (fileType: string): React.JSX.Element => {
   if (fileType.includes("pdf")) {
     return (
       <svg

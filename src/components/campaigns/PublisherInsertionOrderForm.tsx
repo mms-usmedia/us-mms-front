@@ -47,7 +47,10 @@ const PublisherInsertionOrderForm: React.FC<
   }, [pio.billingServer]);
 
   // Manejar cambios en los campos
-  const handleChange = (field: keyof PublisherInsertionOrder, value: any) => {
+  const handleChange = (
+    field: keyof PublisherInsertionOrder,
+    value: string | number | BillingServerType
+  ) => {
     setPio((prev) => ({
       ...prev,
       [field]: value,

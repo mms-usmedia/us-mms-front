@@ -26,7 +26,7 @@ export default function CampaignDetailPage() {
   const router = useRouter();
   const params = useParams();
   const { user, isLoading, isAuthenticated } = useAuth();
-  const { isCollapsed } = useSidebar();
+  const {} = useSidebar();
   const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<
@@ -268,7 +268,15 @@ export default function CampaignDetailPage() {
                   ].map((tab) => (
                     <button
                       key={tab.id}
-                      onClick={() => setActiveTab(tab.id as any)}
+                      onClick={() =>
+                        setActiveTab(
+                          tab.id as
+                            | "details"
+                            | "adUnits"
+                            | "documents"
+                            | "activity"
+                        )
+                      }
                       className={`
                         whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm
                         ${

@@ -19,6 +19,7 @@ interface RefreshTokenResponse {
 // Servicio para manejar la autenticación
 const AuthService = {
   // Login con email y contraseña
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async login(email: string, password: string): Promise<AuthResponse> {
     // TODO: Integrar con el backend cuando esté disponible
     // Mock para desarrollo
@@ -79,6 +80,7 @@ const AuthService = {
   },
 
   // Renovar token de acceso
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async refreshToken(refreshToken: string): Promise<RefreshTokenResponse> {
     // TODO: Integrar con el backend cuando esté disponible
     // Mock para desarrollo

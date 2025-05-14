@@ -29,7 +29,7 @@ const LoginCarousel: React.FC<LoginCarouselProps> = ({ items }) => {
     autoplay: true,
     autoplaySpeed: 3000,
     arrows: false,
-    beforeChange: (_: any, next: number) => setCurrentSlide(next),
+    beforeChange: (_: number, next: number) => setCurrentSlide(next),
   };
 
   const goToSlide = (index: number) => {
