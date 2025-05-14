@@ -641,6 +641,7 @@ export default function CampaignsListPage() {
                       <tr
                         key={campaign.id}
                         className="hover:bg-gray-50 transition-colors cursor-pointer"
+                        onClick={() => router.push(`/campaigns/${campaign.id}`)}
                       >
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
                           {campaign.id}
