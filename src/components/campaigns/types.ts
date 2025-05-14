@@ -1,3 +1,4 @@
+// /src/components/campaigns/types.ts
 // Tipos compartidos para la sección de campañas
 
 export interface Campaign {

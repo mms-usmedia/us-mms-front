@@ -1,3 +1,4 @@
+// /src/components/campaigns/DocumentDeleteModal.tsx
 import React from "react";
 
 interface DocumentDeleteModalProps {

@@ -1,9 +1,15 @@
-// src/contexts/AuthContext.tsx
+// /src/contexts/AuthContext.tsx
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
-import AuthService from '@/services/auth';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { useRouter } from "next/navigation";
+import AuthService from "@/services/auth";
 
 // Tipo para el usuario
 interface User {
@@ -27,7 +33,9 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Proveedor del contexto
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -40,19 +48,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         // En una implementación real, verificaríamos la validez del token
         // y obtendríamos la información del usuario
         const isAuthenticatedUser = AuthService.isAuthenticated();
-        
+
         if (isAuthenticatedUser) {
           // Mock: En una implementación real, obtendríamos esta información del backend
           setUser({
-            id: '1',
-            email: 'user@example.com',
-            name: 'User Name',
-            role: 'user',
+            id: "1",
+            email: "user@example.com",
+            name: "User Name",
+            role: "user",
           });
           setIsAuthenticated(true);
         }
       } catch (error) {
-        console.error('Error checking auth status:', error);
+        console.error("Error checking auth status:", error);
       } finally {
         setIsLoading(false);
       }
@@ -68,14 +76,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const response = await AuthService.login(email, password);
       setUser(response.user);
       setIsAuthenticated(true);
-      
+
       // Establecer cookie y localStorage
-      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem("isLoggedIn", "true");
       document.cookie = "isLoggedIn=true; path=/; max-age=86400";
-      
-      router.push('/dashboard');
+
+      router.push("/dashboard");
     } catch (error) {
-      console.error('Login error:', error);
+      console.error("Login error:", error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -89,7 +97,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // El flujo de OAuth redirigirá al usuario, por lo que no necesitamos
       // hacer nada más aquí
     } catch (error) {
-      console.error('Google login error:', error);
+      console.error("Google login error:", error);
       throw error;
     }
   };
@@ -101,14 +109,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       await AuthService.logout();
       setUser(null);
       setIsAuthenticated(false);
-      
+
       // Eliminar tanto de localStorage como de cookies
-      localStorage.removeItem('isLoggedIn');
-      document.cookie = "isLoggedIn=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-      
-      router.push('/login');
+      localStorage.removeItem("isLoggedIn");
+      document.cookie =
+        "isLoggedIn=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+
+      router.push("/login");
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
     } finally {
       setIsLoading(false);
     }
@@ -125,9 +134,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   return (
-    <AuthContext.Provider value={contextValue}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
 
@@ -135,7 +142,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

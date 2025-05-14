@@ -1,4 +1,4 @@
-// src/components/layout/Sidebar.tsx
+// /src/components/layout/Sidebar.tsx
 "use client";
 
 import React from "react";

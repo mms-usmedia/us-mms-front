@@ -1,4 +1,4 @@
-// src/components/auth/LoginCarousel.tsx
+// /src/components/auth/LoginCarousel.tsx
 "use client";
 
 import React, { useState } from "react";

@@ -1,4 +1,4 @@
-// src/components/ui/StatusBadge.tsx
+// /src/components/ui/StatusBadge.tsx
 import React from "react";
 
 // Tipo para los posibles estados de campaña

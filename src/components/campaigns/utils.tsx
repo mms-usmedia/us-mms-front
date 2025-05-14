@@ -1,3 +1,4 @@
+// /src/components/campaigns/utils.tsx
 import React from "react";
 
 // Utilidades compartidas para componentes de campaña

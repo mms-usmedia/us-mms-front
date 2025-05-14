@@ -1,4 +1,4 @@
-// src/components/campaigns/SearchFilter.tsx
+// /src/components/campaigns/SearchFilter.tsx
 import React, { useState, useEffect, useRef } from "react";
 
 // Type for possible campaign statuses

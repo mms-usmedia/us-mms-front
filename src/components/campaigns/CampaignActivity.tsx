@@ -1,3 +1,4 @@
+// /src/components/campaigns/CampaignActivity.tsx
 import React from "react";
 import { Campaign } from "./types";
 import { formatDate } from "./utils";

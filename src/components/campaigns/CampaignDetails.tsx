@@ -1,4 +1,4 @@
-// Solución para el componente CampaignDetails.tsx
+// /src/components/campaigns/CampaignDetails.tsx
 
 import React, { useState } from "react";
 import StatusBadge from "@/components/ui/StatusBadge";

@@ -1,3 +1,4 @@
+// /src/components/campaigns/mockData.ts
 import { Campaign } from "./types";
 
 // Mock data para las campañas
