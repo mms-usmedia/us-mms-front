@@ -6,10 +6,10 @@ import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface HeaderProps {
-  userName: string;
+  userName?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ userName }) => {
+const Header: React.FC<HeaderProps> = ({ userName = "User" }) => {
   const { logout } = useAuth();
   const [openProfile, setOpenProfile] = useState(false);
   const [openNotifications, setOpenNotifications] = useState(false);
@@ -204,11 +204,11 @@ const Header: React.FC<HeaderProps> = ({ userName }) => {
               className="flex items-center text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded-full"
             >
               <div className="h-9 w-9 rounded-full bg-gradient-to-r from-violet-500 to-indigo-500 flex items-center justify-center text-white font-medium shadow-md">
-                {userName.charAt(0).toUpperCase()}
+                {(userName && userName.charAt(0).toUpperCase()) || "U"}
               </div>
               <div className="ml-2 hidden md:block">
                 <div className="text-sm font-medium text-gray-800">
-                  {userName}
+                  {userName || "User"}
                 </div>
                 <div className="text-xs text-gray-500">Administrator</div>
               </div>
