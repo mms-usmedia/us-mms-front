@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { AdUnit, Campaign } from "./types";
 import { formatCurrency, formatNumber, truncateText } from "./utils";
 import AdUnitDeleteModal from "./AdUnitDeleteModal";
+import AdUnitForm from "./AdUnitForm";
 import {
   marketOptions,
   channelOptions,
@@ -25,6 +26,8 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
   const [editedAdUnit, setEditedAdUnit] = useState<AdUnit | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [adUnitToDelete, setAdUnitToDelete] = useState<string | null>(null);
+  const [showAdUnitForm, setShowAdUnitForm] = useState(false);
+  const [selectedAdUnit, setSelectedAdUnit] = useState<AdUnit | null>(null);
 
   // Función para calcular valores dependientes cuando cambia la inversión o las unidades
   const calculateDependentValues = (field: string, value: any) => {
@@ -112,15 +115,46 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
     setAdUnitToDelete(null);
   };
 
-  // Función para manejar el inicio de edición
-  const handleEditAdUnit = (adUnitId: string) => {
-    const adUnit = campaign.adUnits?.find((unit) => unit.id === adUnitId);
-    if (adUnit) {
-      setEditedAdUnit({ ...adUnit });
-      setEditingAdUnit(adUnitId);
-    }
+  // Función para mostrar el formulario de nueva/editar ad unit
+  const handleNewAdUnit = () => {
+    setSelectedAdUnit(null);
+    setShowAdUnitForm(true);
   };
 
+  // Función para manejar el inicio de edición
+  const handleEditAdUnit = (adUnit: AdUnit) => {
+    setSelectedAdUnit(adUnit);
+    setShowAdUnitForm(true);
+  };
+
+  // Función para guardar desde el formulario
+  const handleSaveFromForm = (adUnit: AdUnit) => {
+    onSaveAdUnit(adUnit);
+    setShowAdUnitForm(false);
+    setSelectedAdUnit(null);
+  };
+
+  // Función para cancelar el formulario
+  const handleCancelForm = () => {
+    setShowAdUnitForm(false);
+    setSelectedAdUnit(null);
+  };
+
+  // Si estamos mostrando el formulario, lo renderizamos
+  if (showAdUnitForm) {
+    return (
+      <AdUnitForm
+        adUnit={selectedAdUnit || undefined}
+        campaignId={campaign.id}
+        campaignName={campaign.name}
+        existingLines={campaign.adUnits?.length || 0}
+        onSave={handleSaveFromForm}
+        onCancel={handleCancelForm}
+      />
+    );
+  }
+
+  // Si no, mostramos la tabla de ad units
   return (
     <div className="bg-white shadow-sm border border-gray-100 rounded-b-xl overflow-hidden">
       <div className="flex justify-between items-center p-5 border-b border-gray-200 bg-gradient-to-r from-indigo-50 to-white">
@@ -135,7 +169,10 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
           </svg>
           Ad Units
         </h2>
-        <button className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md shadow-sm text-sm font-medium transition-colors flex items-center gap-1">
+        <button
+          onClick={handleNewAdUnit}
+          className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md shadow-sm text-sm font-medium transition-colors flex items-center gap-1"
+        >
           <svg
             className="h-4 w-4"
             xmlns="http://www.w3.org/2000/svg"
@@ -250,7 +287,11 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
           <tbody className="bg-white divide-y divide-gray-200">
             {campaign.adUnits &&
               campaign.adUnits.map((unit) => (
-                <tr key={unit.id} className="hover:bg-gray-50">
+                <tr
+                  key={unit.id}
+                  className="hover:bg-gray-50 cursor-pointer"
+                  onClick={() => handleEditAdUnit(unit)}
+                >
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
                     {/* Line no es editable */}
                     {unit.line}
@@ -267,6 +308,7 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                         onChange={(e) =>
                           handleAdUnitChange("market", e.target.value)
                         }
+                        onClick={(e) => e.stopPropagation()}
                       >
                         {marketOptions.map((option) => (
                           <option key={option} value={option}>
@@ -286,6 +328,7 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                         onChange={(e) =>
                           handleAdUnitChange("channel", e.target.value)
                         }
+                        onClick={(e) => e.stopPropagation()}
                       >
                         {channelOptions.map((option) => (
                           <option key={option} value={option}>
@@ -305,6 +348,7 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                         onChange={(e) =>
                           handleAdUnitChange("format", e.target.value)
                         }
+                        onClick={(e) => e.stopPropagation()}
                       >
                         {formatOptions.map((option) => (
                           <option key={option} value={option}>
@@ -324,6 +368,7 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                         onChange={(e) =>
                           handleAdUnitChange("size", e.target.value)
                         }
+                        onClick={(e) => e.stopPropagation()}
                       >
                         {sizeOptions.map((option) => (
                           <option key={option} value={option}>
@@ -344,6 +389,7 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                         onChange={(e) =>
                           handleAdUnitChange("units", parseInt(e.target.value))
                         }
+                        onClick={(e) => e.stopPropagation()}
                       />
                     ) : (
                       formatNumber(unit.units)
@@ -357,6 +403,7 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                         onChange={(e) =>
                           handleAdUnitChange("model", e.target.value)
                         }
+                        onClick={(e) => e.stopPropagation()}
                       >
                         {modelOptions.map((option) => (
                           <option key={option} value={option}>
@@ -420,6 +467,7 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                             parseFloat(e.target.value)
                           )
                         }
+                        onClick={(e) => e.stopPropagation()}
                       />
                     ) : (
                       formatCurrency(unit.investment)
@@ -433,6 +481,7 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                         onChange={(e) =>
                           handleAdUnitChange("status", e.target.value)
                         }
+                        onClick={(e) => e.stopPropagation()}
                       >
                         <option value="Pending">Pending</option>
                         <option value="Approved">Approved</option>
@@ -458,7 +507,10 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                       </span>
                     )}
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                  <td
+                    className="px-4 py-3 whitespace-nowrap text-sm text-gray-500"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     {editingAdUnit === unit.id ? (
                       <div className="flex items-center space-x-2">
                         <button
@@ -503,7 +555,10 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                     ) : (
                       <div className="flex items-center space-x-2">
                         <button
-                          onClick={() => handleEditAdUnit(unit.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditAdUnit(unit);
+                          }}
                           className="text-indigo-600 hover:text-indigo-800"
                         >
                           <svg
@@ -522,7 +577,10 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                           </svg>
                         </button>
                         <button
-                          onClick={() => handleDeleteAdUnit(unit.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteAdUnit(unit.id);
+                          }}
                           className="text-red-600 hover:text-red-800"
                         >
                           <svg

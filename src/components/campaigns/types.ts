@@ -58,6 +58,13 @@ export interface AdUnit {
   startDate: string;
   endDate: string;
   status: string;
+  // Campos adicionales para costos ocultos
+  agencyCommission?: number; // Porcentaje de comisión AVB
+  localTaxes?: number; // Porcentaje de impuestos locales
+  grossMargin?: number; // Margen bruto
+  publisherNetCost?: number; // Costo neto para el publisher
+  publisherOpenRate?: number; // Tarifa abierta que pagamos al publisher
+  publisherCommission?: number; // Comisión opcional del publisher (porcentaje)
 }
 
 export interface Document {
@@ -68,6 +75,48 @@ export interface Document {
   uploadDate: string;
   uploadedBy: string;
 }
+
+// Simulación de datos para publishers
+export interface Publisher {
+  id: string;
+  name: string;
+  website: string;
+  agencyCommission: number; // Porcentaje de comisión predeterminado
+}
+
+// Publishers de ejemplo
+export const samplePublishers: Publisher[] = [
+  {
+    id: "pub1",
+    name: "US Media Consulting Miami",
+    website: "www.usmediaconsulting.com",
+    agencyCommission: 15,
+  },
+  {
+    id: "pub2",
+    name: "Google AdSense",
+    website: "www.google.com/adsense",
+    agencyCommission: 10,
+  },
+  {
+    id: "pub3",
+    name: "Facebook Ads",
+    website: "www.facebook.com/business",
+    agencyCommission: 12,
+  },
+  {
+    id: "pub4",
+    name: "Twitter Ads",
+    website: "ads.twitter.com",
+    agencyCommission: 8,
+  },
+  {
+    id: "pub5",
+    name: "Amazon Advertising",
+    website: "advertising.amazon.com",
+    agencyCommission: 14,
+  },
+];
 
 // Opciones para los dropdowns de AdUnit
 export const marketOptions = [
