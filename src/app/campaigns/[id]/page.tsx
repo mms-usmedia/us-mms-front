@@ -232,7 +232,7 @@ export default function CampaignDetailPage() {
                       href={`https://usmedia.pipedrive.com/deal/${campaign.id}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-4 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700 text-sm font-medium flex items-center"
+                      className="px-4 py-2 bg-[#1aaa55] text-white rounded shadow hover:bg-[#26292c] text-sm font-medium flex items-center transition-colors"
                     >
                       Pipedrive
                       <svg

@@ -26,6 +26,8 @@ import {
   FaCalculator,
   FaChartPie,
   FaExternalLinkAlt,
+  FaFileDownload,
+  FaFilePdf,
 } from "react-icons/fa";
 
 interface CampaignDetailsProps {
@@ -60,6 +62,21 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
   const handleCancel = () => {
     setEditedCampaign(campaign);
     setIsEditing(false);
+  };
+
+  // Función para generar el CIO (Customer Insertion Order)
+  const handleGenerateCIO = () => {
+    // Esta función se conectaría con el backend para generar y descargar el PDF
+    console.log("Generando CIO para la campaña:", campaign.id);
+    // Aquí iría la llamada al backend
+  };
+
+  // Función para redirigir a la página de creación de la PIO (Publisher Insertion Order)
+  const handleGeneratePIO = () => {
+    // Esta función redirigiría a una nueva vista para crear la PIO
+    console.log("Redirigiendo a crear PIO para la campaña:", campaign.id);
+    // Redirigir a la página de creación de PIO usando window.location
+    window.location.href = `/campaigns/${campaign.id}/pio`;
   };
 
   // Datos para el gráfico circular de distribución de inversión
@@ -142,13 +159,30 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
               </button>
             </>
           ) : (
-            <button
-              onClick={() => setIsEditing(true)}
-              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
-            >
-              <FaEdit className="h-4 w-4" />
-              Edit Details
-            </button>
+            <>
+              <button
+                onClick={handleGeneratePIO}
+                className="px-4 py-2 bg-blue-500 hover:!bg-blue-900 text-white rounded-md text-sm font-medium transition-all duration-200 flex items-center gap-2 shadow-sm active:bg-blue-900"
+                style={{ transition: "background-color 0.3s ease" }}
+              >
+                <FaFilePdf className="h-4 w-4" />
+                Generate PIO
+              </button>
+              <button
+                onClick={handleGenerateCIO}
+                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
+              >
+                <FaFilePdf className="h-4 w-4" />
+                Generate CIO
+              </button>
+              <button
+                onClick={() => setIsEditing(true)}
+                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
+              >
+                <FaEdit className="h-4 w-4" />
+                Edit Details
+              </button>
+            </>
           )}
         </div>
       </div>
