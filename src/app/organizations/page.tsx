@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSidebar } from "@/contexts/SidebarContext";
+import { useRouter } from "next/navigation";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import SearchFilter from "@/components/organizations/SearchFilter";
@@ -212,6 +213,7 @@ const mockOrganizations: Organization[] = [
 export default function OrganizationsListPage() {
   const { user } = useAuth();
   const { isCollapsed } = useSidebar();
+  const router = useRouter();
 
   // State for search and filters
   const [searchTerm, setSearchTerm] = useState("");
@@ -581,8 +583,7 @@ export default function OrganizationsListPage() {
                         key={org.id}
                         className="hover:bg-gray-50 transition-colors cursor-pointer"
                         onClick={() => {
-                          // This would navigate to organization details in a real app
-                          console.log(`View organization ${org.id}`);
+                          router.push(`/organizations/${org.id}`);
                         }}
                       >
                         <td className="px-6 py-4 whitespace-nowrap">
