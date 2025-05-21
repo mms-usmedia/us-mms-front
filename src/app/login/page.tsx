@@ -39,7 +39,7 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       await loginWithGoogle();
-      // La redirección se maneja por el flujo OAuth
+      // La redirección se maneja en el contexto de autenticación
     } catch (err) {
       setError(
         err instanceof Error

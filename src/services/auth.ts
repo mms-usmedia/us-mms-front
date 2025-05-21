@@ -64,19 +64,29 @@ const AuthService = {
   },
 
   // Login con Google
-  async loginWithGoogle(): Promise<void> {
+  async loginWithGoogle(): Promise<AuthResponse> {
     // TODO: Integrar con el backend cuando esté disponible
-    // Para OAuth, normalmente se redirecciona al usuario a la página de Google
+    // Mock para desarrollo (simular inicio de sesión exitoso)
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        // Almacenar en localStorage y cookies para que el middleware pueda detectarlo
+        localStorage.setItem("isLoggedIn", "true");
 
-    /* 
-    // Código para integrar con backend
-    window.location.href = '/api/auth/google';
-    */
+        // Crear una cookie que el middleware pueda leer
+        document.cookie = "isLoggedIn=true; path=/; max-age=86400";
 
-    // Mock para desarrollo
-    alert(
-      "Google Login functionality will be implemented once backend is ready"
-    );
+        resolve({
+          accessToken: "mock-google-access-token",
+          refreshToken: "mock-google-refresh-token",
+          user: {
+            id: "1",
+            email: "usuario@usmedia.com",
+            name: "Usuario US Media",
+            role: "user",
+          },
+        });
+      }, 800);
+    });
   },
 
   // Renovar token de acceso

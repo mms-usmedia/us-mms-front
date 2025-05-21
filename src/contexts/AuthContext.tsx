@@ -92,13 +92,21 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   // Función de login con Google
   const loginWithGoogle = async (): Promise<void> => {
+    setIsLoading(true);
     try {
-      await AuthService.loginWithGoogle();
-      // El flujo de OAuth redirigirá al usuario, por lo que no necesitamos
-      // hacer nada más aquí
+      const response = await AuthService.loginWithGoogle();
+      setUser(response.user);
+      setIsAuthenticated(true);
+
+      // No necesitamos establecer isLoggedIn ya que lo hace el servicio AuthService
+
+      // Redirigir al dashboard
+      router.push("/dashboard");
     } catch (error) {
       console.error("Google login error:", error);
       throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
