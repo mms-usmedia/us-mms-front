@@ -48,6 +48,7 @@ interface OrganizationDetailsProps {
   onSave?: (updatedOrganization: Organization) => void;
   editMode?: boolean;
   hideActionButtons?: boolean;
+  setIsEditing?: (value: boolean) => void;
 }
 
 const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
@@ -55,6 +56,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
   onSave = () => {},
   editMode = false,
   hideActionButtons = false,
+  setIsEditing: externalSetIsEditing,
 }) => {
   const [isEditing, setIsEditing] = useState(editMode);
   const [editedOrganization, setEditedOrganization] = useState<Organization>(
@@ -64,7 +66,19 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
   // Update isEditing when editMode changes
   useEffect(() => {
     setIsEditing(editMode);
-  }, [editMode]);
+
+    // Si cambia a no editable, restauramos los datos originales
+    if (!editMode) {
+      setEditedOrganization(organization);
+    }
+  }, [editMode, organization]);
+
+  // Expose isEditing state to parent component if needed
+  useEffect(() => {
+    if (externalSetIsEditing) {
+      externalSetIsEditing(isEditing);
+    }
+  }, [isEditing, externalSetIsEditing]);
 
   // Update local state when organization changes
   useEffect(() => {
@@ -85,17 +99,13 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
   // Save changes
   const handleSave = () => {
     onSave(editedOrganization);
-    if (!editMode) {
-      setIsEditing(false);
-    }
+    setIsEditing(false);
   };
 
   // Cancel editing
   const handleCancel = () => {
     setEditedOrganization(organization);
-    if (!editMode) {
-      setIsEditing(false);
-    }
+    setIsEditing(false);
   };
 
   // Organization types for selector
@@ -223,7 +233,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                     type="text"
                     value={editedOrganization.name}
                     onChange={(e) => handleChange("name", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                   />
                 ) : (
                   <p className="text-gray-800">{organization.name}</p>
@@ -240,7 +250,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                     type="text"
                     value={editedOrganization.legalName}
                     onChange={(e) => handleChange("legalName", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                   />
                 ) : (
                   <p className="text-gray-800">{organization.legalName}</p>
@@ -256,7 +266,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                   <select
                     value={editedOrganization.type}
                     onChange={(e) => handleChange("type", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                   >
                     {organizationTypes.map((type) => (
                       <option key={type} value={type}>
@@ -278,7 +288,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                   <select
                     value={editedOrganization.country}
                     onChange={(e) => handleChange("country", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                   >
                     {countries.map((country) => (
                       <option key={country} value={country}>
@@ -301,7 +311,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                     type="text"
                     value={editedOrganization.taxId}
                     onChange={(e) => handleChange("taxId", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                   />
                 ) : (
                   <p className="text-gray-800 font-mono">
@@ -319,7 +329,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                   <select
                     value={editedOrganization.status}
                     onChange={(e) => handleChange("status", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                   >
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
@@ -342,7 +352,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                   <select
                     value={editedOrganization.industry || ""}
                     onChange={(e) => handleChange("industry", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                   >
                     <option value="">Select industry</option>
                     {industries.map((industry) => (
@@ -368,7 +378,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                     type="text"
                     value={editedOrganization.website || ""}
                     onChange={(e) => handleChange("website", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                   />
                 ) : (
                   <p className="text-gray-800">
@@ -392,6 +402,22 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
 
             {/* Holding Information */}
             <div className="space-y-3 mt-3">
+              {/* Is Holding y Big Six cuando no está en modo edición */}
+              {!isEditing && (
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {organization.isHolding && (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-50 text-purple-700 border border-purple-200">
+                      Holding Company
+                    </span>
+                  )}
+                  {organization.isBigSix && (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200">
+                      Big Six Group
+                    </span>
+                  )}
+                </div>
+              )}
+
               {/* Is Holding */}
               <div>
                 {isEditing ? (
@@ -412,13 +438,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                       Holding Company
                     </label>
                   </div>
-                ) : (
-                  organization.isHolding && (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-50 text-purple-700 border border-purple-200">
-                      Holding Company
-                    </span>
-                  )
-                )}
+                ) : null}
               </div>
 
               {/* Is Big Six */}
@@ -441,13 +461,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                       Big Six Group
                     </label>
                   </div>
-                ) : (
-                  organization.isBigSix && (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200 ml-2">
-                      Big Six Group
-                    </span>
-                  )
-                )}
+                ) : null}
               </div>
 
               {/* Holding Name (only if not a holding) */}
@@ -463,7 +477,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                       onChange={(e) =>
                         handleChange("holdingName", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                     />
                   ) : (
                     <p className="text-gray-800">
@@ -492,7 +506,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                     type="text"
                     value={editedOrganization.address || ""}
                     onChange={(e) => handleChange("address", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                   />
                 ) : (
                   <p className="text-gray-800">
@@ -512,7 +526,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                       type="text"
                       value={editedOrganization.city || ""}
                       onChange={(e) => handleChange("city", e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                     />
                   ) : (
                     <p className="text-gray-800">
@@ -530,7 +544,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                       type="text"
                       value={editedOrganization.state || ""}
                       onChange={(e) => handleChange("state", e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                     />
                   ) : (
                     <p className="text-gray-800">
@@ -548,7 +562,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                       type="text"
                       value={editedOrganization.zipCode || ""}
                       onChange={(e) => handleChange("zipCode", e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                     />
                   ) : (
                     <p className="text-gray-800">
@@ -568,7 +582,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                     type="text"
                     value={editedOrganization.phone || ""}
                     onChange={(e) => handleChange("phone", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                   />
                 ) : (
                   <p className="text-gray-800">{organization.phone || "N/A"}</p>
@@ -592,7 +606,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                         onChange={(e) =>
                           handleChange("contactName", e.target.value)
                         }
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                       />
                     ) : (
                       <p className="text-gray-800">
@@ -611,7 +625,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                         onChange={(e) =>
                           handleChange("contactEmail", e.target.value)
                         }
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                       />
                     ) : (
                       <p className="text-gray-800">
@@ -651,7 +665,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                       onChange={(e) =>
                         handleChange("billingCurrency", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                     >
                       <option value="">Select currency</option>
                       {currencies.map((currency) => (
@@ -676,7 +690,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                       onChange={(e) =>
                         handleChange("paymentTerms", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                     >
                       <option value="">Select terms</option>
                       {paymentTermsOptions.map((term) => (
@@ -703,7 +717,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                       handleChange("billingAddress", e.target.value)
                     }
                     rows={2}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                   />
                 ) : (
                   <p className="text-gray-800">
@@ -724,13 +738,13 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                 value={editedOrganization.description || ""}
                 onChange={(e) => handleChange("description", e.target.value)}
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                placeholder="Organization description..."
+                className="mt-1 text-sm w-full p-3 border-2 border-emerald-100 focus:border-emerald-300 rounded bg-white min-h-[100px] text-gray-900 focus:ring-0 transition-colors"
+                placeholder="Agregar descripción de la organización..."
               />
             ) : (
-              <p className="text-gray-800 bg-gray-50 p-4 rounded-md">
+              <div className="mt-1 text-sm text-gray-900 p-3 border border-emerald-100 rounded bg-white min-h-[100px] shadow-inner">
                 {organization.description || "No description available."}
-              </p>
+              </div>
             )}
           </div>
         </div>

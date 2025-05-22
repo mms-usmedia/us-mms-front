@@ -377,6 +377,11 @@ const getMockOrganizationById = (id: string): Organization | null => {
   return mockOrganizations.find((org) => org.id === id) || null;
 };
 
+// Define un tipo para la propiedad global
+interface WindowWithGlobalFunction extends Window {
+  __addContactFunction?: () => void;
+}
+
 export default function OrganizationDetailPage() {
   const router = useRouter();
   const params = useParams();
@@ -387,6 +392,32 @@ export default function OrganizationDetailPage() {
   const [activeTab, setActiveTab] = useState<
     "details" | "contacts" | "rates" | "campaigns"
   >("details");
+  const [isEditingDetails, setIsEditingDetails] = useState(false);
+  const [showAddContactForm, setShowAddContactForm] = useState(false);
+  const [showAddRateForm, setShowAddRateForm] = useState(false);
+
+  // Función global para agregar contacto, disponible para todos los componentes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      (window as WindowWithGlobalFunction).__addContactFunction = () => {
+        console.log("Función global para agregar contacto llamada");
+        const contactsElement = document.getElementById(
+          "organization-contacts"
+        );
+        if (contactsElement) {
+          const event = new CustomEvent("add-contact");
+          contactsElement.dispatchEvent(event);
+        }
+      };
+    }
+
+    return () => {
+      if (typeof window !== "undefined") {
+        // Usar el mismo tipo
+        delete (window as WindowWithGlobalFunction).__addContactFunction;
+      }
+    };
+  }, []);
 
   // Get organization ID from URL parameters
   const organizationId = Array.isArray(params.id) ? params.id[0] : params.id;
@@ -406,8 +437,28 @@ export default function OrganizationDetailPage() {
       const organizationData = getMockOrganizationById(organizationId);
       setOrganization(organizationData || null);
       setIsDataLoading(false);
+
+      // Cambiar automáticamente de pestaña si rates está seleccionado pero no es Publisher
+      if (
+        organizationData &&
+        organizationData.type !== "Publisher" &&
+        activeTab === "rates"
+      ) {
+        setActiveTab("details");
+      }
     }
-  }, [organizationId]);
+  }, [organizationId, activeTab]);
+
+  // Efecto para cambiar de pestaña si se selecciona rates en una organización no-Publisher
+  useEffect(() => {
+    if (
+      organization &&
+      organization.type !== "Publisher" &&
+      activeTab === "rates"
+    ) {
+      setActiveTab("details");
+    }
+  }, [activeTab, organization]);
 
   // Render loading while data loads
   if (isDataLoading || isLoading) {
@@ -478,47 +529,49 @@ export default function OrganizationDetailPage() {
                 </svg>
                 Back to Organizations
               </Link>
-              <div className="bg-white rounded-lg shadow-sm p-6 flex flex-col md:flex-row justify-between">
-                <div>
-                  <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                    {organization.name}
-                  </h1>
-                  <p className="text-gray-600">
-                    ID: {organization.id} | Type: {organization.type}
-                  </p>
-                </div>
-                <div className="flex items-center space-x-3 mt-4 md:mt-0">
-                  <div className="flex items-center">
-                    <StatusBadge
-                      status={
-                        organization.status === "Active" ? "Live" : "Closed"
-                      }
-                    />
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+                  <div>
+                    <h1 className="text-3xl font-bold text-gray-800 mb-2">
+                      {organization.name}
+                    </h1>
+                    <p className="text-gray-600">
+                      ID: {organization.id} | Type: {organization.type}
+                    </p>
                   </div>
-                  {organization.website && (
-                    <a
-                      href={organization.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-sm font-medium flex items-center transition-colors"
-                    >
-                      Website
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4 ml-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+                  <div className="flex items-center space-x-3 mt-4 md:mt-0">
+                    <div className="flex items-center">
+                      <StatusBadge
+                        status={
+                          organization.status === "Active" ? "Live" : "Closed"
+                        }
+                      />
+                    </div>
+                    {organization.website && (
+                      <a
+                        href={organization.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-sm font-medium flex items-center transition-colors"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                      </svg>
-                    </a>
-                  )}
+                        Website
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4 ml-1"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                          />
+                        </svg>
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -530,7 +583,9 @@ export default function OrganizationDetailPage() {
                   {[
                     { id: "details", name: "Details" },
                     { id: "contacts", name: "Contacts" },
-                    { id: "rates", name: "Rates" },
+                    ...(organization.type === "Publisher"
+                      ? [{ id: "rates", name: "Rates" }]
+                      : []),
                     { id: "campaigns", name: "Campaigns" },
                   ].map((tab) => (
                     <button
@@ -560,16 +615,9 @@ export default function OrganizationDetailPage() {
 
                 {/* Action buttons based on active tab */}
                 <div>
-                  {activeTab === "details" && (
+                  {activeTab === "details" && !isEditingDetails ? (
                     <button
-                      onClick={() => {
-                        const detailsElement = document.getElementById(
-                          "organization-details"
-                        );
-                        if (detailsElement) {
-                          detailsElement.querySelector("button")?.click();
-                        }
-                      }}
+                      onClick={() => setIsEditingDetails(true)}
                       className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium flex items-center gap-2 shadow-sm"
                     >
                       <svg
@@ -586,18 +634,66 @@ export default function OrganizationDetailPage() {
                           d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
                         />
                       </svg>
-                      Edit Details
+                      Editar Detalles
                     </button>
-                  )}
+                  ) : activeTab === "details" && isEditingDetails ? (
+                    <div className="flex items-center space-x-3">
+                      <button
+                        onClick={() => {
+                          // Cuando se hace clic en Guardar, simplemente desactivamos el modo edición
+                          // El componente se encargará de guardar los cambios a través del prop onSave
+                          setIsEditingDetails(false);
+                        }}
+                        className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md text-sm font-medium flex items-center gap-2 shadow-sm"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        Guardar Cambios
+                      </button>
+                      <button
+                        onClick={() => {
+                          // Al cancelar, simplemente desactivamos el modo edición
+                          // El componente descartará los cambios cuando cambie de editMode=true a false
+                          setIsEditingDetails(false);
+                        }}
+                        className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md text-sm font-medium flex items-center gap-2 shadow-sm"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                        Cancelar
+                      </button>
+                    </div>
+                  ) : null}
                   {activeTab === "contacts" && (
                     <button
+                      id="main-add-contact-button"
                       onClick={() => {
-                        const contactsElement = document.getElementById(
-                          "organization-contacts"
-                        );
-                        if (contactsElement) {
-                          contactsElement.querySelector("button")?.click();
-                        }
+                        console.log("Botón Add Contact clickeado");
+                        setShowAddContactForm(true);
                       }}
                       className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-md text-sm font-medium flex items-center gap-2 shadow-sm"
                     >
@@ -618,17 +714,13 @@ export default function OrganizationDetailPage() {
                       Add Contact
                     </button>
                   )}
-                  {activeTab === "rates" && (
+                  {activeTab === "rates" && organization.type === "Publisher" && (
                     <button
                       onClick={() => {
-                        const ratesElement = document.getElementById(
-                          "organization-rates"
-                        );
-                        if (ratesElement) {
-                          ratesElement.querySelector("button")?.click();
-                        }
+                        console.log("Botón Add Rate clickeado");
+                        setShowAddRateForm(true);
                       }}
-                      className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-md text-sm font-medium flex items-center gap-2 shadow-sm"
+                      className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-indigo-700 hover:from-indigo-600 hover:to-indigo-800 text-white rounded-md text-sm font-medium flex items-center gap-2 shadow-sm"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -659,6 +751,8 @@ export default function OrganizationDetailPage() {
                     organization={organization}
                     onSave={(updatedOrg) => setOrganization(updatedOrg)}
                     hideActionButtons={true}
+                    editMode={isEditingDetails}
+                    setIsEditing={setIsEditingDetails}
                   />
                 </div>
               )}
@@ -667,14 +761,18 @@ export default function OrganizationDetailPage() {
                   <OrganizationContacts
                     organization={organization}
                     hideActionButtons={true}
+                    showAddContactForm={showAddContactForm}
+                    onFormDisplay={() => setShowAddContactForm(false)}
                   />
                 </div>
               )}
-              {activeTab === "rates" && (
+              {activeTab === "rates" && organization.type === "Publisher" && (
                 <div id="organization-rates">
                   <OrganizationRates
                     organization={organization}
                     hideActionButtons={true}
+                    showAddRateForm={showAddRateForm}
+                    onFormDisplay={() => setShowAddRateForm(false)}
                   />
                 </div>
               )}
