@@ -102,7 +102,7 @@ const Sidebar: React.FC = () => {
   return (
     <aside
       className={`bg-white border-r border-gray-100 text-gray-900 transition-all duration-300 ease-in-out shadow-sm relative ${
-        isCollapsed ? "w-20" : "w-64"
+        isCollapsed ? "w-24" : "w-72"
       }`}
     >
       <div className="h-full flex flex-col">
@@ -110,13 +110,13 @@ const Sidebar: React.FC = () => {
         <div className="flex items-center justify-between p-4 border-b border-gray-100">
           <div className="flex items-center min-w-0">
             <div
-              className={`bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl p-2 flex items-center justify-center shadow-md flex-shrink-0 ${
+              className={`bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl p-2.5 flex items-center justify-center shadow-md flex-shrink-0 ${
                 isCollapsed ? "mx-auto" : "mr-3"
               }`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-white"
+                className="h-6 w-6 text-white"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
@@ -128,7 +128,7 @@ const Sidebar: React.FC = () => {
                 isCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"
               }`}
             >
-              <h1 className="text-xl font-bold tracking-tight whitespace-nowrap">
+              <h1 className="text-2xl font-bold tracking-tight whitespace-nowrap">
                 MMS <span className="text-indigo-600">2.0</span>
               </h1>
             </div>
@@ -137,13 +137,13 @@ const Sidebar: React.FC = () => {
 
         {/* Navigation sections */}
         <nav className="flex-1 overflow-y-auto py-6">
-          <div className={`space-y-1.5 ${isCollapsed ? "px-2" : "px-4"}`}>
+          <div className={`space-y-2 ${isCollapsed ? "px-3" : "px-5"}`}>
             <div
               className={`overflow-hidden transition-opacity duration-300 ease-in-out ${
-                isCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-3"
+                isCollapsed ? "opacity-0 h-0 mb-0" : "opacity-100 h-auto mb-4"
               }`}
             >
-              <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider pl-3">
+              <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider pl-3">
                 Main
               </h2>
             </div>
@@ -152,8 +152,8 @@ const Sidebar: React.FC = () => {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center rounded-xl text-sm font-medium transition-all duration-300 ease-in-out ${
-                  isCollapsed ? "justify-center py-3" : "px-3 py-2.5"
+                className={`flex items-center rounded-xl text-base font-medium transition-all duration-300 ease-in-out ${
+                  isCollapsed ? "justify-center py-3.5" : "px-4 py-3"
                 } ${
                   pathname === item.href
                     ? "bg-indigo-50 text-indigo-600 border border-indigo-100 shadow-sm"
@@ -162,7 +162,7 @@ const Sidebar: React.FC = () => {
               >
                 <item.icon
                   className={`${
-                    isCollapsed ? "w-6 h-6" : "w-5 h-5 mr-3"
+                    isCollapsed ? "w-7 h-7" : "w-6 h-6 mr-3.5"
                   } transition-all duration-300 ease-in-out ${
                     pathname === item.href ? "text-indigo-500" : "text-gray-500"
                   }`}
@@ -182,19 +182,19 @@ const Sidebar: React.FC = () => {
         </nav>
 
         {/* System version */}
-        <div className="p-4 text-xs text-gray-400 text-center transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden">
+        <div className="p-4 text-sm text-gray-400 text-center transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden">
           {isCollapsed ? "v2.0" : "Media Management System v2.0"}
         </div>
 
         {/* Button to expand/collapse (always visible) */}
         <button
           onClick={toggleSidebar}
-          className="absolute -right-4 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md border border-gray-200 text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 transition-colors z-10"
+          className="absolute -right-4 top-1/2 transform -translate-y-1/2 w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md border border-gray-200 text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 transition-colors z-10"
           aria-label={isCollapsed ? "Expand menu" : "Collapse menu"}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className={`h-5 w-5 transition-transform duration-300 ${
+            className={`h-6 w-6 transition-transform duration-300 ${
               isCollapsed ? "" : "transform rotate-180"
             }`}
             viewBox="0 0 20 20"
