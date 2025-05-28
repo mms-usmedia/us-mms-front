@@ -67,7 +67,7 @@ export const mockCampaigns: Campaign[] = [
   {
     id: "23809",
     name: "Alpura_Deslactosada_Podcast ads_Mex_Jun25",
-    organizationType: "Agencia",
+    organizationType: "Agency",
     startDate: "2025-06-01",
     endDate: "2025-06-30",
     status: "Live",

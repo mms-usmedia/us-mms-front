@@ -149,14 +149,7 @@ const CampaignDocuments: React.FC<CampaignDocumentsProps> = ({
                 uploaded
               </p>
               <div className="flex space-x-2">
-                <button
-                  onClick={() =>
-                    document.getElementById("document-upload")?.click()
-                  }
-                  className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors"
-                >
-                  Add More
-                </button>
+                {/* Se eliminó el botón "Add More" */}
               </div>
             </div>
           </div>

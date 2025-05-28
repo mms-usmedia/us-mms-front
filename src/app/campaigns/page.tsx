@@ -17,7 +17,7 @@ interface Campaign {
   name: string;
   organizationName: string;
   organizationType:
-    | "Agencia"
+    | "Agency"
     | "Advertiser"
     | "Publisher"
     | "Holding Agency"
@@ -58,7 +58,7 @@ const mockCampaigns: Campaign[] = [
     id: "23809",
     name: "Alpura_Deslactosada_Podcast ads_Mex_Jun25",
     organizationName: "Havas Media Mexico City",
-    organizationType: "Agencia",
+    organizationType: "Agency",
     startDate: "2025-06-01",
     endDate: "2025-06-30",
     status: "Live",
@@ -70,7 +70,7 @@ const mockCampaigns: Campaign[] = [
     id: "23808",
     name: "Embratur_Americas_August_2025_Sojem",
     organizationName: "CALIA Y2 PROPAGANDA E MARKETING LTDA",
-    organizationType: "Agencia",
+    organizationType: "Agency",
     startDate: "2025-08-01",
     endDate: "2025-08-31",
     status: "Pending",
@@ -82,7 +82,7 @@ const mockCampaigns: Campaign[] = [
     id: "23807",
     name: "Embratur_Americas_July_2025_Sojem",
     organizationName: "CALIA Y2 PROPAGANDA E MARKETING LTDA",
-    organizationType: "Agencia",
+    organizationType: "Agency",
     startDate: "2025-07-01",
     endDate: "2025-07-31",
     status: "Negotiating",
@@ -94,7 +94,7 @@ const mockCampaigns: Campaign[] = [
     id: "23806",
     name: "Embratur_Americas_June_2025_Sojem",
     organizationName: "CALIA Y2 PROPAGANDA E MARKETING LTDA",
-    organizationType: "Agencia",
+    organizationType: "Agency",
     startDate: "2025-06-01",
     endDate: "2025-06-30",
     status: "Won",
@@ -106,7 +106,7 @@ const mockCampaigns: Campaign[] = [
     id: "23805",
     name: "Banco_Itau_Chile_Personal_Bank_Mayo_2025_LinkedIn",
     organizationName: "Omnet Chile",
-    organizationType: "Agencia",
+    organizationType: "Agency",
     startDate: "2025-05-09",
     endDate: "2025-05-31",
     status: "Invoiced",
@@ -116,9 +116,10 @@ const mockCampaigns: Campaign[] = [
   },
   {
     id: "23804",
-    name: "Nintendo_Hardware focus CGI_Q1_Platforms & FITO_Bra_Chi_Mex_Col_Per_Vevo_May24_June25",
+    name:
+      "Nintendo_Hardware focus CGI_Q1_Platforms & FITO_Bra_Chi_Mex_Col_Per_Vevo_May24_June25",
     organizationName: "Omnet Latin America LLC",
-    organizationType: "Agencia",
+    organizationType: "Agency",
     startDate: "2025-05-12",
     endDate: "2025-06-30",
     status: "Materials & Creatives OK",
@@ -130,7 +131,7 @@ const mockCampaigns: Campaign[] = [
     id: "23802",
     name: "MB_MODEL LinkedIn_Mex_Mayo 25",
     organizationName: "OMD Mexico",
-    organizationType: "Agencia",
+    organizationType: "Agency",
     startDate: "2025-05-09",
     endDate: "2025-05-31",
     status: "Implementation",
@@ -142,7 +143,7 @@ const mockCampaigns: Campaign[] = [
     id: "23801",
     name: "Claro_Colombia_EquiposPost_Pinterest_mayo_2025",
     organizationName: "Havas Media Colombia",
-    organizationType: "Agencia",
+    organizationType: "Agency",
     startDate: "2025-05-09",
     endDate: "2025-05-31",
     status: "Closed",
@@ -178,7 +179,7 @@ const mockCampaigns: Campaign[] = [
     id: "23797",
     name: "Renault_CO_Brand_Everyone_Mayo_25_Vevo",
     organizationName: "OMD Colombia - Bogota",
-    organizationType: "Agencia",
+    organizationType: "Agency",
     startDate: "2025-05-08",
     endDate: "2025-05-31",
     status: "Live",
@@ -202,7 +203,7 @@ const mockCampaigns: Campaign[] = [
     id: "23795",
     name: "Banorte_Nomina_LinkedIn_Mex_Mayo25",
     organizationName: "Havas Media Mexico City",
-    organizationType: "Agencia",
+    organizationType: "Agency",
     startDate: "2025-05-07",
     endDate: "2025-05-31",
     status: "Negotiating",
@@ -229,8 +230,9 @@ export default function CampaignsListPage() {
   const { user, isLoading, isAuthenticated } = useAuth();
   const { isCollapsed } = useSidebar();
   const [campaigns] = useState<Campaign[]>(mockCampaigns);
-  const [filteredCampaigns, setFilteredCampaigns] =
-    useState<Campaign[]>(mockCampaigns);
+  const [filteredCampaigns, setFilteredCampaigns] = useState<Campaign[]>(
+    mockCampaigns
+  );
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOrganization, setSelectedOrganization] = useState<string>("");
   const [selectedStatus, setSelectedStatus] = useState<string>("");
@@ -248,14 +250,12 @@ export default function CampaignsListPage() {
   }, [isLoading, isAuthenticated, router]);
 
   // Adjust truncation size based on sidebar state
-  const nameTruncateLength = useMemo(
-    () => (isCollapsed ? 30 : 25),
-    [isCollapsed]
-  );
-  const orgTruncateLength = useMemo(
-    () => (isCollapsed ? 28 : 22),
-    [isCollapsed]
-  );
+  const nameTruncateLength = useMemo(() => (isCollapsed ? 30 : 25), [
+    isCollapsed,
+  ]);
+  const orgTruncateLength = useMemo(() => (isCollapsed ? 28 : 22), [
+    isCollapsed,
+  ]);
 
   // Apply filters when criteria change
   useEffect(() => {
@@ -401,7 +401,7 @@ export default function CampaignsListPage() {
   // Function to get background color based on organization type
   const getOrganizationTypeStyles = (type: string) => {
     switch (type) {
-      case "Agencia":
+      case "Agency":
         return "bg-blue-50 text-blue-700 border border-blue-100 px-2 py-1 rounded-md text-xs shadow-sm";
       case "Advertiser":
         return "bg-purple-50 text-purple-700 border border-purple-100 px-2 py-1 rounded-md text-xs shadow-sm";

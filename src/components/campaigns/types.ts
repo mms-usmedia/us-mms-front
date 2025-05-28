@@ -5,7 +5,7 @@ export interface Campaign {
   id: string;
   name: string;
   organizationType:
-    | "Agencia"
+    | "Agency"
     | "Advertiser"
     | "Publisher"
     | "Holding Agency"

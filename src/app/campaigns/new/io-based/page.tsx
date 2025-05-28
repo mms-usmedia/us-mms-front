@@ -26,15 +26,15 @@ export default function NewIOBasedCampaignPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [campaign, setCampaign] = useState<Campaign>({
-    id: "new", // Temporal ID para nueva campaña
+    id: "new", // Temporary ID for new campaign
     name: "",
-    organizationType: "Agencia", // Por defecto Agencia para IO-based
+    organizationType: "Agency", // Default Agency for IO-based
     startDate: "",
     endDate: "",
     status: "Pending",
     units: 0,
     budget: 0,
-    grossMargin: 25, // Margen estándar para IO-based
+    grossMargin: 0,
     // Campos específicos para IO-based
     salesperson: "",
     trafficker: "",

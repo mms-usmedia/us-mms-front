@@ -16,7 +16,7 @@ type StatusType =
 
 // Type for organizations
 type OrganizationType =
-  | "Agencia"
+  | "Agency"
   | "Advertiser"
   | "Publisher"
   | "Holding Agency"
