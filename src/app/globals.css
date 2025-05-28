@@ -47,7 +47,7 @@ body {
   color: white;
 }
 
-/* Asegúrate de que los estilos del carrusel sean visibles en modo oscuro */
+/* Estilos para asegurar compatibilidad en modo oscuro */
 .bg-blue-600 {
   background-color: #2563eb !important;
 }
@@ -56,16 +56,43 @@ body {
   color: #ffffff !important;
 }
 
-/* Asegúrate de que los inputs tengan el color correcto en ambos modos */
+/* Estilos para inputs */
 input {
-  color: #1f2937 !important; /* Gris muy oscuro para mejor visibilidad */
+  color: #1f2937 !important;
 }
 
 input::placeholder {
   color: #9ca3af;
 }
 
-/* Asegurar que los inputs en fondo oscuro también tengan contraste adecuado */
 .dark input {
   color: #e5e7eb !important;
+}
+
+/* Estilos para el carrusel de login */
+.carousel-container {
+  height: 100vh !important;
+  width: 100% !important;
+  overflow: hidden !important;
+}
+
+.carousel-container .slick-slider,
+.carousel-container .slick-list,
+.carousel-container .slick-track,
+.carousel-container .slick-slide,
+.carousel-container .slick-slide > div {
+  height: 100% !important;
+}
+
+/* Fondos de respaldo para carrusel */
+.carousel-slide-1 {
+  background: linear-gradient(135deg, #4285f4, #0f9d58);
+}
+
+.carousel-slide-2 {
+  background: linear-gradient(135deg, #db4437, #f4b400);
+}
+
+.carousel-slide-3 {
+  background: linear-gradient(135deg, #5b51d8, #833ab4);
 }

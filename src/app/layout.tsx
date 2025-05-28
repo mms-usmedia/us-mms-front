@@ -10,6 +10,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "MMS 2.0 - Media Management System",
   description: "Next generation media management system for US Media",
+  icons: {
+    icon: '/us-media.png',
+    apple: '/us-media.png',
+  },
 };
 
 export default function RootLayout({

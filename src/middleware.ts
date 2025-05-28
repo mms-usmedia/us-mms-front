@@ -9,8 +9,33 @@ const publicRoutes = [
   "/reset-password",
 ];
 
+// Patrones de rutas estáticas (archivos)
+const staticPatterns = [
+  /^\/carousel\/.+/, // Imágenes del carrusel
+  /^\/public\/.+/, // Otros archivos públicos
+  /\.(jpg|jpeg|png|gif|svg|webp)$/i, // Todas las imágenes
+  /\.(css|js)$/, // Archivos CSS y JS
+];
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // SIEMPRE permitir acceso a imágenes y recursos estáticos
+  if (
+    pathname.includes("/carousel/") ||
+    pathname.endsWith(".jpg") ||
+    pathname.endsWith(".png") ||
+    pathname.endsWith(".svg") ||
+    pathname.includes("/_next/")
+  ) {
+    return NextResponse.next();
+  }
+
+  // Verificar si es una ruta estática (imágenes, archivos, etc)
+  const isStaticFile = staticPatterns.some((pattern) => pattern.test(pathname));
+  if (isStaticFile) {
+    return NextResponse.next();
+  }
 
   // Verificar si la ruta actual es pública
   const isPublicRoute = publicRoutes.some((route) =>
@@ -43,6 +68,6 @@ export function middleware(request: NextRequest) {
 
 // Configurar en qué rutas se ejecutará el middleware
 export const config = {
-  // Se aplicará a todas las rutas excepto a los archivos estáticos o API routes
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  // Se aplicará a todas las rutas excepto a los archivos estáticos explícitamente excluidos
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|carousel).*)"],
 };

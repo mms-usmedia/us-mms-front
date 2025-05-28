@@ -4,29 +4,21 @@
 import React, { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import LoginCarousel from "@/components/auth/LoginCarousel";
+import Image from "next/image";
 
-// Datos del carrusel
+// Datos del carrusel - imágenes para el slider
 const carouselItems = [
   {
     id: 1,
-    title: "Gestión de Campañas Unificada",
-    description:
-      "Administra tus campañas publicitarias en línea, fuera de línea, broadcast y out-of-home desde una única plataforma centralizada.",
-    image: "/carousel/slide1.png",
+    teamImage: "/carousel/person1.jpg",
   },
   {
     id: 2,
-    title: "Reportería en Tiempo Real",
-    description:
-      "Accede a métricas detalladas y reportes de desempeño para optimizar tus campañas y maximizar tu ROI.",
-    image: "/carousel/slide2.png",
+    teamImage: "/carousel/person2.jpg",
   },
   {
     id: 3,
-    title: "Flujo de Trabajo Simplificado",
-    description:
-      "Optimiza la colaboración entre vendedores y traffikers con un proceso de aprobación de campañas simplificado.",
-    image: "/carousel/slide3.png",
+    teamImage: "/carousel/person3.jpg",
   },
 ];
 
@@ -52,31 +44,24 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden">
-      {/* Lado izquierdo - Carrusel */}
-      <div className="hidden md:block md:w-1/2 bg-blue-600 text-white overflow-hidden">
+    <div className="flex h-screen overflow-hidden">
+      {/* Lado izquierdo - Carrusel a pantalla completa */}
+      <div className="hidden md:block md:w-1/2 h-full carousel-container">
         <LoginCarousel items={carouselItems} />
       </div>
 
       {/* Lado derecho - Inicio de sesión con Google */}
-      <div className="w-full md:w-1/2 flex items-center justify-center">
+      <div className="w-full md:w-1/2 flex items-center justify-center bg-white">
         <div className="w-full max-w-md p-8 flex flex-col items-center">
-          {/* Logo */}
+          {/* Logo US Media */}
           <div className="flex justify-center mb-8">
-            <div className="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-blue-600"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
+            <Image
+              src="/us-media.png"
+              alt="US Media Logo"
+              width={80}
+              height={80}
+              priority
+            />
           </div>
 
           <h1 className="text-3xl font-bold text-center mb-2 text-gray-900">
@@ -96,18 +81,18 @@ export default function LoginPage() {
 
           <div className="w-full mb-8">
             <div className="flex items-center justify-center">
-              <div className="w-12 border-t border-gray-300"></div>
+              <div className="w-12 border-t border-gray-200"></div>
               <span className="mx-4 text-gray-500">
                 Iniciar sesión con Google
               </span>
-              <div className="w-12 border-t border-gray-300"></div>
+              <div className="w-12 border-t border-gray-200"></div>
             </div>
           </div>
 
           <button
             type="button"
             onClick={handleGoogleLogin}
-            className="w-full flex items-center justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-150 ease-in-out mb-4"
+            className="w-full flex items-center justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white hover:bg-gray-50 text-sm font-medium text-gray-700 transition duration-150 ease-in-out mb-4"
             disabled={isLoading || authLoading}
           >
             <svg
