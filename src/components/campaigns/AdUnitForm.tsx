@@ -257,7 +257,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
               1
             </div>
             <span className="ml-2 text-sm font-medium text-gray-700">
-              Selecciona Publisher
+              Información General
             </span>
             <svg
               className="h-5 w-5 text-gray-400 mx-2"
@@ -329,198 +329,116 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       <form onSubmit={handleSubmit} className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Sección de información principal */}
-          <div className="bg-gradient-to-br from-white to-indigo-50 shadow-sm border border-indigo-100 rounded-xl p-5 md:col-span-2">
+          <div className="bg-gradient-to-br from-white to-indigo-50 shadow-sm border border-indigo-100 rounded-xl p-5 md:col-span-1">
             <h3 className="text-lg font-medium text-indigo-900 mb-4 flex items-center">
               <svg
-                className="h-5 w-5 mr-2 text-indigo-500"
+                className="h-6 w-6 mr-2 text-indigo-500"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
                 <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
               </svg>
-              Información de Campaña y Publisher
+              <span className="text-indigo-900">Información General</span>
             </h3>
 
-            <div className="bg-white rounded-lg border border-indigo-100 p-4 mb-4">
-              <h4 className="text-indigo-800 font-medium mb-2 flex items-center">
-                <div className="h-6 w-6 rounded-full bg-indigo-600 text-white font-medium flex items-center justify-center text-xs mr-2">
-                  1
-                </div>
-                Información de Campaña
-              </h4>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-indigo-600 mb-1">
-                    Estado
-                  </label>
-                  <select
-                    className="mt-1 block w-full border-2 border-indigo-100 focus:border-indigo-300 rounded-md p-2 bg-white text-gray-900 focus:ring-0 transition-colors"
-                    value={formData.status}
-                    onChange={(e) => handleChange("status", e.target.value)}
-                  >
-                    <option value="Pending">Pendiente</option>
-                    <option value="Approved">Aprobado</option>
-                    <option value="Live">En vivo</option>
-                    <option value="Implementation">Implementación</option>
-                    <option value="Closed">Cerrado</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-indigo-600 mb-1">
-                    Línea
-                  </label>
-                  <div className="mt-1 block w-full border-2 border-indigo-100 rounded-md p-2 bg-gray-50 text-gray-700">
-                    {formData.line}{" "}
-                    <span className="text-xs text-gray-500">
-                      (Asignado automáticamente)
-                    </span>
+            <div className="space-y-4">
+              <div className="bg-white rounded-lg border-2 border-indigo-200 p-4 shadow-sm">
+                <h4 className="text-indigo-800 font-semibold mb-3 flex items-center">
+                  <div className="h-6 w-6 rounded-full bg-indigo-600 text-white font-medium flex items-center justify-center text-xs mr-2">
+                    1
                   </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-indigo-600 mb-1">
-                    Propuesta
-                  </label>
-                  <div className="mt-1 block w-full border-2 border-indigo-100 rounded-md p-2 bg-gray-50 text-gray-700">
-                    {campaignId}{" "}
-                    <span className="text-xs text-gray-500">(No editable)</span>
+                  Información de Campaña y Publisher
+                </h4>
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-sm font-medium text-indigo-600 mb-1">
+                      Línea
+                    </label>
+                    <div className="mt-1 block w-full border-2 border-indigo-100 rounded-md p-2 bg-gray-50 text-gray-700">
+                      {formData.line}{" "}
+                    </div>
                   </div>
-                </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-indigo-600 mb-1">
-                    Línea de Facturación
-                  </label>
-                  <input
-                    type="text"
-                    className="mt-1 block w-full border-2 border-indigo-100 focus:border-indigo-300 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors"
-                    placeholder="0"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-indigo-600 mb-1">
-                    Fecha de Inicio
-                  </label>
-                  <input
-                    type="date"
-                    className="mt-1 block w-full border-2 border-indigo-100 focus:border-indigo-300 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors"
-                    value={formData.startDate}
-                    onChange={(e) => handleChange("startDate", e.target.value)}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-indigo-600 mb-1">
-                    Fecha de Fin
-                  </label>
-                  <input
-                    type="date"
-                    className="mt-1 block w-full border-2 border-indigo-100 focus:border-indigo-300 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors"
-                    value={formData.endDate}
-                    onChange={(e) => handleChange("endDate", e.target.value)}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg border border-indigo-100 p-4">
-              <h4 className="text-indigo-800 font-medium mb-2 flex items-center">
-                <div className="h-6 w-6 rounded-full bg-indigo-600 text-white font-medium flex items-center justify-center text-xs mr-2">
-                  2
-                </div>
-                Selecciona Publisher
-              </h4>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-indigo-600 mb-1">
-                    Publisher
-                  </label>
-                  <div className="relative">
+                  <div>
+                    <label className="block text-sm font-medium text-indigo-600 mb-1">
+                      Fecha de Inicio
+                    </label>
                     <input
-                      type="text"
+                      type="date"
                       className="mt-1 block w-full border-2 border-indigo-100 focus:border-indigo-300 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      placeholder="Buscar publishers..."
-                      onFocus={() => setShowPublisherDropdown(true)}
+                      value={formData.startDate}
+                      onChange={(e) =>
+                        handleChange("startDate", e.target.value)
+                      }
                     />
-                    {selectedPublisher && (
-                      <div className="mt-2 p-2 border border-indigo-100 rounded-md bg-indigo-50 flex items-center">
-                        <div className="flex-1">
-                          <p className="font-medium text-indigo-800">
-                            {selectedPublisher.name}
-                          </p>
-                          <p className="text-xs text-indigo-600">
-                            {selectedPublisher.website}
-                          </p>
-                        </div>
-                        <span className="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs font-medium rounded-md">
-                          Seleccionado
-                        </span>
-                      </div>
-                    )}
-                    {showPublisherDropdown && (
-                      <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-y-auto">
-                        {filteredPublishers.length > 0 ? (
-                          filteredPublishers.map((publisher) => (
-                            <div
-                              key={publisher.id}
-                              className="px-4 py-2 hover:bg-indigo-50 cursor-pointer"
-                              onClick={() => selectPublisher(publisher)}
-                            >
-                              <div className="font-medium">
-                                {publisher.name}
-                              </div>
-                              <div className="text-xs text-gray-500">
-                                {publisher.website}
-                              </div>
-                            </div>
-                          ))
-                        ) : (
-                          <div className="px-4 py-2 text-sm text-gray-500">
-                            No se encontraron publishers
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-indigo-600 mb-1">
+                      Fecha de Fin
+                    </label>
+                    <input
+                      type="date"
+                      className="mt-1 block w-full border-2 border-indigo-100 focus:border-indigo-300 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors"
+                      value={formData.endDate}
+                      onChange={(e) => handleChange("endDate", e.target.value)}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-indigo-600 mb-1">
+                      Publisher
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        className="mt-1 block w-full border-2 border-indigo-100 focus:border-indigo-300 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        placeholder="Buscar publishers..."
+                        onFocus={() => setShowPublisherDropdown(true)}
+                      />
+                      {selectedPublisher && (
+                        <div className="mt-2 p-2 border border-indigo-100 rounded-md bg-indigo-50 flex items-center">
+                          <div className="flex-1">
+                            <p className="font-medium text-indigo-800">
+                              {selectedPublisher.name}
+                            </p>
+                            <p className="text-xs text-indigo-600">
+                              {selectedPublisher.website}
+                            </p>
                           </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-indigo-600 mb-1">
-                    Sitio Web
-                  </label>
-                  <div className="mt-1 block w-full border-2 border-indigo-100 rounded-md p-2 bg-gray-50 text-gray-700">
-                    {selectedPublisher ? selectedPublisher.website : "N/A"}
-                    <span className="text-xs text-gray-500 ml-2">
-                      (Obtenido del publisher)
-                    </span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-indigo-600 mb-1">
-                      Publisher I/O
-                    </label>
-                    <input
-                      type="text"
-                      className="mt-1 block w-full border-2 border-indigo-100 focus:border-indigo-300 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors"
-                      placeholder="ej. 22996"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-indigo-600 mb-1">
-                      Línea PO
-                    </label>
-                    <input
-                      type="text"
-                      className="mt-1 block w-full border-2 border-indigo-100 focus:border-indigo-300 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors"
-                    />
+                          <span className="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs font-medium rounded-md">
+                            Seleccionado
+                          </span>
+                        </div>
+                      )}
+                      {showPublisherDropdown && (
+                        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                          {filteredPublishers.length > 0 ? (
+                            filteredPublishers.map((publisher) => (
+                              <div
+                                key={publisher.id}
+                                className="px-4 py-2 hover:bg-indigo-50 cursor-pointer"
+                                onClick={() => selectPublisher(publisher)}
+                              >
+                                <div className="font-medium">
+                                  {publisher.name}
+                                </div>
+                                <div className="text-xs text-gray-500">
+                                  {publisher.website}
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="px-4 py-2 text-sm text-gray-500">
+                              No se encontraron publishers
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -528,10 +446,10 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
           </div>
 
           {/* Sección de Producto */}
-          <div className="bg-gradient-to-br from-white to-blue-50 shadow-sm border border-blue-100 rounded-xl p-5">
+          <div className="bg-gradient-to-br from-white to-blue-50 shadow-sm border border-blue-100 rounded-xl p-5 md:col-span-2">
             <h3 className="text-lg font-medium text-blue-900 mb-4 flex items-center">
               <svg
-                className="h-5 w-5 mr-2 text-blue-500"
+                className="h-6 w-6 mr-2 text-blue-500"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
@@ -543,17 +461,23 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                 />
                 <path d="M9 11H3v5a2 2 0 002 2h4v-7zm2 7h4a2 2 0 002-2v-5h-6v7z" />
               </svg>
-              Información del Producto
+              <span className="text-blue-900">Información del Producto</span>
+              <span className="ml-2 px-2 py-1 bg-blue-500 text-white text-xs rounded-full">
+                Importante
+              </span>
             </h3>
 
-            <div className="bg-white rounded-lg border border-blue-100 p-4">
-              <h4 className="text-blue-800 font-medium mb-3 flex items-center">
+            <div className="bg-white rounded-lg border-2 border-blue-200 p-4 shadow-sm">
+              <h4 className="text-blue-800 font-medium mb-4 flex items-center">
                 <div className="h-6 w-6 rounded-full bg-blue-600 text-white font-medium flex items-center justify-center text-xs mr-2">
-                  3
+                  2
                 </div>
-                Configura el Producto
+                <span className="text-blue-800 font-semibold">
+                  Configura el Producto
+                </span>
               </h4>
-              <div className="space-y-4">
+
+              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-blue-600 mb-1">
                     Mercado
@@ -626,7 +550,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                   </select>
                 </div>
 
-                <div>
+                <div className="col-span-2">
                   <label className="block text-sm font-medium text-blue-600 mb-1">
                     Creatividad
                   </label>
@@ -651,18 +575,20 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                   </div>
                 </div>
 
-                <div className="flex items-center mt-2">
-                  <input
-                    id="v-ad"
-                    type="checkbox"
-                    className="h-4 w-4 text-blue-600 border-blue-300 rounded focus:ring-blue-500"
-                  />
-                  <label
-                    htmlFor="v-ad"
-                    className="ml-2 block text-sm text-gray-700"
-                  >
-                    V-Ad
-                  </label>
+                <div className="col-span-2">
+                  <div className="flex items-center mt-2">
+                    <input
+                      id="v-ad"
+                      type="checkbox"
+                      className="h-4 w-4 text-blue-600 border-blue-300 rounded focus:ring-blue-500"
+                    />
+                    <label
+                      htmlFor="v-ad"
+                      className="ml-2 block text-sm text-gray-700"
+                    >
+                      V-Ad
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -672,7 +598,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
           <div className="bg-gradient-to-br from-white to-emerald-50 shadow-sm border border-emerald-100 rounded-xl p-5 md:col-span-3">
             <h3 className="text-lg font-medium text-emerald-900 mb-4 flex items-center">
               <svg
-                className="h-5 w-5 mr-2 text-emerald-500"
+                className="h-6 w-6 mr-2 text-emerald-500"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
@@ -683,7 +609,10 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                   clipRule="evenodd"
                 />
               </svg>
-              Información Financiera
+              <span className="text-emerald-900">Información Financiera</span>
+              <div className="h-6 w-6 rounded-full bg-emerald-600 text-white font-medium flex items-center justify-center text-xs ml-2">
+                3
+              </div>
             </h3>
 
             <div className="grid grid-cols-1 gap-6">
