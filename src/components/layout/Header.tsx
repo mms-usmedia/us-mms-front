@@ -84,8 +84,8 @@ const Header: React.FC<HeaderProps> = ({ userName = "User" }) => {
   };
 
   return (
-    <header className="bg-white border-b border-gray-100 shadow-sm z-10">
-      <div className="flex items-center justify-between px-6 py-3">
+    <header className="bg-white shadow-sm z-10">
+      <div className="flex items-center justify-between h-[68px] px-6 border-b border-gray-100">
         {/* Space to balance design - logo and text removed */}
         <div className="w-10"></div>
 

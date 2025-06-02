@@ -107,7 +107,7 @@ const Sidebar: React.FC = () => {
     >
       <div className="h-full flex flex-col">
         {/* Logo and system name */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-100">
+        <div className="flex items-center justify-between p-4 h-[68px] border-b border-gray-100">
           <div className="flex items-center min-w-0">
             <div
               className={`bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl p-2.5 flex items-center justify-center shadow-md flex-shrink-0 ${
