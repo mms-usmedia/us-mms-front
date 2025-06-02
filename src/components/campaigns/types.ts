@@ -30,6 +30,7 @@ export interface Campaign {
   salesperson?: string;
   trafficker?: string;
   customer?: string;
+  advertiser?: string;
   notes?: string;
   internalNotes?: string;
   billingParty: string;

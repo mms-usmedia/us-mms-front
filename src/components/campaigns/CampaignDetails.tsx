@@ -320,6 +320,24 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
               </div>
               <div>
                 <p className="text-sm font-medium text-indigo-600">
+                  Advertiser
+                </p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                    value={editedCampaign.advertiser || ""}
+                    onChange={(e) => handleChange("advertiser", e.target.value)}
+                    placeholder="Nombre del anunciante"
+                  />
+                ) : (
+                  <p className="mt-1 text-sm text-gray-900 font-medium">
+                    {campaign.advertiser || "-"}
+                  </p>
+                )}
+              </div>
+              <div>
+                <p className="text-sm font-medium text-indigo-600">
                   Organization Type
                 </p>
                 {isEditing ? (
