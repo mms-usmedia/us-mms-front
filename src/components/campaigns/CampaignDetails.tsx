@@ -1095,7 +1095,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     onChange={(e) =>
                       handleChange("internalNotes", e.target.value)
                     }
-                    placeholder="Agregar notas internas..."
+                    placeholder="Add internal notes..."
                   />
                 ) : (
                   <div className="mt-1 text-sm text-gray-900 p-3 border border-amber-100 rounded bg-white min-h-[100px] shadow-inner">
@@ -1120,7 +1120,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     className="mt-1 text-sm w-full p-3 border-2 border-amber-100 focus:border-amber-300 rounded bg-white min-h-[100px] text-gray-900 focus:ring-0 transition-colors"
                     value={editedCampaign.notes || ""}
                     onChange={(e) => handleChange("notes", e.target.value)}
-                    placeholder="Agregar notas del cliente..."
+                    placeholder="Add client notes..."
                   />
                 ) : (
                   <div className="mt-1 text-sm text-gray-900 p-3 border border-amber-100 rounded bg-white min-h-[100px] shadow-inner">

@@ -218,25 +218,16 @@ export default function NewIOBasedCampaignPage() {
                     d="M10 19l-7-7m0 0l7-7m-7 7h18"
                   />
                 </svg>
-                Volver a selección de campaña
+                Back to Campaigns
               </Link>
               <div className="flex items-center justify-between">
                 <div>
                   <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                    Nueva Campaña IO-Based
+                    New IO-Based Campaign
                   </h1>
                   <p className="text-gray-600">
-                    Crea una campaña tradicional donde US Media gestiona todo el
-                    proceso para el cliente
+                    Create a traditional campaign where US Media manages the entire process for the client.
                   </p>
-                </div>
-                <div className="flex space-x-2">
-                  <button
-                    onClick={handleSubmitCampaign}
-                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md shadow-sm text-sm font-medium transition-colors"
-                  >
-                    Guardar Campaña
-                  </button>
                 </div>
               </div>
             </div>
@@ -246,10 +237,10 @@ export default function NewIOBasedCampaignPage() {
               <div className="px-6">
                 <nav className="-mb-px flex space-x-8" aria-label="Tabs">
                   {[
-                    { id: "details", name: "Detalles" },
+                    { id: "details", name: "Details" },
                     { id: "adUnits", name: "Ad Units" },
-                    { id: "documents", name: "Documentos" },
-                    { id: "activity", name: "Actividad" },
+                    { id: "documents", name: "Documents" },
+                    { id: "activity", name: "Activity" },
                   ].map((tab) => (
                     <button
                       key={tab.id}

@@ -16,7 +16,7 @@ const CampaignActivityEmpty: React.FC = () => {
             clipRule="evenodd"
           />
         </svg>
-        Historial de Actividad
+        Activity History
       </h2>
       <div className="text-center py-10 px-6 bg-purple-50 rounded-xl border border-purple-100">
         <svg
@@ -34,11 +34,10 @@ const CampaignActivityEmpty: React.FC = () => {
           />
         </svg>
         <h3 className="mt-2 text-lg font-medium text-gray-900">
-          No hay actividad
+          No activity yet
         </h3>
         <p className="mt-1 text-sm text-gray-500">
-          El historial de actividad se generará una vez que la campaña sea
-          creada.
+          The activity history will be generated once the campaign is created.
         </p>
       </div>
     </div>

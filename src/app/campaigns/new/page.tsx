@@ -11,20 +11,20 @@ export default function NewCampaignTypePage() {
   const router = useRouter();
   const { user, isLoading, isAuthenticated } = useAuth();
 
-  // Redireccionar si no está autenticado
+  // Redirect if not authenticated
   React.useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       router.push("/login");
     }
   }, [isLoading, isAuthenticated, router]);
 
-  // Mostrar carga mientras se verifica autenticación
+  // Show loading while verifying authentication
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Cargando...</p>
+          <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>
     );
@@ -63,13 +63,13 @@ export default function NewCampaignTypePage() {
                   </svg>
                 </Link>
                 <h1 className="text-2xl font-bold text-gray-800">
-                  Seleccionar Tipo de Campaña
+                  Select Campaign Type
                 </h1>
               </div>
 
               <div className="bg-white rounded-xl shadow-md p-8">
                 <h2 className="text-xl font-semibold text-gray-700 mb-6">
-                  ¿Qué tipo de campaña deseas crear?
+                  What type of campaign would you like to create?
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -80,13 +80,13 @@ export default function NewCampaignTypePage() {
                   >
                     <div className="border-b border-gray-100 bg-blue-50 p-4">
                       <h3 className="text-lg font-medium text-gray-800 group-hover:text-indigo-700 transition-colors">
-                        Campaña IO-Based (Tradicional)
+                        IO-Based Campaign (Traditional)
                       </h3>
                     </div>
                     <div className="p-5">
                       <p className="text-gray-600 mb-4">
-                        Campañas tradicionales donde US Media gestiona todo el
-                        proceso desde la negociación hasta la implementación.
+                        Traditional campaigns where US Media manages the entire
+                        process from negotiation to implementation.
                       </p>
                       <ul className="text-sm text-gray-600 space-y-2">
                         <li className="flex items-start">
@@ -103,7 +103,7 @@ export default function NewCampaignTypePage() {
                               d="M5 13l4 4L19 7"
                             />
                           </svg>
-                          <span>US Media maneja la compra de medios</span>
+                          <span>US Media handles media buying</span>
                         </li>
                         <li className="flex items-start">
                           <svg
@@ -120,8 +120,7 @@ export default function NewCampaignTypePage() {
                             />
                           </svg>
                           <span>
-                            Tráfico e implementación gestionados por nuestro
-                            equipo
+                            Traffic and implementation managed by our team
                           </span>
                         </li>
                         <li className="flex items-start">
@@ -138,13 +137,13 @@ export default function NewCampaignTypePage() {
                               d="M5 13l4 4L19 7"
                             />
                           </svg>
-                          <span>El cliente paga a US Media</span>
+                          <span>Client pays US Media</span>
                         </li>
                       </ul>
                     </div>
                     <div className="bg-gray-50 px-5 py-3 text-right">
                       <button className="text-indigo-600 font-medium text-sm hover:text-indigo-800 transition-colors inline-flex items-center">
-                        Crear Campaña IO-Based
+                        Create IO-Based Campaign
                         <svg
                           className="ml-1 h-4 w-4"
                           fill="none"
@@ -169,14 +168,13 @@ export default function NewCampaignTypePage() {
                   >
                     <div className="border-b border-gray-100 bg-purple-50 p-4">
                       <h3 className="text-lg font-medium text-gray-800 group-hover:text-indigo-700 transition-colors">
-                        Campaña Programática
+                        Programmatic Campaign
                       </h3>
                     </div>
                     <div className="p-5">
                       <p className="text-gray-600 mb-4">
-                        Campañas donde el cliente gestiona la compra
-                        directamente en un DSP, generando comisiones para US
-                        Media.
+                        Campaigns where the client manages buying directly
+                        through a DSP, generating commissions for US Media.
                       </p>
                       <ul className="text-sm text-gray-600 space-y-2">
                         <li className="flex items-start">
@@ -193,7 +191,7 @@ export default function NewCampaignTypePage() {
                               d="M5 13l4 4L19 7"
                             />
                           </svg>
-                          <span>El cliente accede directamente al DSP</span>
+                          <span>Client accesses DSP directly</span>
                         </li>
                         <li className="flex items-start">
                           <svg
@@ -209,7 +207,7 @@ export default function NewCampaignTypePage() {
                               d="M5 13l4 4L19 7"
                             />
                           </svg>
-                          <span>Comisiones recibidas de los Publishers</span>
+                          <span>Commissions received from Publishers</span>
                         </li>
                         <li className="flex items-start">
                           <svg
@@ -225,13 +223,13 @@ export default function NewCampaignTypePage() {
                               d="M5 13l4 4L19 7"
                             />
                           </svg>
-                          <span>Segmentación exclusiva por ser EAP</span>
+                          <span>Exclusive targeting as an EAP</span>
                         </li>
                       </ul>
                     </div>
                     <div className="bg-gray-50 px-5 py-3 text-right">
                       <button className="text-indigo-600 font-medium text-sm hover:text-indigo-800 transition-colors inline-flex items-center">
-                        Crear Campaña Programática
+                        Create Programmatic Campaign
                         <svg
                           className="ml-1 h-4 w-4"
                           fill="none"
