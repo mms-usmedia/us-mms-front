@@ -352,10 +352,6 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                       <option value="Agency">Agency</option>
                       <option value="Advertiser">Advertiser</option>
                       <option value="Publisher">Publisher</option>
-                      <option value="Holding Agency">Holding Agency</option>
-                      <option value="Holding Advertiser">
-                        Holding Advertiser
-                      </option>
                     </select>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none mt-1">
                       <svg
@@ -434,15 +430,15 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                         value={editedCampaign.status}
                         onChange={(e) => handleChange("status", e.target.value)}
                       >
-                        <option value="Live">Live</option>
-                        <option value="Implementation">Implementation</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Negotiating">Negotiating</option>
+                        <option value="Won">Won</option>
                         <option value="Approved">Approved</option>
                         <option value="Materials & Creatives OK">
                           Materials & Creatives OK
                         </option>
-                        <option value="Won">Won</option>
-                        <option value="Negotiating">Negotiating</option>
-                        <option value="Pending">Pending</option>
+                        <option value="Implementation">Implementation</option>
+                        <option value="Live">Live</option>
                         <option value="Closed">Closed</option>
                         <option value="HUR">HUR</option>
                         <option value="Invoiced">Invoiced</option>
@@ -700,27 +696,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 <>
                   <div>
                     <p className="text-sm font-medium text-indigo-600">
-                      Media Owner
-                    </p>
-                    {isEditing ? (
-                      <input
-                        type="text"
-                        className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
-                        value={editedCampaign.mediaOwner || ""}
-                        onChange={(e) =>
-                          handleChange("mediaOwner", e.target.value)
-                        }
-                        placeholder="Propietario del medio"
-                      />
-                    ) : (
-                      <p className="mt-1 text-sm text-gray-900">
-                        {campaign.mediaOwner || "-"}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-indigo-600">
-                      Target Market
+                      Market
                     </p>
                     {isEditing ? (
                       <div className="relative mt-1">
@@ -756,32 +732,6 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     ) : (
                       <p className="mt-1 text-sm text-gray-900">
                         {campaign.targetMarket || "-"}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-indigo-600">
-                      Cross Border
-                    </p>
-                    {isEditing ? (
-                      <div className="mt-1 flex items-center">
-                        <label className="inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
-                            checked={editedCampaign.isCrossBorder || false}
-                            onChange={(e) =>
-                              handleChange("isCrossBorder", e.target.checked)
-                            }
-                          />
-                          <span className="ml-2 text-sm text-gray-700">
-                            Es una campaña cross-border
-                          </span>
-                        </label>
-                      </div>
-                    ) : (
-                      <p className="mt-1 text-sm text-gray-900">
-                        {campaign.isCrossBorder ? "Sí" : "No"}
                       </p>
                     )}
                   </div>
