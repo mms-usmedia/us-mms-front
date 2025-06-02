@@ -150,7 +150,7 @@ export default function NewProgrammaticCampaignPage() {
   };
 
   // Función para guardar la campaña completa
-  const handleSubmitCampaign = async () => {
+  const _handleSubmitCampaign = async () => {
     try {
       // Aquí se enviarían los datos al backend
       // Incluir unidades y documentos

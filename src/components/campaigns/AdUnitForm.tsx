@@ -12,7 +12,7 @@ import { formatCurrency } from "./utils";
 
 interface AdUnitFormProps {
   adUnit?: AdUnit; // Si es null, estamos creando una nueva ad unit
-  campaignId: string;
+  _campaignId: string; // Cambiado a _campaignId para indicar que no se usa
   existingLines: number; // Número de líneas existentes para asignar automáticamente
   onSave: (adUnit: AdUnit) => void;
   onCancel: () => void;
@@ -20,7 +20,7 @@ interface AdUnitFormProps {
 
 const AdUnitForm: React.FC<AdUnitFormProps> = ({
   adUnit,
-  campaignId,
+  _campaignId,
   existingLines,
   onSave,
   onCancel,
@@ -43,7 +43,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
   });
 
   // Estado para guardar el precio unitario automático
-  const [autoUnitPrice, setAutoUnitPrice] = useState<number | null>(null);
+  const [_autoUnitPrice, setAutoUnitPrice] = useState<number | null>(null);
 
   // Estado inicial para una nueva AdUnit o los valores existentes
   const [formData, setFormData] = useState<AdUnit>(

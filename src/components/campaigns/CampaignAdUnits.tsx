@@ -149,7 +149,7 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
     return (
       <AdUnitForm
         adUnit={selectedAdUnit || undefined}
-        campaignId={campaign.id}
+        _campaignId={campaign.id}
         existingLines={campaign.adUnits?.length || 0}
         onSave={handleSaveFromForm}
         onCancel={handleCancelForm}

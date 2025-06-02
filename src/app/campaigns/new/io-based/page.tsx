@@ -152,7 +152,7 @@ export default function NewIOBasedCampaignPage() {
   };
 
   // Función para guardar la campaña completa
-  const handleSubmitCampaign = async () => {
+  const _handleSubmitCampaign = async () => {
     try {
       // Aquí se enviarían los datos al backend
       // Incluir unidades y documentos
@@ -226,7 +226,8 @@ export default function NewIOBasedCampaignPage() {
                     New IO-Based Campaign
                   </h1>
                   <p className="text-gray-600">
-                    Create a traditional campaign where US Media manages the entire process for the client.
+                    Create a traditional campaign where US Media manages the
+                    entire process for the client.
                   </p>
                 </div>
               </div>
