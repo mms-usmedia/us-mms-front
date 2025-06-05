@@ -291,7 +291,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                         className="text-sm w-full p-2 bg-white rounded text-gray-900 focus:ring-0 border-0 focus:outline-none"
                         value={clientSearch}
                         onChange={(e) => setClientSearch(e.target.value)}
-                        placeholder="Buscar cliente..."
+                        placeholder="Search client"
                       />
                       <FaSearch className="mr-2 text-gray-400" />
                     </div>
@@ -328,7 +328,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
                     value={editedCampaign.advertiser || ""}
                     onChange={(e) => handleChange("advertiser", e.target.value)}
-                    placeholder="Nombre del anunciante"
+                    placeholder="Name of the advertiser"
                   />
                 ) : (
                   <p className="mt-1 text-sm text-gray-900 font-medium">
@@ -473,7 +473,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                         className="text-sm w-full p-2 bg-white rounded text-gray-900 focus:ring-0 border-0 focus:outline-none"
                         value={industrySearch}
                         onChange={(e) => setIndustrySearch(e.target.value)}
-                        placeholder="Buscar industria..."
+                        placeholder="Search industry"
                       />
                       <FaSearch className="mr-2 text-gray-400" />
                     </div>
@@ -512,7 +512,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                         className="text-sm w-full p-2 bg-white rounded text-gray-900 focus:ring-0 border-0 focus:outline-none"
                         value={billingPartySearch}
                         onChange={(e) => setBillingPartySearch(e.target.value)}
-                        placeholder="Buscar parte de facturación..."
+                        placeholder="Search billing party"
                       />
                       <FaSearch className="mr-2 text-gray-400" />
                     </div>
