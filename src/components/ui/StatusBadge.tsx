@@ -16,10 +16,9 @@ type StatusType =
 
 interface StatusBadgeProps {
   status: StatusType;
-  size?: "sm" | "md" | "lg"; // Agregar prop para diferentes tamaños
 }
 
-const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = "md" }) => {
+const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   // Función para obtener los estilos según el estado
   const getStatusStyle = (status: StatusType) => {
     switch (status) {
@@ -55,7 +54,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = "md" }) => {
         return (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className={getSizeClasses().icon}
+            className="h-3.5 w-3.5 mr-1"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -70,7 +69,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = "md" }) => {
         return (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className={getSizeClasses().icon}
+            className="h-3.5 w-3.5 mr-1"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -85,7 +84,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = "md" }) => {
         return (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className={getSizeClasses().icon}
+            className="h-3.5 w-3.5 mr-1"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -100,7 +99,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = "md" }) => {
         return (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className={getSizeClasses().icon}
+            className="h-3.5 w-3.5 mr-1"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -115,7 +114,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = "md" }) => {
         return (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className={getSizeClasses().icon}
+            className="h-3.5 w-3.5 mr-1"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -127,7 +126,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = "md" }) => {
         return (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className={getSizeClasses().icon}
+            className="h-3.5 w-3.5 mr-1"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -142,7 +141,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = "md" }) => {
         return (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className={getSizeClasses().icon}
+            className="h-3.5 w-3.5 mr-1"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -157,7 +156,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = "md" }) => {
         return (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className={getSizeClasses().icon}
+            className="h-3.5 w-3.5 mr-1"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -172,7 +171,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = "md" }) => {
         return (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className={getSizeClasses().icon}
+            className="h-3.5 w-3.5 mr-1"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -187,7 +186,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = "md" }) => {
         return (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className={getSizeClasses().icon}
+            className="h-3.5 w-3.5 mr-1"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -203,35 +202,8 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = "md" }) => {
     }
   };
 
-  // Función para obtener las clases de tamaño basadas en la prop size
-  const getSizeClasses = () => {
-    switch (size) {
-      case "sm":
-        return {
-          badge: "px-2.5 py-0.5 text-xs",
-          icon: "h-3.5 w-3.5 mr-1",
-        };
-      case "md":
-        return {
-          badge: "px-3 py-1 text-sm",
-          icon: "h-4 w-4 mr-1.5",
-        };
-      case "lg":
-        return {
-          badge: "px-4 py-2 text-base",
-          icon: "h-5 w-5 mr-2",
-        };
-      default:
-        return {
-          badge: "px-3 py-1 text-sm",
-          icon: "h-4 w-4 mr-1.5",
-        };
-    }
-  };
-
   const styleClasses = getStatusStyle(status);
   const icon = getStatusIcon(status);
-  const sizeClasses = getSizeClasses();
 
   // Para los estados con nombres largos, usamos nombres más cortos
   const getDisplayName = (status: StatusType) => {
@@ -245,7 +217,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = "md" }) => {
 
   return (
     <span
-      className={`inline-flex items-center rounded-full font-medium border shadow-sm ${styleClasses} ${sizeClasses.badge}`}
+      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border shadow-sm ${styleClasses}`}
     >
       {icon}
       {getDisplayName(status)}
