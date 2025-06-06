@@ -46,7 +46,7 @@ interface OrganizationCampaignsProps {
 const getMockCampaigns = (organizationId: string): Campaign[] => {
   return [
     {
-      id: "CAM001",
+      id: "23808",
       name: "Summer Promotional Campaign 2025",
       organizationId,
       organizationName: "OMD Mexico",
@@ -55,11 +55,11 @@ const getMockCampaigns = (organizationId: string): Campaign[] => {
       startDate: "2025-06-01",
       endDate: "2025-08-31",
       status: "Live",
-      units: 15,
-      grossMargin: 0.25,
+      units: 15000,
+      grossMargin: 25,
     },
     {
-      id: "CAM002",
+      id: "23807",
       name: "Website Retargeting Q1 2025",
       organizationId,
       organizationName: "OMD Mexico",
@@ -68,11 +68,11 @@ const getMockCampaigns = (organizationId: string): Campaign[] => {
       startDate: "2025-01-15",
       endDate: "2025-03-31",
       status: "Closed",
-      units: 8,
-      grossMargin: 0.22,
+      units: 8000,
+      grossMargin: 22,
     },
     {
-      id: "CAM003",
+      id: "23809",
       name: "Holiday Season Special 2024",
       organizationId,
       organizationName: "OMD Mexico",
@@ -81,11 +81,11 @@ const getMockCampaigns = (organizationId: string): Campaign[] => {
       startDate: "2024-11-20",
       endDate: "2024-12-31",
       status: "Invoiced",
-      units: 12,
-      grossMargin: 0.3,
+      units: 12000,
+      grossMargin: 30,
     },
     {
-      id: "CAM004",
+      id: "23800",
       name: "Brand Awareness 2025",
       organizationId,
       organizationName: "OMD Mexico",
@@ -94,11 +94,11 @@ const getMockCampaigns = (organizationId: string): Campaign[] => {
       startDate: "2025-02-01",
       endDate: "2025-12-31",
       status: "Approved",
-      units: 24,
-      grossMargin: 0.18,
+      units: 24000,
+      grossMargin: 18,
     },
     {
-      id: "CAM005",
+      id: "23801",
       name: "New Product Launch Campaign",
       organizationId,
       organizationName: "OMD Mexico",
@@ -107,8 +107,8 @@ const getMockCampaigns = (organizationId: string): Campaign[] => {
       startDate: "2025-04-15",
       endDate: "2025-07-15",
       status: "Implementation",
-      units: 18,
-      grossMargin: 0.28,
+      units: 18000,
+      grossMargin: 28,
     },
   ];
 };
@@ -119,7 +119,7 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
   const router = useRouter();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
   const [startDateFilter, setStartDateFilter] = useState("");
   const [endDateFilter, setEndDateFilter] = useState("");
   const [sortField, setSortField] = useState<keyof Campaign>("startDate");
@@ -141,7 +141,9 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
         campaign.id.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .filter((campaign) =>
-      selectedStatus ? campaign.status === selectedStatus : true
+      selectedStatus.length > 0
+        ? selectedStatus.includes(campaign.status)
+        : true
     )
     .filter((campaign) =>
       startDateFilter ? campaign.startDate >= startDateFilter : true
@@ -180,12 +182,28 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
 
   // Format currency
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
+    return (
+      "$" +
+      amount.toLocaleString("en-US", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      })
+    );
+  };
+
+  // Format date
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+  };
+
+  // Format number
+  const formatNumber = (num: number) => {
+    return new Intl.NumberFormat("en-US").format(num);
   };
 
   // Status options for filter
@@ -213,14 +231,14 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
   // Clear all filters
   const handleClearFilters = () => {
     setSearchTerm("");
-    setSelectedStatus("");
+    setSelectedStatus([]);
     setStartDateFilter("");
     setEndDateFilter("");
   };
 
   // Check if there are any active filters
   const hasActiveFilters =
-    searchTerm || selectedStatus || startDateFilter || endDateFilter;
+    searchTerm || selectedStatus.length > 0 || startDateFilter || endDateFilter;
 
   // Get color for status badge
   const getStatusColor = (status: string) => {
@@ -283,7 +301,7 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
               {hasActiveFilters && (
                 <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-100 text-xs font-medium text-indigo-800">
                   {(searchTerm ? 1 : 0) +
-                    (selectedStatus ? 1 : 0) +
+                    (selectedStatus.length > 0 ? 1 : 0) +
                     (startDateFilter ? 1 : 0) +
                     (endDateFilter ? 1 : 0)}
                 </span>
@@ -356,19 +374,24 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
                     <div
                       key={status}
                       className={`cursor-pointer rounded-md px-3 py-1.5 text-sm border ${
-                        selectedStatus === status
+                        selectedStatus.includes(status)
                           ? getStatusColor(status)
                           : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
                       }`}
                       onClick={() => {
-                        if (selectedStatus === status) {
-                          setSelectedStatus("");
+                        if (selectedStatus.includes(status)) {
+                          setSelectedStatus(
+                            selectedStatus.filter((s) => s !== status)
+                          );
                         } else {
-                          setSelectedStatus(status);
+                          setSelectedStatus([...selectedStatus, status]);
                         }
                       }}
                     >
                       {status}
+                      {selectedStatus.includes(status) && (
+                        <span className="ml-1.5 inline-block">✓</span>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -380,77 +403,88 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
 
       {/* Campaigns table */}
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
+        <table className="min-w-full divide-y divide-gray-200 transition-all duration-300 ease-in-out table-fixed">
           <thead className="bg-gray-50">
             <tr>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-20"
                 onClick={() => handleSort("id")}
               >
-                <div className="flex items-center">ID {getSortIcon("id")}</div>
+                <div className="whitespace-nowrap flex items-center">
+                  ID {getSortIcon("id")}
+                </div>
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-48"
                 onClick={() => handleSort("name")}
               >
-                <div className="flex items-center">
-                  Name {getSortIcon("name")}
+                <div className="whitespace-nowrap flex items-center">
+                  Campaign {getSortIcon("name")}
                 </div>
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                onClick={() => handleSort("budget")}
-              >
-                <div className="flex items-center">
-                  Budget {getSortIcon("budget")}
-                </div>
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-28"
                 onClick={() => handleSort("startDate")}
               >
-                <div className="flex items-center">
+                <div className="whitespace-nowrap flex items-center">
                   Start Date {getSortIcon("startDate")}
                 </div>
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-24"
                 onClick={() => handleSort("endDate")}
               >
-                <div className="flex items-center">
+                <div className="whitespace-nowrap flex items-center">
                   End Date {getSortIcon("endDate")}
                 </div>
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                onClick={() => handleSort("status")}
+                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-24"
+                onClick={() => handleSort("units")}
               >
-                <div className="flex items-center">
-                  Status {getSortIcon("status")}
+                <div className="whitespace-nowrap flex items-center">
+                  Units {getSortIcon("units")}
                 </div>
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                onClick={() => handleSort("units")}
+                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-24"
+                onClick={() => handleSort("budget")}
               >
-                <div className="flex items-center">
-                  Units {getSortIcon("units")}
+                <div className="whitespace-nowrap flex items-center">
+                  Budget {getSortIcon("budget")}
+                </div>
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-20"
+                onClick={() => handleSort("grossMargin")}
+              >
+                <div className="whitespace-nowrap flex items-center">
+                  % GM {getSortIcon("grossMargin")}
+                </div>
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-28"
+                onClick={() => handleSort("status")}
+              >
+                <div className="whitespace-nowrap flex items-center">
+                  Status {getSortIcon("status")}
                 </div>
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white divide-y divide-gray-100">
             {filteredCampaigns.length === 0 ? (
               <tr>
                 <td
-                  colSpan={7}
+                  colSpan={8}
                   className="px-6 py-8 text-sm text-gray-500 text-center"
                 >
                   No campaigns found for this organization with the selected
@@ -461,7 +495,7 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
               filteredCampaigns.map((campaign) => (
                 <tr
                   key={campaign.id}
-                  className="hover:bg-indigo-50 cursor-pointer transition-colors"
+                  className="hover:bg-gray-50 transition-colors cursor-pointer"
                   onClick={() => router.push(`/campaigns/${campaign.id}`)}
                 >
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
@@ -470,20 +504,23 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-800">
                     {campaign.name}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                    {formatDate(campaign.startDate)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                    {formatDate(campaign.endDate)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                    {formatNumber(campaign.units)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
                     {formatCurrency(campaign.budget)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(campaign.startDate).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(campaign.endDate).toLocaleDateString()}
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                    {campaign.grossMargin.toFixed(1)}%
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <StatusBadge status={campaign.status} />
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {campaign.units}
                   </td>
                 </tr>
               ))

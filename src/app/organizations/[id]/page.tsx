@@ -382,6 +382,102 @@ interface WindowWithGlobalFunction extends Window {
   __addContactFunction?: () => void;
 }
 
+// Componente personalizado para mostrar un badge de estado más grande en el header
+const StatusBadgeLarge = ({ status }: { status: string }) => {
+  // Función para obtener los estilos según el estado
+  const getStatusStyle = (status: string) => {
+    switch (status) {
+      case "Pending":
+        return "bg-amber-50 text-amber-700 border-amber-200 shadow-amber-100";
+      case "Negotiating":
+        return "bg-blue-50 text-blue-700 border-blue-200 shadow-blue-100";
+      case "Won":
+        return "bg-indigo-50 text-indigo-700 border-indigo-200 shadow-indigo-100";
+      case "Approved":
+        return "bg-green-50 text-green-700 border-green-200 shadow-green-100";
+      case "Materials & Creatives OK":
+        return "bg-teal-50 text-teal-700 border-teal-200 shadow-teal-100";
+      case "Implementation":
+        return "bg-cyan-50 text-cyan-700 border-cyan-200 shadow-cyan-100";
+      case "Live":
+        return "bg-violet-50 text-violet-700 border-violet-200 shadow-violet-100";
+      case "Closed":
+        return "bg-gray-50 text-gray-700 border-gray-200 shadow-gray-100";
+      case "HUR":
+        return "bg-rose-50 text-rose-700 border-rose-200 shadow-rose-100";
+      case "Invoiced":
+        return "bg-emerald-50 text-emerald-700 border-emerald-200 shadow-emerald-100";
+      default:
+        return "bg-gray-50 text-gray-700 border-gray-200 shadow-gray-100";
+    }
+  };
+
+  // Obtener un ícono para el estado
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "Pending":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 mr-2"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+              clipRule="evenodd"
+            />
+          </svg>
+        );
+      case "Live":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 mr-2"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M5.05 3.636a1 1 0 010 1.414 7 7 0 000 9.9 1 1 0 11-1.414 1.414 9 9 0 010-12.728 1 1 0 011.414 0zm9.9 0a1 1 0 011.414 0 9 9 0 010 12.728 1 1 0 11-1.414-1.414 7 7 0 000-9.9 1 1 0 010-1.414zM7.879 6.464a1 1 0 010 1.414 3 3 0 000 4.243 1 1 0 11-1.415 1.414 5 5 0 010-7.07 1 1 0 011.415 0zm4.242 0a1 1 0 011.415 0 5 5 0 010 7.072 1 1 0 01-1.415-1.415 3 3 0 000-4.242 1 1 0 010-1.415zM10 9a1 1 0 011 1v.01a1 1 0 11-2 0V10a1 1 0 011-1z"
+              clipRule="evenodd"
+            />
+          </svg>
+        );
+      case "Closed":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 mr-2"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+              clipRule="evenodd"
+            />
+          </svg>
+        );
+      default:
+        return null;
+    }
+  };
+
+  const styleClasses = getStatusStyle(status);
+  const icon = getStatusIcon(status);
+
+  return (
+    <span
+      className={`inline-flex items-center px-4 py-2 rounded-full text-base font-medium border-2 shadow-sm ${styleClasses}`}
+    >
+      {icon}
+      {status}
+    </span>
+  );
+};
+
 export default function OrganizationDetailPage() {
   const router = useRouter();
   const params = useParams();
@@ -541,7 +637,7 @@ export default function OrganizationDetailPage() {
                   </div>
                   <div className="flex items-center space-x-3 mt-4 md:mt-0">
                     <div className="flex items-center">
-                      <StatusBadge
+                      <StatusBadgeLarge
                         status={
                           organization.status === "Active" ? "Live" : "Closed"
                         }

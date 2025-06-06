@@ -23,27 +23,27 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   const getStatusStyle = (status: StatusType) => {
     switch (status) {
       case "Pending":
-        return "bg-amber-50 text-amber-700 border-amber-200 shadow-amber-100";
+        return "bg-amber-50 text-amber-700 border-amber-100 shadow-amber-100";
       case "Negotiating":
-        return "bg-blue-50 text-blue-700 border-blue-200 shadow-blue-100";
+        return "bg-blue-50 text-blue-700 border-blue-100 shadow-blue-100";
       case "Won":
-        return "bg-indigo-50 text-indigo-700 border-indigo-200 shadow-indigo-100";
+        return "bg-indigo-50 text-indigo-700 border-indigo-100 shadow-indigo-100";
       case "Approved":
-        return "bg-green-50 text-green-700 border-green-200 shadow-green-100";
+        return "bg-green-50 text-green-700 border-green-100 shadow-green-100";
       case "Materials & Creatives OK":
-        return "bg-teal-50 text-teal-700 border-teal-200 shadow-teal-100";
+        return "bg-teal-50 text-teal-700 border-teal-100 shadow-teal-100";
       case "Implementation":
-        return "bg-cyan-50 text-cyan-700 border-cyan-200 shadow-cyan-100";
+        return "bg-cyan-50 text-cyan-700 border-cyan-100 shadow-cyan-100";
       case "Live":
-        return "bg-violet-50 text-violet-700 border-violet-200 shadow-violet-100";
+        return "bg-violet-50 text-violet-700 border-violet-100 shadow-violet-100";
       case "Closed":
-        return "bg-gray-50 text-gray-700 border-gray-200 shadow-gray-100";
+        return "bg-gray-50 text-gray-700 border-gray-100 shadow-gray-100";
       case "HUR":
-        return "bg-rose-50 text-rose-700 border-rose-200 shadow-rose-100";
+        return "bg-rose-50 text-rose-700 border-rose-100 shadow-rose-100";
       case "Invoiced":
-        return "bg-emerald-50 text-emerald-700 border-emerald-200 shadow-emerald-100";
+        return "bg-emerald-50 text-emerald-700 border-emerald-100 shadow-emerald-100";
       default:
-        return "bg-gray-50 text-gray-700 border-gray-200 shadow-gray-100";
+        return "bg-gray-50 text-gray-700 border-gray-100 shadow-gray-100";
     }
   };
 

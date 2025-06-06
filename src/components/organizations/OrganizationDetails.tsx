@@ -320,29 +320,6 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                 )}
               </div>
 
-              {/* Status */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Status
-                </label>
-                {isEditing ? (
-                  <select
-                    value={editedOrganization.status}
-                    onChange={(e) => handleChange("status", e.target.value)}
-                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
-                  >
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                  </select>
-                ) : (
-                  <StatusBadge
-                    status={
-                      organization.status === "Active" ? "Live" : "Closed"
-                    }
-                  />
-                )}
-              </div>
-
               {/* Industry */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
