@@ -854,25 +854,6 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
               </div>
               <div>
                 <p className="text-sm font-medium text-emerald-600">
-                  {" "}
-                  % Gross Margin
-                </p>
-                <p className="mt-1 text-base text-gray-900">
-                  <span
-                    className={`font-semibold ${
-                      campaign.grossMargin > 20
-                        ? "text-emerald-600"
-                        : campaign.grossMargin > 10
-                        ? "text-amber-600"
-                        : "text-rose-600"
-                    }`}
-                  >
-                    {campaign.grossMargin}%
-                  </span>
-                </p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-emerald-600">
                   Total Units
                 </p>
                 <p className="mt-1 text-base text-gray-900 font-semibold">
@@ -880,16 +861,30 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 </p>
               </div>
               <div>
-                <p className="text-sm font-medium text-emerald-600">CPM</p>
-                <p className="mt-1 text-base text-gray-900 font-semibold bg-emerald-50 px-2 py-1 rounded-md inline-block">
-                  ${((campaign.budget / campaign.units) * 1000).toFixed(2)}
+                <p className="text-sm font-medium text-emerald-600">
+                  % Gross Margin
+                </p>
+                <p className="mt-1 text-base text-gray-900">
+                  <span className="font-semibold">{campaign.grossMargin}%</span>
+                </p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-emerald-600">
+                  $ Gross Margin
+                </p>
+                <p className="mt-1 text-base text-gray-900 font-semibold">
+                  {formatCurrency(
+                    (campaign.budget * campaign.grossMargin) / 100
+                  )}
                 </p>
               </div>
               <div>
                 <p className="text-sm font-medium text-emerald-600">
                   Payment Terms
                 </p>
-                <p className="mt-1 text-base text-gray-900">30 days</p>
+                <p className="mt-1 text-base text-gray-900 font-semibold">
+                  30 days
+                </p>
               </div>
               <div>
                 <p className="text-sm font-medium text-emerald-600">
