@@ -50,15 +50,15 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
       }
     }
 
-    // Calculamos el margen, USMC Rate y Client Net Rate
+    // Calculamos el margen, USMC Rate y Customer Net Rate
     updatedUnit.margin = "29.6%"; // Ejemplo
 
     // USMC Rate podría ser un porcentaje del Unit Cost
     const usmcRate = updatedUnit.unitCost ? updatedUnit.unitCost * 0.8 : 0;
     updatedUnit.usmcRate = parseFloat(usmcRate.toFixed(2));
 
-    // Client Net Rate podría ser igual al Unit Cost
-    updatedUnit.clientNetRate = updatedUnit.unitCost || 0;
+    // Customer Net Rate podría ser igual al Unit Cost
+    updatedUnit.customerNetRate = updatedUnit.unitCost || 0;
 
     setEditedAdUnit(updatedUnit);
   };
@@ -265,7 +265,7 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                 scope="col"
                 className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Client Net Rate
+                Customer Net Rate
               </th>
               <th
                 scope="col"
@@ -449,13 +449,13 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                     )}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                    {/* Client Net Rate no es editable - calculado automáticamente */}
+                    {/* Customer Net Rate no es editable - calculado automáticamente */}
                     {editingAdUnit === unit.id ? (
                       <div className="w-full p-1 border border-gray-200 rounded text-sm bg-gray-50">
-                        ${editedAdUnit?.clientNetRate?.toFixed(2)}
+                        ${editedAdUnit?.customerNetRate?.toFixed(2)}
                       </div>
                     ) : (
-                      `$${unit.clientNetRate.toFixed(2)}`
+                      `$${unit.customerNetRate.toFixed(2)}`
                     )}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">

@@ -61,7 +61,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       unitCost: 0,
       investment: 0,
       usmcRate: 0,
-      clientNetRate: 0,
+      customerNetRate: 0,
       startDate: new Date().toISOString().split("T")[0],
       endDate: new Date(new Date().setMonth(new Date().getMonth() + 1))
         .toISOString()
@@ -115,9 +115,9 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
           grossMargin: 30,
         };
 
-        // Calculamos la tarifa del cliente basada en el margen
+        // Calculamos la tarifa del customer basada en el margen
         const marginPercentage = updated.grossMargin / 100;
-        updated.clientNetRate = parseFloat(
+        updated.customerNetRate = parseFloat(
           (mockPublisherPrice / (1 - marginPercentage)).toFixed(2)
         );
 
@@ -183,45 +183,45 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       }
     }
 
-    // Si tenemos tarifa de publisher pero no tarifa de cliente o margen bruto, establecemos valores predeterminados
+    // Si tenemos tarifa de publisher pero no tarifa de customer o margen bruto, establecemos valores predeterminados
     if (
       updated.publisherOpenRate &&
-      !updated.clientNetRate &&
+      !updated.customerNetRate &&
       !updated.grossMargin
     ) {
       // Establecer un margen bruto predeterminado del 30%
       updated.grossMargin = 30;
 
-      // Calcular la tarifa del cliente basada en el margen deseado
+      // Calcular la tarifa del customer basada en el margen deseado
       const marginPercentage = updated.grossMargin / 100;
-      updated.clientNetRate = parseFloat(
+      updated.customerNetRate = parseFloat(
         (updated.publisherOpenRate / (1 - marginPercentage)).toFixed(2)
       );
     }
 
-    // Si tenemos tarifa del cliente, calculamos la tarifa USMC (lo que recibimos)
-    if (updated.clientNetRate) {
-      updated.usmcRate = parseFloat((updated.clientNetRate * 0.8).toFixed(2));
+    // Si tenemos tarifa del customer, calculamos la tarifa USMC (lo que recibimos)
+    if (updated.customerNetRate) {
+      updated.usmcRate = parseFloat((updated.customerNetRate * 0.8).toFixed(2));
     }
 
-    // Si tenemos tarifa del cliente y tarifa del publisher, calculamos el margen bruto
+    // Si tenemos tarifa del customer y tarifa del publisher, calculamos el margen bruto
     if (
-      updated.clientNetRate &&
+      updated.customerNetRate &&
       updated.publisherOpenRate &&
       !updated.grossMargin
     ) {
-      const marginValue = 1 - updated.publisherOpenRate / updated.clientNetRate;
+      const marginValue = 1 - updated.publisherOpenRate / updated.customerNetRate;
       updated.grossMargin = parseFloat((marginValue * 100).toFixed(2));
     }
 
-    // Si tenemos margen bruto y tarifa del publisher, calculamos la tarifa del cliente
+    // Si tenemos margen bruto y tarifa del publisher, calculamos la tarifa del customer
     if (
       updated.grossMargin &&
       updated.publisherOpenRate &&
-      !updated.clientNetRate
+      !updated.customerNetRate
     ) {
       const marginPercentage = updated.grossMargin / 100;
-      updated.clientNetRate = parseFloat(
+      updated.customerNetRate = parseFloat(
         (updated.publisherOpenRate / (1 - marginPercentage)).toFixed(2)
       );
     }
@@ -271,27 +271,27 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
         setFieldsEnabled((prev) => ({ ...prev, size: true }));
       }
 
-      // Cálculos relacionados con el margen bruto y tarifa del cliente
+      // Cálculos relacionados con el margen bruto y tarifa del customer
       if (field === "grossMargin" && value !== undefined) {
         const marginPercentage = Number(value) / 100;
 
         // Solo calcular si tenemos una tarifa del publisher válida
         if (updated.publisherOpenRate && updated.publisherOpenRate > 0) {
-          // Calcular la tarifa del cliente basada en el margen deseado
-          // Fórmula: clientRate = publisherRate / (1 - margin)
-          const calculatedClientRate =
+          // Calcular la tarifa del customer basada en el margen deseado
+          // Fórmula: customerRate = publisherRate / (1 - margin)
+          const calculatedCustomerRate =
             updated.publisherOpenRate / (1 - marginPercentage);
-          updated.clientNetRate = parseFloat(calculatedClientRate.toFixed(2));
+          updated.customerNetRate = parseFloat(calculatedCustomerRate.toFixed(2));
         }
-      } else if (field === "clientNetRate" && value !== undefined) {
+      } else if (field === "customerNetRate" && value !== undefined) {
         // Solo calcular si tenemos una tarifa del publisher válida
         if (
           updated.publisherOpenRate &&
           updated.publisherOpenRate > 0 &&
           Number(value) > 0
         ) {
-          // Calcular el margen basado en la tarifa del cliente
-          // Fórmula: margin = 1 - (publisherRate / clientRate)
+          // Calcular el margen basado en la tarifa del customer
+          // Fórmula: margin = 1 - (publisherRate / customerRate)
           const marginValue = 1 - updated.publisherOpenRate / Number(value);
           updated.grossMargin = parseFloat((marginValue * 100).toFixed(2));
         }
@@ -304,7 +304,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
         field === "localTaxes" ||
         field === "publisherOpenRate" ||
         field === "publisherCommission" ||
-        field === "clientNetRate" ||
+        field === "customerNetRate" ||
         field === "grossMargin"
       ) {
         return calculateFinancials(updated);
@@ -873,7 +873,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                           )}
                       </div>
                       <p className="text-xs text-gray-500 mt-1">
-                        Automatically affects the client rate
+                        Automatically affects the customer rate
                       </p>
                     </div>
 
@@ -885,7 +885,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
 
                     <div>
                       <label className="block text-sm font-medium text-emerald-600 mb-1">
-                        Client Rate
+                      Customer Rate
                       </label>
                       <div className="flex items-center">
                         <span className="text-gray-500 font-medium mr-2">
@@ -895,10 +895,10 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                           type="number"
                           step="0.01"
                           className="mt-1 block w-full border-2 border-emerald-200 focus:border-emerald-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors font-bold"
-                          value={formData.clientNetRate || ""}
+                          value={formData.customerNetRate || ""}
                           onChange={(e) =>
                             handleChange(
-                              "clientNetRate",
+                              "customerNetRate",
                               Number(e.target.value)
                             )
                           }
@@ -996,21 +996,21 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                           : "$0.00"}
                       </div>
                       <p className="text-xs text-gray-500 mt-1">
-                        80% of the client rate
+                        80% of the customer rate
                       </p>
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-emerald-600 mb-1">
-                        Client Rate
+                      Customer Rate
                       </label>
                       <div className="mt-1 block w-full border-2 border-emerald-100 rounded-md p-2 bg-emerald-50 text-gray-900 font-medium">
-                        {formData.clientNetRate
-                          ? `$${formData.clientNetRate.toFixed(2)}`
+                        {formData.customerNetRate
+                          ? `$${formData.customerNetRate.toFixed(2)}`
                           : "$0.00"}
                       </div>
                       <p className="text-xs text-gray-500 mt-1">
-                        What we charge the client
+                        What we charge the customer
                       </p>
                     </div>
                   </div>
@@ -1048,11 +1048,11 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-amber-600 mb-1">
-                    Note for Client IO
+                    Note for Customer IO
                   </label>
                   <textarea
                     className="mt-1 block w-full border-2 border-amber-100 focus:border-amber-300 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors min-h-[80px]"
-                    placeholder="Information that will appear on the client order"
+                    placeholder="Information that will appear on the customer order"
                   ></textarea>
                 </div>
 

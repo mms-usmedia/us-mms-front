@@ -243,8 +243,8 @@ const PublisherInsertionOrderForm: React.FC<
                 onChange={(e) => handleChange("billingServer", e.target.value)}
                 required
               >
-                <option value={BillingServerType.CLIENT_AD_SERVER}>
-                  Client Ad Server
+                <option value={BillingServerType.CUSTOMER_AD_SERVER}>
+                Customer Ad Server
                 </option>
                 <option value={BillingServerType.PUBLISHER_AD_SERVER}>
                   Publisher Ad Server

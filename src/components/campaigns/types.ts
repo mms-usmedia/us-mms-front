@@ -72,7 +72,7 @@ export interface AdUnit {
   unitCost: number;
   investment: number;
   usmcRate: number;
-  clientNetRate: number;
+  customerNetRate: number;
   startDate: string;
   endDate: string;
   status: string;
@@ -96,7 +96,7 @@ export interface Document {
 
 // Enumeración para el tipo de servidor de facturación en la PIO
 export enum BillingServerType {
-  CLIENT_AD_SERVER = "Client Ad Server",
+  CUSTOMER_AD_SERVER = "Customer Ad Server",
   PUBLISHER_AD_SERVER = "Publisher Ad Server",
   SUBJECT_TO_DISCREPANCY = "Subject To Discrepancy",
 }
@@ -212,8 +212,8 @@ export const statusOptions = [
 
 // Textos de notas predefinidos según el tipo de servidor de facturación para la PIO
 export const billingServerNotes = {
-  [BillingServerType.CLIENT_AD_SERVER]:
-    "The quantity of delivered impressions will be billed based on Client AD server.\nConfidentiality Obligation. By signing, accepting or delivering any service requested by this Insertion Order, publisher acknowledges and agrees that the negotiations and terms of this Insertion Order, and invoices, reports, materials, and other documents created in connection with or related to such Insertion Order, are and shall remain as confidential Information. As such, they shall be treated by publisher in the same manner as it treats its own confidential documents, and not shared with any third party.",
+  [BillingServerType.CUSTOMER_AD_SERVER]:
+    "The quantity of delivered impressions will be billed based on Customer AD server.\nConfidentiality Obligation. By signing, accepting or delivering any service requested by this Insertion Order, publisher acknowledges and agrees that the negotiations and terms of this Insertion Order, and invoices, reports, materials, and other documents created in connection with or related to such Insertion Order, are and shall remain as confidential Information. As such, they shall be treated by publisher in the same manner as it treats its own confidential documents, and not shared with any third party.",
 
   [BillingServerType.PUBLISHER_AD_SERVER]:
     "The quantity of delivered impressions will be billed based on Publisher Ad Server.\nConfidentiality Obligation. By signing, accepting or delivering any service requested by this Insertion Order, publisher acknowledges and agrees that the negotiations and terms of this Insertion Order, and invoices, reports, materials, and other documents created in connection with or related to such Insertion Order, are and shall remain as confidential Information. As such, they shall be treated by publisher in the same manner as it treats its own confidential documents, and not shared with any third party.",

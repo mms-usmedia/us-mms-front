@@ -224,7 +224,7 @@ export default function NewProgrammaticCampaignPage() {
                     New Programmatic Campaign
                   </h1>
                   <p className="text-gray-600">
-                    Create a campaign where the client accesses the DSP directly
+                    Create a campaign where the customer accesses the DSP directly
                     and US Media receives commissions
                   </p>
                 </div>

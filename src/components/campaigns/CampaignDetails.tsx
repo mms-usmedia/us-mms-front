@@ -34,12 +34,12 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
   const [activeTab, setActiveTab] = useState<"info" | "charts">("info");
 
   // Estados para los dropdowns de búsqueda
-  const [clientSearch, setClientSearch] = useState("");
+  const [customerSearch, setCustomerSearch] = useState("");
   const [industrySearch, setIndustrySearch] = useState("");
   const [billingPartySearch, setBillingPartySearch] = useState("");
 
   // Datos para los dropdowns
-  const clients = [
+  const customers = [
     "Apple",
     "Microsoft",
     "Google",
@@ -66,7 +66,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
   const billingParties = [
     "Media Agency",
     "Creative Agency",
-    "Direct Client",
+    "Direct Customer",
     "PR Agency",
     "Digital Agency",
     "Full Service Agency",
@@ -85,8 +85,8 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
   ];
 
   // Listas filtradas basadas en búsqueda
-  const filteredClients = clients.filter((client) =>
-    client.toLowerCase().includes(clientSearch.toLowerCase())
+  const filteredCustomers = customers.filter((customer) =>
+    customer.toLowerCase().includes(customerSearch.toLowerCase())
   );
   const filteredIndustries = industries.filter((industry) =>
     industry.toLowerCase().includes(industrySearch.toLowerCase())
@@ -334,31 +334,31 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 )}
               </div>
               <div>
-                <p className="text-sm font-medium text-indigo-600">Client</p>
+                <p className="text-sm font-medium text-indigo-600">Customer</p>
                 {isEditing ? (
                   <div className="relative mt-1">
                     <div className="flex items-center border-2 border-indigo-100 focus-within:border-indigo-300 rounded bg-white">
                       <input
                         type="text"
                         className="text-sm w-full p-2 bg-white rounded text-gray-900 focus:ring-0 border-0 focus:outline-none"
-                        value={clientSearch}
-                        onChange={(e) => setClientSearch(e.target.value)}
-                        placeholder="Search client"
+                        value={customerSearch}
+                        onChange={(e) => setCustomerSearch(e.target.value)}
+                        placeholder="Search customer"
                       />
                       <FaSearch className="mr-2 text-gray-400" />
                     </div>
-                    {clientSearch && (
+                    {customerSearch && (
                       <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
-                        {filteredClients.map((client) => (
+                        {filteredCustomers.map((customer) => (
                           <div
-                            key={client}
+                            key={customer}
                             className="px-4 py-2 hover:bg-indigo-50 cursor-pointer text-sm"
                             onClick={() => {
-                              handleChange("customer", client);
-                              setClientSearch("");
+                              handleChange("customer", customer);
+                              setCustomerSearch("");
                             }}
                           >
-                            {client}
+                            {customer}
                           </div>
                         ))}
                       </div>
@@ -1149,18 +1149,18 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                   >
                     <path d="M18 3a1 1 0 00-1.447-.894L8.763 6H5a3 3 0 000 6h.28l1.771 5.316A1 1 0 008 18h1a1 1 0 001-1v-4.382l6.553 3.276A1 1 0 0018 15V3z" />
                   </svg>
-                  Client Notes
+                  Customer Notes
                 </p>
                 {isEditing ? (
                   <textarea
                     className="mt-1 text-sm w-full p-3 border-2 border-amber-100 focus:border-amber-300 rounded bg-white min-h-[100px] text-gray-900 focus:ring-0 transition-colors"
                     value={editedCampaign.notes || ""}
                     onChange={(e) => handleChange("notes", e.target.value)}
-                    placeholder="Add client notes..."
+                    placeholder="Add customer notes..."
                   />
                 ) : (
                   <div className="mt-1 text-sm text-gray-900 p-3 border border-amber-100 rounded bg-white min-h-[100px] shadow-inner">
-                    {campaign.notes || "No client notes"}
+                    {campaign.notes || "No customer notes"}
                   </div>
                 )}
               </div>

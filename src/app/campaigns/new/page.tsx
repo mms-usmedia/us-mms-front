@@ -137,7 +137,7 @@ export default function NewCampaignTypePage() {
                               d="M5 13l4 4L19 7"
                             />
                           </svg>
-                          <span>Client pays US Media</span>
+                          <span>Customer pays US Media</span>
                         </li>
                       </ul>
                     </div>
@@ -173,7 +173,7 @@ export default function NewCampaignTypePage() {
                     </div>
                     <div className="p-5">
                       <p className="text-gray-600 mb-4">
-                        Campaigns where the client manages buying directly
+                        Campaigns where the customer manages buying directly
                         through a DSP, generating commissions for US Media.
                       </p>
                       <ul className="text-sm text-gray-600 space-y-2">
@@ -191,7 +191,7 @@ export default function NewCampaignTypePage() {
                               d="M5 13l4 4L19 7"
                             />
                           </svg>
-                          <span>Client accesses DSP directly</span>
+                          <span>Customer accesses DSP directly</span>
                         </li>
                         <li className="flex items-start">
                           <svg

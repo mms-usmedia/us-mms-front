@@ -227,7 +227,7 @@ export default function NewIOBasedCampaignPage() {
                   </h1>
                   <p className="text-gray-600">
                     Create a traditional campaign where US Media manages the
-                    entire process for the client.
+                    entire process for the customer.
                   </p>
                 </div>
               </div>
