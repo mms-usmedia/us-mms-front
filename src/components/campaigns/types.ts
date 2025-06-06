@@ -39,6 +39,12 @@ export interface Campaign {
   adOpsLeader: string;
   industry: string;
   adUnits?: AdUnit[];
+  // Nuevos campos
+  organizationPublisher?: string;
+  customerBillingParty?: string;
+  agencyContact?: string;
+  billingContact?: string;
+  cioOwner?: "Customer" | "USMC";
 
   // Campos específicos para campañas programáticas
   commissionRate?: number;

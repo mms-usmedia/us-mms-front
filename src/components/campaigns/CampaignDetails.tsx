@@ -282,61 +282,6 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
             </h2>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-sm font-medium text-indigo-600">Client</p>
-                {isEditing ? (
-                  <div className="relative mt-1">
-                    <div className="flex items-center border-2 border-indigo-100 focus-within:border-indigo-300 rounded bg-white">
-                      <input
-                        type="text"
-                        className="text-sm w-full p-2 bg-white rounded text-gray-900 focus:ring-0 border-0 focus:outline-none"
-                        value={clientSearch}
-                        onChange={(e) => setClientSearch(e.target.value)}
-                        placeholder="Search client"
-                      />
-                      <FaSearch className="mr-2 text-gray-400" />
-                    </div>
-                    {clientSearch && (
-                      <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
-                        {filteredClients.map((client) => (
-                          <div
-                            key={client}
-                            className="px-4 py-2 hover:bg-indigo-50 cursor-pointer text-sm"
-                            onClick={() => {
-                              handleChange("customer", client);
-                              setClientSearch("");
-                            }}
-                          >
-                            {client}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <p className="mt-1 text-sm text-gray-900 font-medium">
-                    {campaign.customer || "-"}
-                  </p>
-                )}
-              </div>
-              <div>
-                <p className="text-sm font-medium text-indigo-600">
-                  Advertiser
-                </p>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
-                    value={editedCampaign.advertiser || ""}
-                    onChange={(e) => handleChange("advertiser", e.target.value)}
-                    placeholder="Name of the advertiser"
-                  />
-                ) : (
-                  <p className="mt-1 text-sm text-gray-900 font-medium">
-                    {campaign.advertiser || "-"}
-                  </p>
-                )}
-              </div>
-              <div>
                 <p className="text-sm font-medium text-indigo-600">
                   Organization Type
                 </p>
@@ -389,79 +334,59 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 )}
               </div>
               <div>
+                <p className="text-sm font-medium text-indigo-600">Client</p>
+                {isEditing ? (
+                  <div className="relative mt-1">
+                    <div className="flex items-center border-2 border-indigo-100 focus-within:border-indigo-300 rounded bg-white">
+                      <input
+                        type="text"
+                        className="text-sm w-full p-2 bg-white rounded text-gray-900 focus:ring-0 border-0 focus:outline-none"
+                        value={clientSearch}
+                        onChange={(e) => setClientSearch(e.target.value)}
+                        placeholder="Search client"
+                      />
+                      <FaSearch className="mr-2 text-gray-400" />
+                    </div>
+                    {clientSearch && (
+                      <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
+                        {filteredClients.map((client) => (
+                          <div
+                            key={client}
+                            className="px-4 py-2 hover:bg-indigo-50 cursor-pointer text-sm"
+                            onClick={() => {
+                              handleChange("customer", client);
+                              setClientSearch("");
+                            }}
+                          >
+                            {client}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <p className="mt-1 text-sm text-gray-900 font-medium">
+                    {campaign.customer || "-"}
+                  </p>
+                )}
+              </div>
+              <div>
                 <p className="text-sm font-medium text-indigo-600">
-                  Start Date
+                  Brand Advertiser
                 </p>
                 {isEditing ? (
                   <input
-                    type="date"
-                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 text-gray-900 bg-white transition-colors focus:ring-0"
-                    value={editedCampaign.startDate}
-                    onChange={(e) => handleChange("startDate", e.target.value)}
+                    type="text"
+                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                    value={editedCampaign.advertiser || ""}
+                    onChange={(e) => handleChange("advertiser", e.target.value)}
+                    placeholder="Name of the advertiser"
                   />
                 ) : (
-                  <p className="mt-1 text-sm text-gray-900 bg-blue-50 border border-blue-100 rounded-md px-2 py-1 inline-block">
-                    {formatDate(campaign.startDate)}
+                  <p className="mt-1 text-sm text-gray-900 font-medium">
+                    {campaign.advertiser || "-"}
                   </p>
                 )}
-              </div>
-              <div>
-                <p className="text-sm font-medium text-indigo-600">End Date</p>
-                {isEditing ? (
-                  <input
-                    type="date"
-                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 text-gray-900 bg-white transition-colors focus:ring-0"
-                    value={editedCampaign.endDate}
-                    onChange={(e) => handleChange("endDate", e.target.value)}
-                  />
-                ) : (
-                  <p className="mt-1 text-sm text-gray-900 bg-blue-50 border border-blue-100 rounded-md px-2 py-1 inline-block">
-                    {formatDate(campaign.endDate)}
-                  </p>
-                )}
-              </div>
-              <div>
-                <p className="text-sm font-medium text-indigo-600">Status</p>
-                <div className="mt-1">
-                  {isEditing ? (
-                    <div className="relative">
-                      <select
-                        className="text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
-                        value={editedCampaign.status}
-                        onChange={(e) => handleChange("status", e.target.value)}
-                      >
-                        <option value="Pending">Pending</option>
-                        <option value="Negotiating">Negotiating</option>
-                        <option value="Won">Won</option>
-                        <option value="Approved">Approved</option>
-                        <option value="Materials & Creatives OK">
-                          Materials & Creatives OK
-                        </option>
-                        <option value="Implementation">Implementation</option>
-                        <option value="Live">Live</option>
-                        <option value="Closed">Closed</option>
-                        <option value="HUR">HUR</option>
-                        <option value="Invoiced">Invoiced</option>
-                      </select>
-                      <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                        <svg
-                          className="h-5 w-5 text-indigo-500"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  ) : (
-                    <StatusBadge status={campaign.status} />
-                  )}
-                </div>
               </div>
               <div>
                 <p className="text-sm font-medium text-indigo-600">Industry</p>
@@ -502,7 +427,102 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
               </div>
               <div>
                 <p className="text-sm font-medium text-indigo-600">
-                  Billing Party
+                  Start Date
+                </p>
+                {isEditing ? (
+                  <input
+                    type="date"
+                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 text-gray-900 bg-white transition-colors focus:ring-0"
+                    value={editedCampaign.startDate}
+                    onChange={(e) => handleChange("startDate", e.target.value)}
+                  />
+                ) : (
+                  <p className="mt-1 text-sm text-gray-900 bg-blue-50 border border-blue-100 rounded-md px-2 py-1 inline-block">
+                    {formatDate(campaign.startDate)}
+                  </p>
+                )}
+              </div>
+              <div>
+                <p className="text-sm font-medium text-indigo-600">End Date</p>
+                {isEditing ? (
+                  <input
+                    type="date"
+                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 text-gray-900 bg-white transition-colors focus:ring-0"
+                    value={editedCampaign.endDate}
+                    onChange={(e) => handleChange("endDate", e.target.value)}
+                  />
+                ) : (
+                  <p className="mt-1 text-sm text-gray-900 bg-blue-50 border border-blue-100 rounded-md px-2 py-1 inline-block">
+                    {formatDate(campaign.endDate)}
+                  </p>
+                )}
+              </div>
+              {campaign.organizationType === "Publisher" && (
+                <div>
+                  <p className="text-sm font-medium text-indigo-600">
+                    Organization Publisher
+                  </p>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                      value={editedCampaign.organizationPublisher || ""}
+                      onChange={(e) =>
+                        handleChange("organizationPublisher", e.target.value)
+                      }
+                      placeholder="Organization Publisher"
+                    />
+                  ) : (
+                    <p className="mt-1 text-sm text-gray-900 font-medium">
+                      {campaign.organizationPublisher || "-"}
+                    </p>
+                  )}
+                </div>
+              )}
+              {campaign.organizationType !== "Publisher" && (
+                <div>
+                  <p className="text-sm font-medium text-indigo-600">Market</p>
+                  {isEditing ? (
+                    <div className="relative mt-1">
+                      <select
+                        className="text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
+                        value={editedCampaign.targetMarket || ""}
+                        onChange={(e) =>
+                          handleChange("targetMarket", e.target.value)
+                        }
+                      >
+                        <option value="">Seleccionar mercado...</option>
+                        {marketOptions.map((market) => (
+                          <option key={market} value={market}>
+                            {market}
+                          </option>
+                        ))}
+                      </select>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                        <svg
+                          className="h-5 w-5 text-indigo-500"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="mt-1 text-sm text-gray-900">
+                      {campaign.targetMarket || "-"}
+                    </p>
+                  )}
+                </div>
+              )}
+              <div>
+                <p className="text-sm font-medium text-indigo-600">
+                  US Media Billing Party
                 </p>
                 {isEditing ? (
                   <div className="relative mt-1">
@@ -541,25 +561,78 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
               </div>
               <div>
                 <p className="text-sm font-medium text-indigo-600">
-                  Billing Office
+                  Customer Billing Party
                 </p>
                 {isEditing ? (
-                  <div className="relative mt-1">
+                  <input
+                    type="text"
+                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                    value={editedCampaign.customerBillingParty || ""}
+                    onChange={(e) =>
+                      handleChange("customerBillingParty", e.target.value)
+                    }
+                    placeholder="Customer Billing Party"
+                  />
+                ) : (
+                  <p className="mt-1 text-sm text-gray-900 font-medium">
+                    {campaign.customerBillingParty || "-"}
+                  </p>
+                )}
+              </div>
+              <div>
+                <p className="text-sm font-medium text-indigo-600">
+                  Agency Contact
+                </p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                    value={editedCampaign.agencyContact || ""}
+                    onChange={(e) =>
+                      handleChange("agencyContact", e.target.value)
+                    }
+                    placeholder="Agency Contact"
+                  />
+                ) : (
+                  <p className="mt-1 text-sm text-gray-900 font-medium">
+                    {campaign.agencyContact || "-"}
+                  </p>
+                )}
+              </div>
+              <div>
+                <p className="text-sm font-medium text-indigo-600">
+                  Billing Contact
+                </p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                    value={editedCampaign.billingContact || ""}
+                    onChange={(e) =>
+                      handleChange("billingContact", e.target.value)
+                    }
+                    placeholder="Billing Contact"
+                  />
+                ) : (
+                  <p className="mt-1 text-sm text-gray-900 font-medium">
+                    {campaign.billingContact || "-"}
+                  </p>
+                )}
+              </div>
+              <div>
+                <p className="text-sm font-medium text-indigo-600">CIO Owner</p>
+                {isEditing ? (
+                  <div className="relative">
                     <select
-                      className="text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
-                      value={editedCampaign.billingOffice || ""}
-                      onChange={(e) =>
-                        handleChange("billingOffice", e.target.value)
-                      }
+                      className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
+                      value={editedCampaign.cioOwner || ""}
+                      onChange={(e) => handleChange("cioOwner", e.target.value)}
                     >
-                      <option value="">Seleccionar oficina...</option>
-                      {billingOffices.map((office) => (
-                        <option key={office} value={office}>
-                          {office}
-                        </option>
-                      ))}
+                      <option value="">Seleccionar propietario...</option>
+                      <option value="Customer">Customer</option>
+                      <option value="USMC">USMC</option>
                     </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none mt-1">
                       <svg
                         className="h-5 w-5 text-indigo-500"
                         xmlns="http://www.w3.org/2000/svg"
@@ -576,7 +649,17 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                   </div>
                 ) : (
                   <p className="mt-1 text-sm text-gray-900">
-                    {campaign.billingOffice}
+                    <span
+                      className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        campaign.cioOwner === "Customer"
+                          ? "bg-purple-100 text-purple-800"
+                          : campaign.cioOwner === "USMC"
+                          ? "bg-blue-100 text-blue-800"
+                          : "bg-gray-100 text-gray-800"
+                      }`}
+                    >
+                      {campaign.cioOwner || "-"}
+                    </span>
                   </p>
                 )}
               </div>
@@ -756,7 +839,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     clipRule="evenodd"
                   />
                 </svg>
-                Financial Summary
+                Campaign Summary
               </h2>
             </div>
 
@@ -770,7 +853,10 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 </p>
               </div>
               <div>
-                <p className="text-sm font-medium text-emerald-600">Margin</p>
+                <p className="text-sm font-medium text-emerald-600">
+                  {" "}
+                  % Gross Margin
+                </p>
                 <p className="mt-1 text-base text-gray-900">
                   <span
                     className={`font-semibold ${
