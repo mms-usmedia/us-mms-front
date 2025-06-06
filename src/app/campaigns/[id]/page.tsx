@@ -230,7 +230,7 @@ export default function CampaignDetailPage() {
                   </p>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <StatusBadge status={campaign.status} />
+                  <StatusBadge status={campaign.status} size="lg" />
                   <div className="flex space-x-2">
                     <a
                       href={`https://usmedia.pipedrive.com/deal/${campaign.id}`}
