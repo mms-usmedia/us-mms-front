@@ -173,11 +173,6 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
           <h2 className="text-xl font-semibold text-gray-900">
             Campaign Details
           </h2>
-          {campaign.id !== "new" && (
-            <p className="text-sm text-gray-500">
-              ID: <span className="font-medium">{campaign.id}</span>
-            </p>
-          )}
         </div>
 
         <div className="flex items-center gap-2">

@@ -432,10 +432,7 @@ export default function CampaignDetailPage() {
                   <h1 className="text-3xl font-bold text-gray-800 mb-2">
                     {campaign.name}
                   </h1>
-                  <p className="text-gray-600">
-                    ID: {campaign.id} | Organization:{" "}
-                    {campaign.organizationType}
-                  </p>
+                  <p className="text-gray-600">ID: {campaign.id}</p>
                 </div>
                 <div className="flex items-center space-x-3">
                   <StatusBadgeLarge status={campaign.status} />
