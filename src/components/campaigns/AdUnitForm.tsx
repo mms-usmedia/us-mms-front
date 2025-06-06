@@ -210,7 +210,8 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       updated.publisherOpenRate &&
       !updated.grossMargin
     ) {
-      const marginValue = 1 - updated.publisherOpenRate / updated.customerNetRate;
+      const marginValue =
+        1 - updated.publisherOpenRate / updated.customerNetRate;
       updated.grossMargin = parseFloat((marginValue * 100).toFixed(2));
     }
 
@@ -281,7 +282,9 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
           // Fórmula: customerRate = publisherRate / (1 - margin)
           const calculatedCustomerRate =
             updated.publisherOpenRate / (1 - marginPercentage);
-          updated.customerNetRate = parseFloat(calculatedCustomerRate.toFixed(2));
+          updated.customerNetRate = parseFloat(
+            calculatedCustomerRate.toFixed(2)
+          );
         }
       } else if (field === "customerNetRate" && value !== undefined) {
         // Solo calcular si tenemos una tarifa del publisher válida
@@ -885,7 +888,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
 
                     <div>
                       <label className="block text-sm font-medium text-emerald-600 mb-1">
-                      Customer Rate
+                        Customer Rate
                       </label>
                       <div className="flex items-center">
                         <span className="text-gray-500 font-medium mr-2">
@@ -915,7 +918,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                   <div className="space-y-4 border-r border-emerald-100 pr-4">
                     <h5 className="font-medium text-emerald-900 pb-2 border-b border-emerald-100 flex items-center">
                       <span className="inline-block w-5 h-5 bg-emerald-50 border-2 border-emerald-300 rounded-full mr-2"></span>
-                      Commissions and Taxes
+                      Commissions and Taxes - Advertisers
                     </h5>
 
                     <div>
@@ -963,6 +966,37 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                     <div className="py-3">
                       <div className="w-full border-t border-emerald-200"></div>
                     </div>
+
+                    <h5 className="font-medium text-emerald-900 pb-2 border-b border-emerald-100 flex items-center">
+                      <span className="inline-block w-5 h-5 bg-emerald-50 border-2 border-emerald-300 rounded-full mr-2"></span>
+                      Commissions and Taxes - Customers
+                    </h5>
+
+                    <div>
+                      <label className="flex justify-between text-sm font-medium text-emerald-600 mb-1">
+                        <span>Customer Commission</span>
+                        <span className="text-gray-500">0%</span>
+                      </label>
+                      <div className="mt-1 block w-full border-2 border-emerald-100 rounded-md p-2 bg-emerald-50 text-gray-900 font-medium">
+                        {formatCurrency(0)}
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Commission applied to customer
+                      </p>
+                    </div>
+
+                    <div>
+                      <label className="flex justify-between text-sm font-medium text-emerald-600 mb-1">
+                        <span>Customer Tax</span>
+                        <span className="text-gray-500">0%</span>
+                      </label>
+                      <div className="mt-1 block w-full border-2 border-emerald-100 rounded-md p-2 bg-emerald-50 text-gray-900 font-medium">
+                        {formatCurrency(0)}
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Tax applied to customer
+                      </p>
+                    </div>
                   </div>
 
                   {/* COLUMNA 3: Resultados finales */}
@@ -1002,7 +1036,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
 
                     <div>
                       <label className="block text-sm font-medium text-emerald-600 mb-1">
-                      Customer Rate
+                        Customer Rate
                       </label>
                       <div className="mt-1 block w-full border-2 border-emerald-100 rounded-md p-2 bg-emerald-50 text-gray-900 font-medium">
                         {formData.customerNetRate
