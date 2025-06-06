@@ -235,7 +235,7 @@ export default function CampaignsListPage() {
   );
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOrganization, setSelectedOrganization] = useState<string>("");
-  const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
   const [sortField, setSortField] = useState<string>("startDate");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const [startDateFilter, setStartDateFilter] = useState<string>("");
@@ -281,10 +281,10 @@ export default function CampaignsListPage() {
         );
       }
 
-      // Filter by status
-      if (selectedStatus) {
-        filtered = filtered.filter(
-          (campaign) => campaign.status === selectedStatus
+      // Filter by status (multiple selection)
+      if (selectedStatus.length > 0) {
+        filtered = filtered.filter((campaign) =>
+          selectedStatus.includes(campaign.status)
         );
       }
 

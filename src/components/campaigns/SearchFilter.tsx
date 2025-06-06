@@ -42,8 +42,8 @@ interface SearchFilterProps {
   onSearchChange: (value: string) => void;
   selectedOrganization: string;
   onOrganizationChange: (value: string) => void;
-  selectedStatus: string;
-  onStatusChange: (value: string) => void;
+  selectedStatus: string[];
+  onStatusChange: (value: string[]) => void;
   campaigns: Campaign[];
   startDateFilter?: string;
   endDateFilter?: string;
@@ -176,11 +176,20 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     };
   }, []);
 
+  // Function to toggle status selection
+  const toggleStatus = (status: StatusType) => {
+    if (selectedStatus.includes(status)) {
+      onStatusChange(selectedStatus.filter((s) => s !== status));
+    } else {
+      onStatusChange([...selectedStatus, status]);
+    }
+  };
+
   // Function to clear all filters
   const handleClearFilters = () => {
     onSearchChange("");
     onOrganizationChange("");
-    onStatusChange("");
+    onStatusChange([]);
     setOrgSearchTerm("");
     onStartDateChange("");
     onEndDateChange("");
@@ -192,7 +201,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   const hasActiveFilters =
     searchTerm ||
     selectedOrganization ||
-    selectedStatus ||
+    selectedStatus.length > 0 ||
     startDateFilter ||
     endDateFilter ||
     selectedOwner;
@@ -219,7 +228,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
       case "HUR":
         return "bg-rose-50 text-rose-700 border-rose-100";
       case "Invoiced":
-        return "bg-emerald-50 text-emerald-700 border-emerald-100";
+        return "bg-purple-50 text-purple-700 border-purple-100";
       default:
         return "bg-gray-50 text-gray-700 border-gray-100";
     }
@@ -279,7 +288,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
               <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-100 text-xs font-medium text-indigo-800">
                 {(searchTerm ? 1 : 0) +
                   (selectedOrganization ? 1 : 0) +
-                  (selectedStatus ? 1 : 0) +
+                  (selectedStatus.length > 0 ? 1 : 0) +
                   (startDateFilter ? 1 : 0) +
                   (endDateFilter ? 1 : 0) +
                   (selectedOwner ? 1 : 0)}
@@ -517,19 +526,16 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
                   <div
                     key={status}
                     className={`cursor-pointer rounded-md px-3 py-1.5 text-sm border ${
-                      selectedStatus === status
+                      selectedStatus.includes(status)
                         ? getStatusColor(status)
                         : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
                     }`}
-                    onClick={() => {
-                      if (selectedStatus === status) {
-                        onStatusChange("");
-                      } else {
-                        onStatusChange(status);
-                      }
-                    }}
+                    onClick={() => toggleStatus(status)}
                   >
                     {status}
+                    {selectedStatus.includes(status) && (
+                      <span className="ml-1.5 inline-block">✓</span>
+                    )}
                   </div>
                 ))}
               </div>
