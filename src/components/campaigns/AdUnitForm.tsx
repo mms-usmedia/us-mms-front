@@ -3,12 +3,19 @@ import React, { useState, useEffect } from "react";
 import { AdUnit, samplePublishers, Publisher } from "./types";
 import {
   marketOptions,
-  channelOptions,
-  formatOptions,
-  sizeOptions,
-  modelOptions,
+  channelOptions as defaultChannelOptions,
+  formatOptions as defaultFormatOptions,
+  sizeOptions as defaultSizeOptions,
+  modelOptions as defaultModelOptions,
 } from "./types";
 import { formatCurrency } from "./utils";
+import {
+  getChannelOptions,
+  getFormatOptions,
+  getSizeOptions,
+  getCommModelOptions,
+  getOpenRate,
+} from "./publisherData";
 
 interface AdUnitFormProps {
   adUnit?: AdUnit; // Si es null, estamos creando una nueva ad unit
@@ -41,6 +48,16 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
     model: false,
     size: false,
   });
+
+  // Estados para opciones dinámicas de dropdowns
+  const [dynamicChannelOptions, setDynamicChannelOptions] = useState<string[]>(
+    []
+  );
+  const [dynamicFormatOptions, setDynamicFormatOptions] = useState<string[]>(
+    []
+  );
+  const [dynamicModelOptions, setDynamicModelOptions] = useState<string[]>([]);
+  const [dynamicSizeOptions, setDynamicSizeOptions] = useState<string[]>([]);
 
   // Estado para guardar el precio unitario automático
   const [_autoUnitPrice, setAutoUnitPrice] = useState<number | null>(null);
@@ -85,11 +102,47 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       if (foundPublisher) {
         setSelectedPublisher(foundPublisher);
         setFieldsEnabled((prev) => ({ ...prev, market: true }));
+
+        // Cargar opciones dinámicas para publisher
+        const channels = getChannelOptions(adUnit.publisher);
+        setDynamicChannelOptions(
+          channels.length > 0 ? channels : defaultChannelOptions
+        );
+
+        if (adUnit.channel) {
+          const formats = getFormatOptions(adUnit.publisher, adUnit.channel);
+          setDynamicFormatOptions(
+            formats.length > 0 ? formats : defaultFormatOptions
+          );
+
+          if (adUnit.format) {
+            const models = getCommModelOptions(
+              adUnit.publisher,
+              adUnit.channel,
+              adUnit.format
+            );
+            setDynamicModelOptions(
+              models.length > 0 ? models : defaultModelOptions
+            );
+
+            if (adUnit.model) {
+              const sizes = getSizeOptions(
+                adUnit.publisher,
+                adUnit.channel,
+                adUnit.format,
+                adUnit.model
+              );
+              setDynamicSizeOptions(
+                sizes.length > 0 ? sizes : defaultSizeOptions
+              );
+            }
+          }
+        }
       }
     }
   }, [adUnit, isEditing]);
 
-  // Efecto para simular auto-relleno de precios cuando se selecciona el tamaño
+  // Efecto para actualizar valores cuando todas las selecciones están completas
   useEffect(() => {
     if (
       formData.publisher &&
@@ -99,30 +152,37 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       formData.model &&
       formData.size
     ) {
-      // Aquí simularíamos una llamada al backend para obtener el precio
-      // Por ahora, generamos un valor aleatorio para demostrar la funcionalidad
-      const mockPublisherPrice = parseFloat((Math.random() * 5 + 3).toFixed(2));
+      // Obtener la tarifa abierta de nuestros datos
+      const openRate = getOpenRate(
+        formData.publisher,
+        formData.channel,
+        formData.format,
+        formData.size,
+        formData.model
+      );
 
-      // Actualizamos los valores automáticos
-      setAutoUnitPrice(mockPublisherPrice);
+      if (openRate !== null) {
+        // Actualizamos los valores automáticos
+        setAutoUnitPrice(openRate);
 
-      // Actualizamos el formulario con los valores predeterminados
-      setFormData((prev) => {
-        const updated = {
-          ...prev,
-          publisherOpenRate: mockPublisherPrice,
-          // Establecemos un margen bruto predeterminado del 30%
-          grossMargin: 30,
-        };
+        // Actualizamos el formulario con los valores predeterminados
+        setFormData((prev) => {
+          const updated = {
+            ...prev,
+            publisherOpenRate: openRate,
+            // Establecemos un margen bruto predeterminado del 30%
+            grossMargin: 30,
+          };
 
-        // Calculamos la tarifa del customer basada en el margen
-        const marginPercentage = updated.grossMargin / 100;
-        updated.customerNetRate = parseFloat(
-          (mockPublisherPrice / (1 - marginPercentage)).toFixed(2)
-        );
+          // Calculamos la tarifa del customer basada en el margen
+          const marginPercentage = updated.grossMargin / 100;
+          updated.customerNetRate = parseFloat(
+            (openRate / (1 - marginPercentage)).toFixed(2)
+          );
 
-        return calculateFinancials(updated);
-      });
+          return calculateFinancials(updated);
+        });
+      }
     }
   }, [
     formData.publisher,
@@ -244,6 +304,12 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       return calculateFinancials(updated);
     });
 
+    // Cargar opciones dinámicas para publisher
+    const channels = getChannelOptions(publisher.name);
+    setDynamicChannelOptions(
+      channels.length > 0 ? channels : defaultChannelOptions
+    );
+
     // Desbloquear el campo de mercado después de seleccionar publisher
     setFieldsEnabled((prev) => ({ ...prev, market: true }));
     setShowPublisherDropdown(false);
@@ -265,11 +331,47 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       if (field === "market" && value) {
         setFieldsEnabled((prev) => ({ ...prev, channel: true }));
       } else if (field === "channel" && value) {
+        // Actualizar opciones de formato basadas en el canal seleccionado
+        const formats = getFormatOptions(updated.publisher, value as string);
+        setDynamicFormatOptions(
+          formats.length > 0 ? formats : defaultFormatOptions
+        );
         setFieldsEnabled((prev) => ({ ...prev, format: true }));
+
+        // Reiniciar los valores dependientes
+        updated.format = "";
+        updated.model = "";
+        updated.size = "";
+        setFieldsEnabled((prev) => ({ ...prev, model: false, size: false }));
       } else if (field === "format" && value) {
+        // Actualizar opciones de modelo basadas en el formato seleccionado
+        const models = getCommModelOptions(
+          updated.publisher,
+          updated.channel,
+          value as string
+        );
+        setDynamicModelOptions(
+          models.length > 0 ? models : defaultModelOptions
+        );
         setFieldsEnabled((prev) => ({ ...prev, model: true }));
+
+        // Reiniciar los valores dependientes
+        updated.model = "";
+        updated.size = "";
+        setFieldsEnabled((prev) => ({ ...prev, size: false }));
       } else if (field === "model" && value) {
+        // Actualizar opciones de tamaño basadas en el modelo seleccionado
+        const sizes = getSizeOptions(
+          updated.publisher,
+          updated.channel,
+          updated.format,
+          value as string
+        );
+        setDynamicSizeOptions(sizes.length > 0 ? sizes : defaultSizeOptions);
         setFieldsEnabled((prev) => ({ ...prev, size: true }));
+
+        // Reiniciar el tamaño
+        updated.size = "";
       }
 
       // Cálculos relacionados con el margen bruto y tarifa del customer
@@ -628,21 +730,23 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                     Channels
                   </label>
                   <select
-                    className={`mt-1 block w-full border-2 ${
-                      fieldsEnabled.channel
-                        ? "border-gray-200 focus:border-gray-400 bg-white"
-                        : "border-gray-200 bg-gray-100 cursor-not-allowed"
-                    } rounded-md p-2 text-gray-900 focus:ring-0 transition-colors`}
+                    className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors disabled:bg-gray-100 disabled:text-gray-500"
                     value={formData.channel}
                     onChange={(e) => handleChange("channel", e.target.value)}
                     disabled={!fieldsEnabled.channel}
                   >
                     <option value="">Select Channel</option>
-                    {channelOptions.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
+                    {dynamicChannelOptions.length > 0
+                      ? dynamicChannelOptions.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))
+                      : defaultChannelOptions.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
                   </select>
                 </div>
 
@@ -651,21 +755,23 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                     Format
                   </label>
                   <select
-                    className={`mt-1 block w-full border-2 ${
-                      fieldsEnabled.format
-                        ? "border-gray-200 focus:border-gray-400 bg-white"
-                        : "border-gray-200 bg-gray-100 cursor-not-allowed"
-                    } rounded-md p-2 text-gray-900 focus:ring-0 transition-colors`}
+                    className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors disabled:bg-gray-100 disabled:text-gray-500"
                     value={formData.format}
                     onChange={(e) => handleChange("format", e.target.value)}
                     disabled={!fieldsEnabled.format}
                   >
                     <option value="">Select Format</option>
-                    {formatOptions.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
+                    {dynamicFormatOptions.length > 0
+                      ? dynamicFormatOptions.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))
+                      : defaultFormatOptions.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
                   </select>
                 </div>
 
@@ -674,20 +780,23 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                     Model
                   </label>
                   <select
-                    className={`mt-1 block w-full border-2 ${
-                      fieldsEnabled.model
-                        ? "border-gray-200 focus:border-gray-400 bg-white"
-                        : "border-gray-200 bg-gray-100 cursor-not-allowed"
-                    } rounded-md p-2 text-gray-900 focus:ring-0 transition-colors`}
+                    className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors disabled:bg-gray-100 disabled:text-gray-500"
                     value={formData.model}
                     onChange={(e) => handleChange("model", e.target.value)}
                     disabled={!fieldsEnabled.model}
                   >
-                    {modelOptions.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
+                    <option value="">Select Model</option>
+                    {dynamicModelOptions.length > 0
+                      ? dynamicModelOptions.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))
+                      : defaultModelOptions.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
                   </select>
                 </div>
 
@@ -696,21 +805,23 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                     Size
                   </label>
                   <select
-                    className={`mt-1 block w-full border-2 ${
-                      fieldsEnabled.size
-                        ? "border-gray-200 focus:border-gray-400 bg-white"
-                        : "border-gray-200 bg-gray-100 cursor-not-allowed"
-                    } rounded-md p-2 text-gray-900 focus:ring-0 transition-colors`}
+                    className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors disabled:bg-gray-100 disabled:text-gray-500"
                     value={formData.size}
                     onChange={(e) => handleChange("size", e.target.value)}
                     disabled={!fieldsEnabled.size}
                   >
                     <option value="">Select Size</option>
-                    {sizeOptions.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
+                    {dynamicSizeOptions.length > 0
+                      ? dynamicSizeOptions.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))
+                      : defaultSizeOptions.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
                   </select>
                 </div>
 
@@ -1125,7 +1236,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
             >
               <path
                 fillRule="evenodd"
-                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                 clipRule="evenodd"
               />
             </svg>

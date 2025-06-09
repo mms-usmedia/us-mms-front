@@ -140,27 +140,51 @@ export const samplePublishers: Publisher[] = [
   },
   {
     id: "pub2",
-    name: "Google AdSense",
-    website: "www.google.com/adsense",
-    agencyCommission: 10,
+    name: "Linkedin",
+    website: "www.linkedin.com",
+    agencyCommission: 15,
   },
   {
     id: "pub3",
-    name: "Facebook Ads",
-    website: "www.facebook.com/business",
-    agencyCommission: 12,
+    name: "Tinder",
+    website: "www.tinder.com",
+    agencyCommission: 15,
   },
   {
     id: "pub4",
-    name: "Twitter Ads",
-    website: "ads.twitter.com",
-    agencyCommission: 8,
+    name: "MAP",
+    website: "www.mobileadperformance.com",
+    agencyCommission: 14,
   },
   {
     id: "pub5",
-    name: "Amazon Advertising",
-    website: "advertising.amazon.com",
-    agencyCommission: 14,
+    name: "Fandom",
+    website: "www.fandom.com",
+    agencyCommission: 12,
+  },
+  {
+    id: "pub6",
+    name: "OneFootball",
+    website: "www.onefootball.com",
+    agencyCommission: 12,
+  },
+  {
+    id: "pub7",
+    name: "WeTransfer",
+    website: "www.wetransfer.com",
+    agencyCommission: 15,
+  },
+  {
+    id: "pub8",
+    name: "TikTok",
+    website: "www.tiktok.com",
+    agencyCommission: 15,
+  },
+  {
+    id: "pub9",
+    name: "Vevo",
+    website: "www.vevo.com",
+    agencyCommission: 15,
   },
 ];
 
@@ -176,7 +200,15 @@ export const marketOptions = [
   "Global",
 ];
 
+// Los valores de channelOptions, formatOptions, sizeOptions y modelOptions ahora serán dinámicos
+// basados en el publisher seleccionado, usando el archivo publisherData.ts
 export const channelOptions = [
+  "ROS",
+  "Home Page",
+  "Education",
+  "Government Administration",
+  "Run of Professionals",
+  "Targeted Gender & Age",
   "Cross Platform Takeover VIDEO",
   "Podcast Audio Ads",
   "Display",
@@ -187,13 +219,15 @@ export const channelOptions = [
 export const formatOptions = ["Display", "Video", "Audio", "Social", "Mobile"];
 
 export const sizeOptions = [
+  "160x600",
+  "728x90",
+  "300x250",
   "Takeover",
   "Banner",
   "30s",
   "15s",
   "60s",
   "120x60",
-  "300x250",
   "Interstitial",
 ];
 
