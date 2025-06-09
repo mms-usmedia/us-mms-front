@@ -28,6 +28,7 @@ export default function NewIOBasedCampaignPage() {
   const [campaign, setCampaign] = useState<Campaign>({
     id: "new", // Temporary ID for new campaign
     name: "",
+    campaignType: "IO-based", // Añadido el tipo de campaña requerido
     organizationType: "Agency", // Default Agency for IO-based
     startDate: "",
     endDate: "",

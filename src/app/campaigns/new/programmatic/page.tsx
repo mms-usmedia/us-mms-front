@@ -28,6 +28,7 @@ export default function NewProgrammaticCampaignPage() {
   const [campaign, setCampaign] = useState<Campaign>({
     id: "new", // Temporal ID para nueva campaña
     name: "",
+    campaignType: "Programmatic", // Añadido el tipo de campaña requerido
     organizationType: "Publisher", // Las campañas programáticas siempre son con Publishers
     startDate: "",
     endDate: "",
