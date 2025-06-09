@@ -32,7 +32,7 @@ const StatusBadgeLarge = ({ status }: { status: string }) => {
       case "Negotiating":
         return "bg-blue-50 text-blue-700 border-blue-200 shadow-blue-100";
       case "Won":
-        return "bg-indigo-50 text-indigo-700 border-indigo-200 shadow-indigo-100";
+        return "bg-orange-50 text-orange-700 border-orange-200 shadow-orange-100";
       case "Approved":
         return "bg-green-50 text-green-700 border-green-200 shadow-green-100";
       case "Materials & Creatives OK":
@@ -364,7 +364,7 @@ export default function CampaignDetailPage() {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>
@@ -383,7 +383,7 @@ export default function CampaignDetailPage() {
           </p>
           <Link
             href="/campaigns"
-            className="mt-4 inline-block px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+            className="mt-4 inline-block px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700"
           >
             Return to Campaigns
           </Link>
@@ -409,7 +409,7 @@ export default function CampaignDetailPage() {
             <div className="mb-8">
               <Link
                 href="/campaigns"
-                className="text-indigo-600 hover:text-indigo-800 text-sm flex items-center mb-2"
+                className="text-orange-600 hover:text-orange-800 text-sm flex items-center mb-2"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -489,7 +489,7 @@ export default function CampaignDetailPage() {
                         whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm
                         ${
                           activeTab === tab.id
-                            ? "border-indigo-500 text-indigo-600"
+                            ? "border-orange-600 text-orange-600"
                             : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                         }
                       `}

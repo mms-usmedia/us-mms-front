@@ -23,7 +23,7 @@ export default function NewCampaignTypePage() {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>
@@ -47,7 +47,7 @@ export default function NewCampaignTypePage() {
               <div className="flex items-center mb-6">
                 <Link
                   href="/campaigns"
-                  className="text-indigo-600 hover:text-indigo-800 mr-3"
+                  className="text-orange-600 hover:text-orange-800 mr-3"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +79,7 @@ export default function NewCampaignTypePage() {
                     onClick={() => router.push("/campaigns/new/io-based")}
                   >
                     <div className="border-b border-gray-100 bg-blue-50 p-4">
-                      <h3 className="text-lg font-medium text-gray-800 group-hover:text-indigo-700 transition-colors">
+                      <h3 className="text-lg font-medium text-gray-800 group-hover:text-orange-700 transition-colors">
                         IO-Based Campaign (Traditional)
                       </h3>
                     </div>
@@ -142,7 +142,7 @@ export default function NewCampaignTypePage() {
                       </ul>
                     </div>
                     <div className="bg-gray-50 px-5 py-3 text-right">
-                      <button className="text-indigo-600 font-medium text-sm hover:text-indigo-800 transition-colors inline-flex items-center">
+                      <button className="text-orange-600 font-medium text-sm hover:text-orange-800 transition-colors inline-flex items-center">
                         Create IO-Based Campaign
                         <svg
                           className="ml-1 h-4 w-4"
@@ -167,7 +167,7 @@ export default function NewCampaignTypePage() {
                     onClick={() => router.push("/campaigns/new/programmatic")}
                   >
                     <div className="border-b border-gray-100 bg-purple-50 p-4">
-                      <h3 className="text-lg font-medium text-gray-800 group-hover:text-indigo-700 transition-colors">
+                      <h3 className="text-lg font-medium text-gray-800 group-hover:text-orange-700 transition-colors">
                         Programmatic Campaign
                       </h3>
                     </div>
@@ -228,7 +228,7 @@ export default function NewCampaignTypePage() {
                       </ul>
                     </div>
                     <div className="bg-gray-50 px-5 py-3 text-right">
-                      <button className="text-indigo-600 font-medium text-sm hover:text-indigo-800 transition-colors inline-flex items-center">
+                      <button className="text-orange-600 font-medium text-sm hover:text-orange-800 transition-colors inline-flex items-center">
                         Create Programmatic Campaign
                         <svg
                           className="ml-1 h-4 w-4"

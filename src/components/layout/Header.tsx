@@ -111,7 +111,7 @@ const Header: React.FC<HeaderProps> = ({ userName = "User" }) => {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-full bg-gray-50 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm !text-gray-900 placeholder-gray-500"
+                className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-full bg-gray-50 shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm !text-gray-900 placeholder-gray-500"
                 placeholder="Search across the application..."
                 style={{ color: "#1f2937" }}
               />
@@ -128,7 +128,7 @@ const Header: React.FC<HeaderProps> = ({ userName = "User" }) => {
                 setOpenNotifications(!openNotifications);
                 setOpenProfile(false);
               }}
-              className="relative p-1 text-gray-600 hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded-full"
+              className="relative p-1 text-gray-600 hover:text-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-full"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -150,7 +150,7 @@ const Header: React.FC<HeaderProps> = ({ userName = "User" }) => {
             {/* Notifications menu */}
             {openNotifications && (
               <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-20">
-                <div className="py-2 px-4 bg-gradient-to-r from-indigo-700 to-indigo-500 rounded-t-md">
+                <div className="py-2 px-4 bg-gradient-to-r from-orange-600 to-orange-500 rounded-t-md">
                   <h3 className="text-sm font-medium text-white">
                     Notifications
                   </h3>
@@ -163,7 +163,7 @@ const Header: React.FC<HeaderProps> = ({ userName = "User" }) => {
                           key={notification.id}
                           className={`px-4 py-3 hover:bg-gray-50 transition-colors ${
                             !notification.read
-                              ? "border-l-4 border-indigo-500"
+                              ? "border-l-4 border-orange-500"
                               : ""
                           }`}
                         >
@@ -185,7 +185,7 @@ const Header: React.FC<HeaderProps> = ({ userName = "User" }) => {
                 <div className="py-2 px-4 bg-gray-50 rounded-b-md border-t border-gray-100">
                   <Link
                     href="/notifications"
-                    className="text-xs text-indigo-600 hover:text-indigo-800 font-medium"
+                    className="text-xs text-orange-600 hover:text-orange-800 font-medium"
                   >
                     View all notifications
                   </Link>
@@ -201,9 +201,9 @@ const Header: React.FC<HeaderProps> = ({ userName = "User" }) => {
                 setOpenProfile(!openProfile);
                 setOpenNotifications(false);
               }}
-              className="flex items-center text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded-full"
+              className="flex items-center text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-full"
             >
-              <div className="h-9 w-9 rounded-full bg-gradient-to-r from-violet-500 to-indigo-500 flex items-center justify-center text-white font-medium shadow-md">
+              <div className="h-9 w-9 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 flex items-center justify-center text-white font-medium shadow-md">
                 {(userName && userName.charAt(0).toUpperCase()) || "U"}
               </div>
               <div className="ml-2 hidden md:block">
@@ -232,20 +232,20 @@ const Header: React.FC<HeaderProps> = ({ userName = "User" }) => {
                 <div className="py-1">
                   <Link
                     href="/profile"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-orange-600"
                   >
                     My Profile
                   </Link>
                   <Link
                     href="/settings"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-orange-600"
                   >
                     Settings
                   </Link>
                   <div className="border-t border-gray-100 my-1"></div>
                   <button
                     onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-orange-600"
                   >
                     Log Out
                   </button>

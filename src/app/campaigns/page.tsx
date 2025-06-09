@@ -350,7 +350,7 @@ export default function CampaignsListPage() {
       case "Publisher":
         return "bg-amber-50 text-amber-700 border border-amber-100 px-2 py-1 rounded-md text-xs shadow-sm";
       case "Holding Agency":
-        return "bg-indigo-50 text-indigo-700 border border-indigo-100 px-2 py-1 rounded-md text-xs shadow-sm";
+        return "bg-orange-50 text-orange-700 border border-orange-100 px-2 py-1 rounded-md text-xs shadow-sm";
       case "Holding Advertiser":
         return "bg-rose-50 text-rose-700 border border-rose-100 px-2 py-1 rounded-md text-xs shadow-sm";
       default:
@@ -363,7 +363,7 @@ export default function CampaignsListPage() {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>
@@ -396,7 +396,7 @@ export default function CampaignsListPage() {
               {/* New Campaign Button (now in main view) */}
               <Link
                 href="/campaigns/new"
-                className="flex items-center px-4 py-2.5 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors shadow-md"
+                className="flex items-center px-4 py-2.5 bg-orange-600 text-white rounded-lg text-sm font-medium hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors shadow-md"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -439,7 +439,7 @@ export default function CampaignsListPage() {
                     <tr>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-20"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors w-20"
                         onClick={() => handleSort("id")}
                       >
                         <div className="whitespace-nowrap flex items-center">
@@ -453,7 +453,7 @@ export default function CampaignsListPage() {
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-48"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors w-48"
                         onClick={() => handleSort("name")}
                       >
                         <div className="whitespace-nowrap flex items-center">
@@ -467,7 +467,7 @@ export default function CampaignsListPage() {
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-44"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors w-44"
                         onClick={() => handleSort("organizationName")}
                       >
                         <div className="whitespace-nowrap flex items-center">
@@ -481,7 +481,7 @@ export default function CampaignsListPage() {
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-28"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors w-28"
                         onClick={() => handleSort("organizationType")}
                       >
                         <div className="whitespace-nowrap flex items-center">
@@ -495,7 +495,7 @@ export default function CampaignsListPage() {
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-28"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors w-28"
                         onClick={() => handleSort("startDate")}
                       >
                         <div className="whitespace-nowrap flex items-center">
@@ -509,7 +509,7 @@ export default function CampaignsListPage() {
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-24"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors w-24"
                         onClick={() => handleSort("endDate")}
                       >
                         <div className="whitespace-nowrap flex items-center">
@@ -523,7 +523,7 @@ export default function CampaignsListPage() {
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-24"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors w-24"
                         onClick={() => handleSort("units")}
                       >
                         <div className="whitespace-nowrap flex items-center">
@@ -537,7 +537,7 @@ export default function CampaignsListPage() {
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-24"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors w-24"
                         onClick={() => handleSort("budget")}
                       >
                         <div className="whitespace-nowrap flex items-center">
@@ -551,7 +551,7 @@ export default function CampaignsListPage() {
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-20"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors w-20"
                         onClick={() => handleSort("grossMargin")}
                       >
                         <div className="whitespace-nowrap flex items-center">
@@ -565,7 +565,7 @@ export default function CampaignsListPage() {
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-28"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors w-28"
                         onClick={() => handleSort("status")}
                       >
                         <div className="whitespace-nowrap flex items-center">
@@ -589,7 +589,7 @@ export default function CampaignsListPage() {
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
                           {campaign.id}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-800 max-w-[12rem] overflow-hidden transition-all duration-300 ease-in-out">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-orange-600 hover:text-orange-800 max-w-[12rem] overflow-hidden transition-all duration-300 ease-in-out">
                           <span
                             title={campaign.name}
                             className="hover:underline"
@@ -671,7 +671,7 @@ export default function CampaignsListPage() {
                         <span className="sr-only">Previous</span>
                         &laquo;
                       </button>
-                      <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-indigo-600 hover:bg-indigo-50">
+                      <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-orange-600 hover:bg-orange-50">
                         1
                       </button>
                       <button className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">

@@ -110,7 +110,7 @@ const Sidebar: React.FC = () => {
         <div className="flex items-center justify-between p-4 h-[68px] border-b border-gray-100">
           <div className="flex items-center min-w-0">
             <div
-              className={`bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl p-2.5 flex items-center justify-center shadow-md flex-shrink-0 ${
+              className={`bg-gradient-to-br from-orange-500 to-orange-700 rounded-xl p-2.5 flex items-center justify-center shadow-md flex-shrink-0 ${
                 isCollapsed ? "mx-auto" : "mr-3"
               }`}
             >
@@ -129,7 +129,7 @@ const Sidebar: React.FC = () => {
               }`}
             >
               <h1 className="text-2xl font-bold tracking-tight whitespace-nowrap">
-                MMS <span className="text-indigo-600">2.0</span>
+                MMS <span className="text-orange-600">2.0</span>
               </h1>
             </div>
           </div>
@@ -156,15 +156,15 @@ const Sidebar: React.FC = () => {
                   isCollapsed ? "justify-center py-3.5" : "px-4 py-3"
                 } ${
                   pathname === item.href
-                    ? "bg-indigo-50 text-indigo-600 border border-indigo-100 shadow-sm"
-                    : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                    ? "bg-orange-50 text-orange-600 border border-orange-100 shadow-sm"
+                    : "text-gray-700 hover:bg-gray-50 hover:text-orange-600"
                 }`}
               >
                 <item.icon
                   className={`${
                     isCollapsed ? "w-7 h-7" : "w-6 h-6 mr-3.5"
                   } transition-all duration-300 ease-in-out ${
-                    pathname === item.href ? "text-indigo-500" : "text-gray-500"
+                    pathname === item.href ? "text-orange-500" : "text-gray-500"
                   }`}
                 />
                 <span
@@ -189,7 +189,7 @@ const Sidebar: React.FC = () => {
         {/* Button to expand/collapse (always visible) */}
         <button
           onClick={toggleSidebar}
-          className="absolute -right-4 top-1/2 transform -translate-y-1/2 w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md border border-gray-200 text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 transition-colors z-10"
+          className="absolute -right-4 top-1/2 transform -translate-y-1/2 w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md border border-gray-200 text-orange-600 hover:text-orange-800 hover:bg-orange-50 transition-colors z-10"
           aria-label={isCollapsed ? "Expand menu" : "Collapse menu"}
         >
           <svg

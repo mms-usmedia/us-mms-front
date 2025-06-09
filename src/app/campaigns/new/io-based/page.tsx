@@ -178,7 +178,7 @@ export default function NewIOBasedCampaignPage() {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500 mx-auto"></div>
           <p className="mt-4 text-gray-600">Cargando...</p>
         </div>
       </div>
@@ -202,7 +202,7 @@ export default function NewIOBasedCampaignPage() {
             <div className="mb-8">
               <Link
                 href="/campaigns/new"
-                className="text-indigo-600 hover:text-indigo-800 text-sm flex items-center mb-2"
+                className="text-orange-600 hover:text-orange-800 text-sm flex items-center mb-2"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -258,7 +258,7 @@ export default function NewIOBasedCampaignPage() {
                         whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm
                         ${
                           activeTab === tab.id
-                            ? "border-indigo-500 text-indigo-600"
+                            ? "border-gray-700 text-gray-800"
                             : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                         }
                       `}

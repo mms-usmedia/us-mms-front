@@ -10,9 +10,9 @@ interface CampaignActivityProps {
 const CampaignActivity: React.FC<CampaignActivityProps> = ({ campaign }) => {
   return (
     <div className="bg-white shadow-sm border border-gray-100 rounded-b-xl p-6">
-      <h2 className="text-lg font-medium text-purple-900 mb-6 flex items-center">
+      <h2 className="text-lg font-medium text-orange-600 mb-6 flex items-center">
         <svg
-          className="h-5 w-5 mr-2 text-purple-500"
+          className="h-5 w-5 mr-2 text-orange-500"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
@@ -25,13 +25,13 @@ const CampaignActivity: React.FC<CampaignActivityProps> = ({ campaign }) => {
         </svg>
         Activity History
       </h2>
-      <div className="relative p-4 bg-gradient-to-b from-purple-50 to-white rounded-xl border border-purple-100">
+      <div className="relative p-4 bg-gradient-to-b from-gray-50 to-white rounded-xl border border-gray-200">
         <div className="absolute inset-0 flex items-center" aria-hidden="true">
-          <div className="w-0.5 h-full bg-purple-200 mx-auto"></div>
+          <div className="w-0.5 h-full bg-gray-200 mx-auto"></div>
         </div>
         <div className="relative space-y-8">
           <div className="relative flex items-center group">
-            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center ring-8 ring-white shadow-sm group-hover:shadow-md transition-all">
+            <div className="h-9 w-9 rounded-full bg-orange-600 flex items-center justify-center ring-8 ring-white shadow-sm group-hover:shadow-md transition-all">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-4 w-4 text-white"
@@ -52,7 +52,7 @@ const CampaignActivity: React.FC<CampaignActivityProps> = ({ campaign }) => {
                 Campaign created
               </div>
               <div className="mt-1 text-sm text-gray-500">
-                <span className="font-medium text-purple-600">Admin</span>
+                <span className="font-medium text-gray-700">Admin</span>
                 <span className="mx-2 text-gray-300">•</span>
                 <time className="text-gray-700">
                   {formatDate(campaign.startDate)}
@@ -62,7 +62,7 @@ const CampaignActivity: React.FC<CampaignActivityProps> = ({ campaign }) => {
           </div>
 
           <div className="relative flex items-center group">
-            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center ring-8 ring-white shadow-sm group-hover:shadow-md transition-all">
+            <div className="h-9 w-9 rounded-full bg-orange-600 flex items-center justify-center ring-8 ring-white shadow-sm group-hover:shadow-md transition-all">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-4 w-4 text-white"
@@ -81,12 +81,12 @@ const CampaignActivity: React.FC<CampaignActivityProps> = ({ campaign }) => {
             <div className="ml-6 min-w-0 flex-1 bg-white p-4 rounded-lg shadow-sm border border-gray-100 group-hover:shadow-md transition-all">
               <div className="text-sm font-medium text-gray-900">
                 Status updated to{" "}
-                <span className="font-semibold text-emerald-600">
+                <span className="font-semibold text-gray-700">
                   &quot;{campaign.status}&quot;
                 </span>
               </div>
               <div className="mt-1 text-sm text-gray-500">
-                <span className="font-medium text-purple-600">
+                <span className="font-medium text-gray-700">
                   {campaign.salesperson || "Admin"}
                 </span>
                 <span className="mx-2 text-gray-300">•</span>
@@ -98,7 +98,7 @@ const CampaignActivity: React.FC<CampaignActivityProps> = ({ campaign }) => {
           </div>
 
           <div className="relative flex items-center group">
-            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center ring-8 ring-white shadow-sm group-hover:shadow-md transition-all">
+            <div className="h-9 w-9 rounded-full bg-orange-600 flex items-center justify-center ring-8 ring-white shadow-sm group-hover:shadow-md transition-all">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-4 w-4 text-white"
@@ -119,7 +119,7 @@ const CampaignActivity: React.FC<CampaignActivityProps> = ({ campaign }) => {
                 Campaign details updated
               </div>
               <div className="mt-1 text-sm text-gray-500">
-                <span className="font-medium text-purple-600">
+                <span className="font-medium text-gray-700">
                   {campaign.accountManager || "Account Manager"}
                 </span>
                 <span className="mx-2 text-gray-300">•</span>

@@ -27,7 +27,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
       case "Negotiating":
         return "bg-blue-50 text-blue-700 border-blue-100 shadow-blue-100";
       case "Won":
-        return "bg-indigo-50 text-indigo-700 border-indigo-100 shadow-indigo-100";
+        return "bg-orange-50 text-orange-700 border-orange-100 shadow-orange-100";
       case "Approved":
         return "bg-green-50 text-green-700 border-green-100 shadow-green-100";
       case "Materials & Creatives OK":
@@ -35,7 +35,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
       case "Implementation":
         return "bg-cyan-50 text-cyan-700 border-cyan-100 shadow-cyan-100";
       case "Live":
-        return "bg-violet-50 text-violet-700 border-violet-100 shadow-violet-100";
+        return "bg-orange-50 text-orange-700 border-orange-100 shadow-orange-100";
       case "Closed":
         return "bg-gray-50 text-gray-700 border-gray-100 shadow-gray-100";
       case "HUR":

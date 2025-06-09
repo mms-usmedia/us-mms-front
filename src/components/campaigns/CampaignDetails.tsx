@@ -164,13 +164,13 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
   };
 
   // Colores para el gráfico circular
-  const COLORS = ["#6366F1", "#10B981", "#F59E0B"];
+  const COLORS = ["#F97316", "#FDBA74", "#FFF7ED"];
 
   return (
     <div className="bg-white shadow-sm border border-gray-100 rounded-b-xl p-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900">
+          <h2 className="text-xl font-semibold text-orange-600">
             Campaign Details
           </h2>
         </div>
@@ -201,7 +201,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 <>
                   <button
                     onClick={handleGeneratePIO}
-                    className="px-4 py-2 bg-blue-500 hover:!bg-blue-900 text-white rounded-md text-sm font-medium transition-all duration-200 flex items-center gap-2 shadow-sm active:bg-blue-900"
+                    className="px-4 py-2 bg-orange-400 hover:bg-orange-500 text-white rounded-md text-sm font-medium transition-all duration-200 flex items-center gap-2 shadow-sm active:bg-orange-600"
                     style={{ transition: "background-color 0.3s ease" }}
                   >
                     <FaFilePdf className="h-4 w-4" />
@@ -209,7 +209,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                   </button>
                   <button
                     onClick={handleGenerateCIO}
-                    className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
+                    className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
                   >
                     <FaFilePdf className="h-4 w-4" />
                     Generate CIO
@@ -218,7 +218,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
               )}
               <button
                 onClick={() => setIsEditing(true)}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
+                className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
               >
                 <FaEdit className="h-4 w-4" />
                 Edit Details
@@ -235,7 +235,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
             onClick={() => setActiveTab("info")}
             className={`py-3 px-1 focus:outline-none ${
               activeTab === "info"
-                ? "border-b-2 border-indigo-500 text-indigo-600 font-medium"
+                ? "border-b-2 border-orange-500 text-orange-600 font-medium"
                 : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
             }`}
           >
@@ -245,7 +245,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
             onClick={() => setActiveTab("charts")}
             className={`py-3 px-1 flex items-center gap-2 focus:outline-none ${
               activeTab === "charts"
-                ? "border-b-2 border-indigo-500 text-indigo-600 font-medium"
+                ? "border-b-2 border-orange-500 text-orange-600 font-medium"
                 : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
             }`}
           >
@@ -258,10 +258,10 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
       {activeTab === "info" ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Información de la Campaña */}
-          <div className="bg-gradient-to-br from-white to-indigo-50 shadow-sm border border-indigo-100 rounded-xl p-6">
-            <h2 className="text-lg font-medium text-indigo-900 mb-4 flex items-center">
+          <div className="bg-white shadow-sm border border-gray-200 rounded-xl p-6">
+            <h2 className="text-lg font-medium text-orange-600 mb-4 flex items-center">
               <svg
-                className="h-5 w-5 mr-2 text-indigo-500"
+                className="h-5 w-5 mr-2 text-orange-500"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
@@ -273,17 +273,17 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                   clipRule="evenodd"
                 />
               </svg>
-              Campaign Information
+              <span className="text-orange-600">Campaign Information</span>
             </h2>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-sm font-medium text-indigo-600">
+                <p className="text-sm font-medium text-gray-700">
                   Organization Type
                 </p>
                 {isEditing ? (
                   <div className="relative">
                     <select
-                      className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
+                      className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
                       value={editedCampaign.organizationType}
                       onChange={(e) =>
                         handleChange("organizationType", e.target.value)
@@ -295,7 +295,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     </select>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none mt-1">
                       <svg
-                        className="h-5 w-5 text-indigo-500"
+                        className="h-5 w-5 text-orange-500"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                         fill="currentColor"
@@ -313,13 +313,13 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     <span
                       className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                         campaign.organizationType === "Agency"
-                          ? "bg-amber-100 text-amber-800"
+                          ? "bg-orange-100 text-orange-800"
                           : campaign.organizationType === "Advertiser"
-                          ? "bg-green-100 text-green-800"
+                          ? "bg-orange-50 text-orange-700"
                           : campaign.organizationType === "Publisher"
-                          ? "bg-blue-100 text-blue-800"
+                          ? "bg-orange-200 text-orange-900"
                           : campaign.organizationType === "Holding Agency"
-                          ? "bg-purple-100 text-purple-800"
+                          ? "bg-orange-300 text-orange-900"
                           : "bg-gray-100 text-gray-800"
                       }`}
                     >
@@ -329,10 +329,10 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 )}
               </div>
               <div>
-                <p className="text-sm font-medium text-indigo-600">Customer</p>
+                <p className="text-sm font-medium text-gray-700">Customer</p>
                 {isEditing ? (
                   <div className="relative mt-1">
-                    <div className="flex items-center border-2 border-indigo-100 focus-within:border-indigo-300 rounded bg-white">
+                    <div className="flex items-center border-2 border-orange-100 focus-within:border-orange-300 rounded bg-white">
                       <input
                         type="text"
                         className="text-sm w-full p-2 bg-white rounded text-gray-900 focus:ring-0 border-0 focus:outline-none"
@@ -347,7 +347,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                         {filteredCustomers.map((customer) => (
                           <div
                             key={customer}
-                            className="px-4 py-2 hover:bg-indigo-50 cursor-pointer text-sm"
+                            className="px-4 py-2 hover:bg-orange-50 cursor-pointer text-sm"
                             onClick={() => {
                               handleChange("customer", customer);
                               setCustomerSearch("");
@@ -366,13 +366,13 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 )}
               </div>
               <div>
-                <p className="text-sm font-medium text-indigo-600">
+                <p className="text-sm font-medium text-gray-700">
                   Brand Advertiser
                 </p>
                 {isEditing ? (
                   <input
                     type="text"
-                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                    className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
                     value={editedCampaign.advertiser || ""}
                     onChange={(e) => handleChange("advertiser", e.target.value)}
                     placeholder="Name of the advertiser"
@@ -384,10 +384,10 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 )}
               </div>
               <div>
-                <p className="text-sm font-medium text-indigo-600">Industry</p>
+                <p className="text-sm font-medium text-gray-700">Industry</p>
                 {isEditing ? (
                   <div className="relative mt-1">
-                    <div className="flex items-center border-2 border-indigo-100 focus-within:border-indigo-300 rounded bg-white">
+                    <div className="flex items-center border-2 border-orange-100 focus-within:border-orange-300 rounded bg-white">
                       <input
                         type="text"
                         className="text-sm w-full p-2 bg-white rounded text-gray-900 focus:ring-0 border-0 focus:outline-none"
@@ -402,7 +402,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                         {filteredIndustries.map((industry) => (
                           <div
                             key={industry}
-                            className="px-4 py-2 hover:bg-indigo-50 cursor-pointer text-sm"
+                            className="px-4 py-2 hover:bg-orange-50 cursor-pointer text-sm"
                             onClick={() => {
                               handleChange("industry", industry);
                               setIndustrySearch("");
@@ -421,45 +421,43 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 )}
               </div>
               <div>
-                <p className="text-sm font-medium text-indigo-600">
-                  Start Date
-                </p>
+                <p className="text-sm font-medium text-gray-700">Start Date</p>
                 {isEditing ? (
                   <input
                     type="date"
-                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 text-gray-900 bg-white transition-colors focus:ring-0"
+                    className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 text-gray-900 bg-white transition-colors focus:ring-0"
                     value={editedCampaign.startDate}
                     onChange={(e) => handleChange("startDate", e.target.value)}
                   />
                 ) : (
-                  <p className="mt-1 text-sm text-gray-900 bg-blue-50 border border-blue-100 rounded-md px-2 py-1 inline-block">
+                  <p className="mt-1 text-sm text-gray-900 bg-orange-50 border border-orange-100 rounded-md px-2 py-1 inline-block">
                     {formatDate(campaign.startDate)}
                   </p>
                 )}
               </div>
               <div>
-                <p className="text-sm font-medium text-indigo-600">End Date</p>
+                <p className="text-sm font-medium text-gray-700">End Date</p>
                 {isEditing ? (
                   <input
                     type="date"
-                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 text-gray-900 bg-white transition-colors focus:ring-0"
+                    className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 text-gray-900 bg-white transition-colors focus:ring-0"
                     value={editedCampaign.endDate}
                     onChange={(e) => handleChange("endDate", e.target.value)}
                   />
                 ) : (
-                  <p className="mt-1 text-sm text-gray-900 bg-blue-50 border border-blue-100 rounded-md px-2 py-1 inline-block">
+                  <p className="mt-1 text-sm text-gray-900 bg-orange-50 border border-orange-100 rounded-md px-2 py-1 inline-block">
                     {formatDate(campaign.endDate)}
                   </p>
                 )}
               </div>
               <div>
-                <p className="text-sm font-medium text-indigo-600">
+                <p className="text-sm font-medium text-gray-700">
                   Customer Billing Party
                 </p>
                 {isEditing ? (
                   <input
                     type="text"
-                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                    className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
                     value={editedCampaign.customerBillingParty || ""}
                     onChange={(e) =>
                       handleChange("customerBillingParty", e.target.value)
@@ -473,12 +471,12 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 )}
               </div>
               <div>
-                <p className="text-sm font-medium text-indigo-600">
+                <p className="text-sm font-medium text-gray-700">
                   US Media Billing Party
                 </p>
                 {isEditing ? (
                   <div className="relative mt-1">
-                    <div className="flex items-center border-2 border-indigo-100 focus-within:border-indigo-300 rounded bg-white">
+                    <div className="flex items-center border-2 border-orange-100 focus-within:border-orange-300 rounded bg-white">
                       <input
                         type="text"
                         className="text-sm w-full p-2 bg-white rounded text-gray-900 focus:ring-0 border-0 focus:outline-none"
@@ -493,7 +491,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                         {filteredBillingParties.map((party) => (
                           <div
                             key={party}
-                            className="px-4 py-2 hover:bg-indigo-50 cursor-pointer text-sm"
+                            className="px-4 py-2 hover:bg-orange-50 cursor-pointer text-sm"
                             onClick={() => {
                               handleChange("billingParty", party);
                               setBillingPartySearch("");
@@ -512,13 +510,13 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 )}
               </div>
               <div>
-                <p className="text-sm font-medium text-indigo-600">
+                <p className="text-sm font-medium text-gray-700">
                   Billing Contact
                 </p>
                 {isEditing ? (
                   <input
                     type="text"
-                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                    className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
                     value={editedCampaign.billingContact || ""}
                     onChange={(e) =>
                       handleChange("billingContact", e.target.value)
@@ -532,13 +530,13 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 )}
               </div>
               <div>
-                <p className="text-sm font-medium text-indigo-600">
+                <p className="text-sm font-medium text-gray-700">
                   Agency Contact
                 </p>
                 {isEditing ? (
                   <input
                     type="text"
-                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                    className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
                     value={editedCampaign.agencyContact || ""}
                     onChange={(e) =>
                       handleChange("agencyContact", e.target.value)
@@ -553,11 +551,11 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
               </div>
               {campaign.organizationType !== "Publisher" && (
                 <div>
-                  <p className="text-sm font-medium text-indigo-600">Market</p>
+                  <p className="text-sm font-medium text-gray-700">Market</p>
                   {isEditing ? (
                     <div className="relative mt-1">
                       <select
-                        className="text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
+                        className="text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
                         value={editedCampaign.targetMarket || ""}
                         onChange={(e) =>
                           handleChange("targetMarket", e.target.value)
@@ -572,7 +570,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                       </select>
                       <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                         <svg
-                          className="h-5 w-5 text-indigo-500"
+                          className="h-5 w-5 text-orange-500"
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
                           fill="currentColor"
@@ -593,11 +591,11 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 </div>
               )}
               <div>
-                <p className="text-sm font-medium text-indigo-600">CIO Owner</p>
+                <p className="text-sm font-medium text-gray-700">CIO Owner</p>
                 {isEditing ? (
                   <div className="relative">
                     <select
-                      className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
+                      className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
                       value={editedCampaign.cioOwner || ""}
                       onChange={(e) => handleChange("cioOwner", e.target.value)}
                     >
@@ -607,7 +605,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     </select>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none mt-1">
                       <svg
-                        className="h-5 w-5 text-indigo-500"
+                        className="h-5 w-5 text-orange-500"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                         fill="currentColor"
@@ -625,9 +623,9 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     <span
                       className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                         campaign.cioOwner === "Customer"
-                          ? "bg-purple-100 text-purple-800"
+                          ? "bg-orange-100 text-orange-800"
                           : campaign.cioOwner === "USMC"
-                          ? "bg-blue-100 text-blue-800"
+                          ? "bg-orange-200 text-orange-900"
                           : "bg-gray-100 text-gray-800"
                       }`}
                     >
@@ -638,13 +636,13 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
               </div>
               {campaign.organizationType === "Publisher" && (
                 <div>
-                  <p className="text-sm font-medium text-indigo-600">
+                  <p className="text-sm font-medium text-gray-700">
                     Organization Publisher
                   </p>
                   {isEditing ? (
                     <input
                       type="text"
-                      className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                      className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
                       value={editedCampaign.organizationPublisher || ""}
                       onChange={(e) =>
                         handleChange("organizationPublisher", e.target.value)
@@ -662,11 +660,11 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
           </div>
 
           {/* Resumen Financiero */}
-          <div className="bg-gradient-to-br from-white to-emerald-50 shadow-sm border border-emerald-100 rounded-xl p-6">
+          <div className="bg-white shadow-sm border border-gray-200 rounded-xl p-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-medium text-emerald-900 flex items-center">
+              <h2 className="text-lg font-medium text-orange-600 flex items-center">
                 <svg
-                  className="h-5 w-5 mr-2 text-emerald-500"
+                  className="h-5 w-5 mr-2 text-orange-500"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -677,29 +675,25 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     clipRule="evenodd"
                   />
                 </svg>
-                Campaign Summary
+                <span className="text-orange-600">Campaign Summary</span>
               </h2>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-sm font-medium text-emerald-600">
-                  Investment
-                </p>
+                <p className="text-sm font-medium text-gray-700">Investment</p>
                 <p className="mt-1 text-base text-gray-900 font-semibold">
                   {formatCurrency(campaign.budget)}
                 </p>
               </div>
               <div>
-                <p className="text-sm font-medium text-emerald-600">
-                  Total Units
-                </p>
+                <p className="text-sm font-medium text-gray-700">Total Units</p>
                 <p className="mt-1 text-base text-gray-900 font-semibold">
                   {formatNumber(campaign.units)}
                 </p>
               </div>
               <div>
-                <p className="text-sm font-medium text-emerald-600">
+                <p className="text-sm font-medium text-gray-700">
                   % Gross Margin
                 </p>
                 <p className="mt-1 text-base text-gray-900">
@@ -707,7 +701,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 </p>
               </div>
               <div>
-                <p className="text-sm font-medium text-emerald-600">
+                <p className="text-sm font-medium text-gray-700">
                   $ Gross Margin
                 </p>
                 <p className="mt-1 text-base text-gray-900 font-semibold">
@@ -717,7 +711,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 </p>
               </div>
               <div>
-                <p className="text-sm font-medium text-emerald-600">
+                <p className="text-sm font-medium text-gray-700">
                   Payment Terms
                 </p>
                 <p className="mt-1 text-base text-gray-900 font-semibold">
@@ -725,7 +719,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 </p>
               </div>
               <div>
-                <p className="text-sm font-medium text-emerald-600">
+                <p className="text-sm font-medium text-gray-700">
                   Campaign Duration
                 </p>
                 <p className="mt-1 text-base text-gray-900 font-semibold">
@@ -741,27 +735,25 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
           </div>
 
           {/* Contactos */}
-          <div className="bg-gradient-to-br from-white to-violet-50 shadow-sm border border-violet-100 rounded-xl p-6">
-            <h2 className="text-lg font-medium text-violet-900 mb-4 flex items-center">
+          <div className="bg-white shadow-sm border border-gray-200 rounded-xl p-6">
+            <h2 className="text-lg font-medium text-orange-600 mb-4 flex items-center">
               <svg
-                className="h-5 w-5 mr-2 text-violet-500"
+                className="h-5 w-5 mr-2 text-orange-500"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
                 <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
               </svg>
-              US Media Contacts
+              <span className="text-orange-600">US Media Contacts</span>
             </h2>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-sm font-medium text-violet-600">
-                  Salesperson
-                </p>
+                <p className="text-sm font-medium text-gray-700">Salesperson</p>
                 {isEditing ? (
                   <div className="relative">
                     <select
-                      className="mt-1 text-sm w-full border-2 border-violet-100 focus:border-violet-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
+                      className="mt-1 text-sm w-full border-2 border-gray-200 focus:border-gray-400 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
                       value={editedCampaign.salesperson || ""}
                       onChange={(e) =>
                         handleChange("salesperson", e.target.value)
@@ -778,7 +770,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     </select>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none mt-1">
                       <svg
-                        className="h-5 w-5 text-violet-500"
+                        className="h-5 w-5 text-gray-500"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                         fill="currentColor"
@@ -792,19 +784,17 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     </div>
                   </div>
                 ) : (
-                  <p className="mt-1 text-sm text-gray-900 font-medium bg-violet-50 px-2 py-1 rounded-md inline-block border border-violet-100">
+                  <p className="mt-1 text-sm text-gray-900 font-medium bg-orange-50 px-2 py-1 rounded-md inline-block border border-orange-100">
                     {campaign.salesperson || "-"}
                   </p>
                 )}
               </div>
               <div>
-                <p className="text-sm font-medium text-violet-600">
-                  Trafficker
-                </p>
+                <p className="text-sm font-medium text-gray-700">Trafficker</p>
                 {isEditing ? (
                   <div className="relative">
                     <select
-                      className="mt-1 text-sm w-full border-2 border-violet-100 focus:border-violet-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
+                      className="mt-1 text-sm w-full border-2 border-gray-200 focus:border-gray-400 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
                       value={editedCampaign.trafficker || ""}
                       onChange={(e) =>
                         handleChange("trafficker", e.target.value)
@@ -819,7 +809,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     </select>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none mt-1">
                       <svg
-                        className="h-5 w-5 text-violet-500"
+                        className="h-5 w-5 text-gray-500"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                         fill="currentColor"
@@ -833,19 +823,19 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     </div>
                   </div>
                 ) : (
-                  <p className="mt-1 text-sm text-gray-900 font-medium bg-violet-50 px-2 py-1 rounded-md inline-block border border-violet-100">
+                  <p className="mt-1 text-sm text-gray-900 font-medium bg-orange-50 px-2 py-1 rounded-md inline-block border border-orange-100">
                     {campaign.trafficker || "-"}
                   </p>
                 )}
               </div>
               <div>
-                <p className="text-sm font-medium text-violet-600">
+                <p className="text-sm font-medium text-gray-700">
                   Account Manager
                 </p>
                 {isEditing ? (
                   <div className="relative">
                     <select
-                      className="mt-1 text-sm w-full border-2 border-violet-100 focus:border-violet-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
+                      className="mt-1 text-sm w-full border-2 border-gray-200 focus:border-gray-400 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
                       value={editedCampaign.accountManager || ""}
                       onChange={(e) =>
                         handleChange("accountManager", e.target.value)
@@ -860,7 +850,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     </select>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none mt-1">
                       <svg
-                        className="h-5 w-5 text-violet-500"
+                        className="h-5 w-5 text-gray-500"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                         fill="currentColor"
@@ -874,19 +864,19 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     </div>
                   </div>
                 ) : (
-                  <p className="mt-1 text-sm text-gray-900 font-medium bg-violet-50 px-2 py-1 rounded-md inline-block border border-violet-100">
+                  <p className="mt-1 text-sm text-gray-900 font-medium bg-orange-50 px-2 py-1 rounded-md inline-block border border-orange-100">
                     {campaign.accountManager || "-"}
                   </p>
                 )}
               </div>
               <div>
-                <p className="text-sm font-medium text-violet-600">
+                <p className="text-sm font-medium text-gray-700">
                   AdOps Leader
                 </p>
                 {isEditing ? (
                   <div className="relative">
                     <select
-                      className="mt-1 text-sm w-full border-2 border-violet-100 focus:border-violet-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
+                      className="mt-1 text-sm w-full border-2 border-gray-200 focus:border-gray-400 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
                       value={editedCampaign.adOpsLeader || ""}
                       onChange={(e) =>
                         handleChange("adOpsLeader", e.target.value)
@@ -901,7 +891,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     </select>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none mt-1">
                       <svg
-                        className="h-5 w-5 text-violet-500"
+                        className="h-5 w-5 text-gray-500"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                         fill="currentColor"
@@ -915,7 +905,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     </div>
                   </div>
                 ) : (
-                  <p className="mt-1 text-sm text-gray-900 font-medium bg-violet-50 px-2 py-1 rounded-md inline-block border border-violet-100">
+                  <p className="mt-1 text-sm text-gray-900 font-medium bg-orange-50 px-2 py-1 rounded-md inline-block border border-orange-100">
                     {campaign.adOpsLeader || "-"}
                   </p>
                 )}
@@ -924,10 +914,10 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
           </div>
 
           {/* Notas */}
-          <div className="bg-gradient-to-br from-white to-amber-50 shadow-sm border border-amber-100 rounded-xl p-6">
-            <h2 className="text-lg font-medium text-amber-900 mb-4 flex items-center">
+          <div className="bg-white shadow-sm border border-gray-200 rounded-xl p-6">
+            <h2 className="text-lg font-medium text-orange-600 mb-4 flex items-center">
               <svg
-                className="h-5 w-5 mr-2 text-amber-500"
+                className="h-5 w-5 mr-2 text-orange-500"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
@@ -938,13 +928,13 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                   clipRule="evenodd"
                 />
               </svg>
-              Notes
+              <span className="text-orange-600">Notes</span>
             </h2>
             <div className="space-y-4">
               <div>
-                <p className="text-sm font-medium text-amber-600 flex items-center">
+                <p className="text-sm font-medium text-gray-700 flex items-center">
                   <svg
-                    className="h-4 w-4 mr-1 text-amber-500"
+                    className="h-4 w-4 mr-1 text-orange-500"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                     fill="currentColor"
@@ -959,7 +949,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 </p>
                 {isEditing ? (
                   <textarea
-                    className="mt-1 text-sm w-full p-3 border-2 border-amber-100 focus:border-amber-300 rounded bg-white min-h-[100px] text-gray-900 focus:ring-0 transition-colors"
+                    className="mt-1 text-sm w-full p-3 border-2 border-gray-200 focus:border-gray-400 rounded bg-white min-h-[100px] text-gray-900 focus:ring-0 transition-colors"
                     value={editedCampaign.internalNotes || ""}
                     onChange={(e) =>
                       handleChange("internalNotes", e.target.value)
@@ -967,15 +957,15 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     placeholder="Add internal notes..."
                   />
                 ) : (
-                  <div className="mt-1 text-sm text-gray-900 p-3 border border-amber-100 rounded bg-white min-h-[100px] shadow-inner">
+                  <div className="mt-1 text-sm text-gray-900 p-3 border border-orange-100 rounded bg-orange-50 min-h-[100px] shadow-inner">
                     {campaign.internalNotes || "No internal notes"}
                   </div>
                 )}
               </div>
               <div>
-                <p className="text-sm font-medium text-amber-600 flex items-center">
+                <p className="text-sm font-medium text-gray-700 flex items-center">
                   <svg
-                    className="h-4 w-4 mr-1 text-amber-500"
+                    className="h-4 w-4 mr-1 text-orange-500"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                     fill="currentColor"
@@ -986,13 +976,13 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 </p>
                 {isEditing ? (
                   <textarea
-                    className="mt-1 text-sm w-full p-3 border-2 border-amber-100 focus:border-amber-300 rounded bg-white min-h-[100px] text-gray-900 focus:ring-0 transition-colors"
+                    className="mt-1 text-sm w-full p-3 border-2 border-gray-200 focus:border-gray-400 rounded bg-white min-h-[100px] text-gray-900 focus:ring-0 transition-colors"
                     value={editedCampaign.notes || ""}
                     onChange={(e) => handleChange("notes", e.target.value)}
                     placeholder="Add customer notes..."
                   />
                 ) : (
-                  <div className="mt-1 text-sm text-gray-900 p-3 border border-amber-100 rounded bg-white min-h-[100px] shadow-inner">
+                  <div className="mt-1 text-sm text-gray-900 p-3 border border-orange-100 rounded bg-orange-50 min-h-[100px] shadow-inner">
                     {campaign.notes || "No customer notes"}
                   </div>
                 )}
@@ -1005,9 +995,9 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Gráfico circular de distribución de inversión */}
           <div className="bg-white shadow-sm border border-gray-100 rounded-xl p-6">
-            <h2 className="text-lg font-medium text-gray-900 mb-5 flex items-center">
-              <FaChartPie className="h-5 w-5 mr-2 text-indigo-500" />
-              Investment Distribution
+            <h2 className="text-lg font-medium text-orange-600 mb-5 flex items-center">
+              <FaChartPie className="h-5 w-5 mr-2 text-orange-500" />
+              <span className="text-orange-600">Investment Distribution</span>
             </h2>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
@@ -1053,23 +1043,23 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
 
           {/* Tarjetas KPI */}
           <div className="bg-white shadow-sm border border-gray-100 rounded-xl p-6">
-            <h2 className="text-lg font-medium text-gray-900 mb-5 flex items-center">
+            <h2 className="text-lg font-medium text-orange-600 mb-5 flex items-center">
               <svg
-                className="h-5 w-5 mr-2 text-indigo-500"
+                className="h-5 w-5 mr-2 text-orange-500"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
                 <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
               </svg>
-              Campaign Info
+              <span className="text-orange-600">Campaign Info</span>
             </h2>
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-indigo-50 rounded-lg p-4 border border-indigo-100">
-                <p className="text-xs font-medium text-indigo-500 uppercase">
+              <div className="bg-orange-50 rounded-lg p-4 border border-orange-100">
+                <p className="text-xs font-medium text-gray-700 uppercase">
                   Total Investment
                 </p>
-                <p className="text-2xl font-bold text-indigo-700 mt-1">
+                <p className="text-2xl font-bold text-gray-800 mt-1">
                   {formatCurrency(campaign.budget)}
                 </p>
                 <div className="flex items-center mt-2">
@@ -1080,11 +1070,11 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 </div>
               </div>
 
-              <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-100">
-                <p className="text-xs font-medium text-emerald-500 uppercase">
+              <div className="bg-orange-50 rounded-lg p-4 border border-orange-100">
+                <p className="text-xs font-medium text-gray-700 uppercase">
                   Total Units
                 </p>
-                <p className="text-2xl font-bold text-emerald-700 mt-1">
+                <p className="text-2xl font-bold text-gray-800 mt-1">
                   {formatNumber(campaign.units)}
                 </p>
                 <div className="flex items-center mt-2">
@@ -1095,11 +1085,11 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 </div>
               </div>
 
-              <div className="bg-violet-50 rounded-lg p-4 border border-violet-100">
-                <p className="text-xs font-medium text-violet-500 uppercase">
+              <div className="bg-orange-50 rounded-lg p-4 border border-orange-100">
+                <p className="text-xs font-medium text-gray-700 uppercase">
                   CPM
                 </p>
-                <p className="text-2xl font-bold text-violet-700 mt-1">
+                <p className="text-2xl font-bold text-gray-800 mt-1">
                   ${((campaign.budget / campaign.units) * 1000).toFixed(2)}
                 </p>
                 <div className="flex items-center mt-2">
@@ -1110,11 +1100,11 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 </div>
               </div>
 
-              <div className="bg-amber-50 rounded-lg p-4 border border-amber-100">
-                <p className="text-xs font-medium text-amber-500 uppercase">
+              <div className="bg-orange-50 rounded-lg p-4 border border-orange-100">
+                <p className="text-xs font-medium text-gray-700 uppercase">
                   Gross Margin
                 </p>
-                <p className="text-2xl font-bold text-amber-700 mt-1">
+                <p className="text-2xl font-bold text-gray-800 mt-1">
                   {campaign.grossMargin}%
                 </p>
                 <div className="flex items-center mt-2">

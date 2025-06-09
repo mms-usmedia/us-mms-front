@@ -339,10 +339,10 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
 
   return (
     <div className="bg-white shadow-lg border border-gray-200 rounded-xl overflow-hidden">
-      <div className="p-5 border-b border-gray-200 bg-gradient-to-r from-indigo-600 to-blue-500 flex justify-between items-center">
-        <h2 className="text-xl font-semibold text-white flex items-center">
+      <div className="p-5 border-b border-gray-200 bg-white flex justify-between items-center">
+        <h2 className="text-xl font-semibold text-orange-600 flex items-center">
           <svg
-            className="h-6 w-6 mr-2"
+            className="h-6 w-6 mr-2 text-orange-500"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
@@ -357,14 +357,14 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
           <button
             type="button"
             onClick={onCancel}
-            className="px-3 py-1 border border-white rounded-md text-sm font-medium text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 transition-colors"
+            className="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-colors"
           >
             Cancel
           </button>
           <button
             type="button"
             onClick={(e) => handleSubmit((e as unknown) as React.FormEvent)}
-            className="px-3 py-1 border border-white bg-white rounded-md text-sm font-medium text-indigo-600 hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-white/50 transition-colors"
+            className="px-3 py-1 border border-orange-500 bg-orange-500 rounded-md text-sm font-medium text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-colors"
           >
             {isEditing ? "Save Changes" : "Create"}
           </button>
@@ -375,14 +375,14 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       <div className="bg-gray-50 border-b border-gray-200 px-5 py-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center">
-            <div className="h-8 w-8 rounded-full bg-indigo-600 text-white font-medium flex items-center justify-center">
+            <div className="h-8 w-8 rounded-full bg-orange-500 text-white font-medium flex items-center justify-center shadow-sm">
               1
             </div>
-            <span className="ml-2 text-sm font-medium text-gray-700">
+            <span className="ml-2 text-sm font-medium text-orange-600">
               General Information
             </span>
             <svg
-              className="h-5 w-5 text-gray-400 mx-2"
+              className="h-5 w-5 text-orange-400 mx-2"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
@@ -396,14 +396,14 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
           </div>
 
           <div className="flex items-center">
-            <div className="h-8 w-8 rounded-full bg-blue-600 text-white font-medium flex items-center justify-center">
+            <div className="h-8 w-8 rounded-full bg-orange-400 text-white font-medium flex items-center justify-center shadow-sm">
               2
             </div>
-            <span className="ml-2 text-sm font-medium text-gray-700">
+            <span className="ml-2 text-sm font-medium text-orange-600">
               Configure Product
             </span>
             <svg
-              className="h-5 w-5 text-gray-400 mx-2"
+              className="h-5 w-5 text-orange-400 mx-2"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
@@ -417,14 +417,14 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
           </div>
 
           <div className="flex items-center">
-            <div className="h-8 w-8 rounded-full bg-emerald-600 text-white font-medium flex items-center justify-center">
+            <div className="h-8 w-8 rounded-full bg-orange-300 text-white font-medium flex items-center justify-center shadow-sm">
               3
             </div>
-            <span className="ml-2 text-sm font-medium text-gray-700">
+            <span className="ml-2 text-sm font-medium text-orange-600">
               Financial Data
             </span>
             <svg
-              className="h-5 w-5 text-gray-400 mx-2"
+              className="h-5 w-5 text-orange-400 mx-2"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
@@ -438,10 +438,10 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
           </div>
 
           <div className="flex items-center">
-            <div className="h-8 w-8 rounded-full bg-amber-600 text-white font-medium flex items-center justify-center">
+            <div className="h-8 w-8 rounded-full bg-orange-200 text-orange-700 font-medium flex items-center justify-center shadow-sm">
               4
             </div>
-            <span className="ml-2 text-sm font-medium text-gray-700">
+            <span className="ml-2 text-sm font-medium text-orange-600">
               Additional Notes
             </span>
           </div>
@@ -451,44 +451,44 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       <form onSubmit={handleSubmit} className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Sección de información principal */}
-          <div className="bg-gradient-to-br from-white to-indigo-50 shadow-sm border border-indigo-100 rounded-xl p-5 md:col-span-1">
-            <h3 className="text-lg font-medium text-indigo-900 mb-4 flex items-center">
+          <div className="bg-white shadow-sm border border-gray-200 rounded-xl p-5 md:col-span-1">
+            <h3 className="text-lg font-medium text-orange-600 mb-4 flex items-center">
               <svg
-                className="h-6 w-6 mr-2 text-indigo-500"
+                className="h-6 w-6 mr-2 text-orange-500"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
                 <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
               </svg>
-              <span className="text-indigo-900">General Information</span>
+              <span className="text-orange-600">General Information</span>
             </h3>
 
             <div className="space-y-4">
-              <div className="bg-white rounded-lg border-2 border-indigo-200 p-4 shadow-sm">
-                <h4 className="text-indigo-800 font-semibold mb-3 flex items-center">
-                  <div className="h-6 w-6 rounded-full bg-indigo-600 text-white font-medium flex items-center justify-center text-xs mr-2">
+              <div className="bg-white rounded-lg border-2 border-gray-200 p-4 shadow-sm">
+                <h4 className="text-orange-700 font-semibold mb-3 flex items-center">
+                  <div className="h-6 w-6 rounded-full bg-orange-700 text-white font-medium flex items-center justify-center text-xs mr-2">
                     1
                   </div>
                   Campaign and Publisher Information
                 </h4>
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-medium text-indigo-600 mb-1">
+                    <label className="block text-sm font-medium text-gray-600 mb-1">
                       Line
                     </label>
-                    <div className="mt-1 block w-full border-2 border-indigo-100 rounded-md p-2 bg-gray-50 text-gray-700">
+                    <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-700">
                       {formData.line}{" "}
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-indigo-600 mb-1">
+                    <label className="block text-sm font-medium text-gray-600 mb-1">
                       Start Date
                     </label>
                     <input
                       type="date"
-                      className="mt-1 block w-full border-2 border-indigo-100 focus:border-indigo-300 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors"
+                      className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors"
                       value={formData.startDate}
                       onChange={(e) =>
                         handleChange("startDate", e.target.value)
@@ -497,41 +497,41 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-indigo-600 mb-1">
+                    <label className="block text-sm font-medium text-gray-600 mb-1">
                       End Date
                     </label>
                     <input
                       type="date"
-                      className="mt-1 block w-full border-2 border-indigo-100 focus:border-indigo-300 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors"
+                      className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors"
                       value={formData.endDate}
                       onChange={(e) => handleChange("endDate", e.target.value)}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-indigo-600 mb-1">
+                    <label className="block text-sm font-medium text-gray-600 mb-1">
                       Publisher
                     </label>
                     <div className="relative">
                       <input
                         type="text"
-                        className="mt-1 block w-full border-2 border-indigo-100 focus:border-indigo-300 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors"
+                        className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         placeholder="Search publishers..."
                         onFocus={() => setShowPublisherDropdown(true)}
                       />
                       {selectedPublisher && (
-                        <div className="mt-2 p-2 border border-indigo-100 rounded-md bg-indigo-50 flex items-center">
+                        <div className="mt-2 p-2 border border-gray-200 rounded-md bg-gray-50 flex items-center">
                           <div className="flex-1">
-                            <p className="font-medium text-indigo-800">
+                            <p className="font-medium text-gray-800">
                               {selectedPublisher.name}
                             </p>
-                            <p className="text-xs text-indigo-600">
+                            <p className="text-xs text-gray-600">
                               {selectedPublisher.website}
                             </p>
                           </div>
-                          <span className="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs font-medium rounded-md">
+                          <span className="px-2 py-1 bg-gray-200 text-gray-800 text-xs font-medium rounded-md">
                             Selected
                           </span>
                         </div>
@@ -542,7 +542,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                             filteredPublishers.map((publisher) => (
                               <div
                                 key={publisher.id}
-                                className="px-4 py-2 hover:bg-indigo-50 cursor-pointer"
+                                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                                 onClick={() => selectPublisher(publisher)}
                               >
                                 <div className="font-medium">
@@ -568,10 +568,10 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
           </div>
 
           {/* Sección de Producto */}
-          <div className="bg-gradient-to-br from-white to-blue-50 shadow-sm border border-blue-100 rounded-xl p-5 md:col-span-2">
-            <h3 className="text-lg font-medium text-blue-900 mb-4 flex items-center">
+          <div className="bg-white shadow-sm border border-gray-200 rounded-xl p-5 md:col-span-2">
+            <h3 className="text-lg font-medium text-orange-600 mb-4 flex items-center">
               <svg
-                className="h-6 w-6 mr-2 text-blue-500"
+                className="h-6 w-6 mr-2 text-orange-500"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
@@ -583,31 +583,31 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                 />
                 <path d="M9 11H3v5a2 2 0 002 2h4v-7zm2 7h4a2 2 0 002-2v-5h-6v7z" />
               </svg>
-              <span className="text-blue-900">Product Information</span>
-              <span className="ml-2 px-2 py-1 bg-blue-500 text-white text-xs rounded-full">
+              <span className="text-orange-600">Product Information</span>
+              <span className="ml-2 px-2 py-1 bg-orange-600 text-white text-xs rounded-full">
                 Important
               </span>
             </h3>
 
-            <div className="bg-white rounded-lg border-2 border-blue-200 p-4 shadow-sm">
-              <h4 className="text-blue-800 font-medium mb-4 flex items-center">
-                <div className="h-6 w-6 rounded-full bg-blue-600 text-white font-medium flex items-center justify-center text-xs mr-2">
+            <div className="bg-white rounded-lg border-2 border-gray-200 p-4 shadow-sm">
+              <h4 className="text-orange-700 font-medium mb-4 flex items-center">
+                <div className="h-6 w-6 rounded-full bg-orange-400 text-white font-medium flex items-center justify-center text-xs mr-2 shadow-sm">
                   2
                 </div>
-                <span className="text-blue-800 font-semibold">
+                <span className="text-orange-700 font-semibold">
                   Configure Product
                 </span>
               </h4>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-blue-600 mb-1">
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
                     Market
                   </label>
                   <select
                     className={`mt-1 block w-full border-2 ${
                       fieldsEnabled.market
-                        ? "border-blue-100 focus:border-blue-300 bg-white"
+                        ? "border-gray-200 focus:border-gray-400 bg-white"
                         : "border-gray-200 bg-gray-100 cursor-not-allowed"
                     } rounded-md p-2 text-gray-900 focus:ring-0 transition-colors`}
                     value={formData.market}
@@ -624,13 +624,13 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-blue-600 mb-1">
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
                     Channels
                   </label>
                   <select
                     className={`mt-1 block w-full border-2 ${
                       fieldsEnabled.channel
-                        ? "border-blue-100 focus:border-blue-300 bg-white"
+                        ? "border-gray-200 focus:border-gray-400 bg-white"
                         : "border-gray-200 bg-gray-100 cursor-not-allowed"
                     } rounded-md p-2 text-gray-900 focus:ring-0 transition-colors`}
                     value={formData.channel}
@@ -647,13 +647,13 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-blue-600 mb-1">
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
                     Format
                   </label>
                   <select
                     className={`mt-1 block w-full border-2 ${
                       fieldsEnabled.format
-                        ? "border-blue-100 focus:border-blue-300 bg-white"
+                        ? "border-gray-200 focus:border-gray-400 bg-white"
                         : "border-gray-200 bg-gray-100 cursor-not-allowed"
                     } rounded-md p-2 text-gray-900 focus:ring-0 transition-colors`}
                     value={formData.format}
@@ -670,13 +670,13 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-blue-600 mb-1">
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
                     Model
                   </label>
                   <select
                     className={`mt-1 block w-full border-2 ${
                       fieldsEnabled.model
-                        ? "border-blue-100 focus:border-blue-300 bg-white"
+                        ? "border-gray-200 focus:border-gray-400 bg-white"
                         : "border-gray-200 bg-gray-100 cursor-not-allowed"
                     } rounded-md p-2 text-gray-900 focus:ring-0 transition-colors`}
                     value={formData.model}
@@ -692,13 +692,13 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-blue-600 mb-1">
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
                     Size
                   </label>
                   <select
                     className={`mt-1 block w-full border-2 ${
                       fieldsEnabled.size
-                        ? "border-blue-100 focus:border-blue-300 bg-white"
+                        ? "border-gray-200 focus:border-gray-400 bg-white"
                         : "border-gray-200 bg-gray-100 cursor-not-allowed"
                     } rounded-md p-2 text-gray-900 focus:ring-0 transition-colors`}
                     value={formData.size}
@@ -715,7 +715,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                 </div>
 
                 <div className="col-span-2">
-                  <label className="block text-sm font-medium text-blue-600 mb-1">
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
                     Creative
                   </label>
                   <div className="mt-1 flex items-center">
@@ -727,7 +727,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                     />
                     <label
                       htmlFor="creative-file"
-                      className="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-md cursor-pointer text-sm font-medium transition-colors"
+                      className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md cursor-pointer text-sm font-medium transition-colors"
                     >
                       Choose File
                     </label>
@@ -757,10 +757,10 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
           </div>
 
           {/* Sección de Financiera */}
-          <div className="bg-gradient-to-br from-white to-emerald-50 shadow-sm border border-emerald-100 rounded-xl p-5 md:col-span-3">
-            <h3 className="text-lg font-medium text-emerald-900 mb-4 flex items-center">
+          <div className="bg-white shadow-sm border border-gray-200 rounded-xl p-5 md:col-span-3">
+            <h3 className="text-lg font-medium text-orange-600 mb-4 flex items-center">
               <svg
-                className="h-6 w-6 mr-2 text-emerald-500"
+                className="h-6 w-6 mr-2 text-orange-500"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
@@ -771,33 +771,33 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="text-emerald-900">Financial Information</span>
-              <div className="h-6 w-6 rounded-full bg-emerald-600 text-white font-medium flex items-center justify-center text-xs ml-2">
+              <span className="text-orange-600">Financial Information</span>
+              <div className="h-6 w-6 rounded-full bg-orange-300 text-white font-medium flex items-center justify-center text-xs ml-2 shadow-sm">
                 3
               </div>
             </h3>
 
             <div className="grid grid-cols-1 gap-6">
               {/* Nuevo diseño de la sección financiera */}
-              <div className="bg-white shadow-md rounded-xl overflow-hidden border border-emerald-100">
+              <div className="bg-white shadow-md rounded-xl overflow-hidden border border-gray-200">
                 {/* Encabezado con explicación */}
 
                 {/* Contenido en tres columnas */}
                 <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* COLUMNA 1: Datos principales que el usuario debe ingresar */}
-                  <div className="space-y-4 border-r border-emerald-100 pr-4">
-                    <h5 className="font-medium text-emerald-900 pb-2 border-b border-emerald-100 flex items-center">
-                      <span className="inline-block w-5 h-5 bg-white border-2 border-emerald-300 rounded-full mr-2"></span>
+                  <div className="space-y-4 border-r border-gray-200 pr-4">
+                    <h5 className="font-medium text-orange-600 pb-2 border-b border-gray-200 flex items-center">
+                      <span className="inline-block w-5 h-5 bg-white border-2 border-orange-500 rounded-full mr-2"></span>
                       Data to Complete
                     </h5>
 
                     <div>
-                      <label className="block text-sm font-medium text-emerald-600 mb-1">
+                      <label className="block text-sm font-medium text-gray-600 mb-1">
                         Units
                       </label>
                       <input
                         type="number"
-                        className="mt-1 block w-full border-2 border-emerald-200 focus:border-emerald-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors font-medium"
+                        className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors font-medium"
                         value={formData.units}
                         onChange={(e) =>
                           handleChange("units", Number(e.target.value))
@@ -806,14 +806,14 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-emerald-600 mb-1">
+                      <label className="block text-sm font-medium text-gray-600 mb-1">
                         Publisher Open Rate
                       </label>
                       <div className="flex items-center">
                         <span className="text-gray-500 font-medium mr-2">
                           $
                         </span>
-                        <div className="flex-1 block border-2 border-emerald-100 rounded-md p-2 bg-emerald-50 text-gray-900 font-medium">
+                        <div className="flex-1 block border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
                           {formData.publisherOpenRate
                             ? formData.publisherOpenRate.toFixed(2)
                             : "0.00"}
@@ -829,17 +829,17 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                         className="absolute inset-0 flex items-center"
                         aria-hidden="true"
                       >
-                        <div className="w-full border-t border-emerald-200"></div>
+                        <div className="w-full border-t border-gray-200"></div>
                       </div>
                       <div className="relative flex justify-center">
-                        <span className="px-2 bg-white text-sm text-emerald-600 font-medium">
+                        <span className="px-2 bg-white text-sm text-gray-600 font-medium">
                           Choose one of the two fields
                         </span>
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-emerald-600 mb-1">
+                      <label className="block text-sm font-medium text-gray-600 mb-1">
                         Desired Gross Margin (%)
                       </label>
                       <div className="flex items-center">
@@ -848,7 +848,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                           step="0.1"
                           min="0"
                           max="100"
-                          className="mt-1 block w-full border-2 border-emerald-200 focus:border-emerald-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors font-bold"
+                          className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors font-bold"
                           value={formData.grossMargin || ""}
                           onChange={(e) =>
                             handleChange("grossMargin", Number(e.target.value))
@@ -881,13 +881,13 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                     </div>
 
                     <div className="flex items-center justify-center my-2">
-                      <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-medium">
+                      <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-xs font-medium">
                         or
                       </span>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-emerald-600 mb-1">
+                      <label className="block text-sm font-medium text-gray-600 mb-1">
                         Customer Rate
                       </label>
                       <div className="flex items-center">
@@ -897,7 +897,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                         <input
                           type="number"
                           step="0.01"
-                          className="mt-1 block w-full border-2 border-emerald-200 focus:border-emerald-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors font-bold"
+                          className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors font-bold"
                           value={formData.customerNetRate || ""}
                           onChange={(e) =>
                             handleChange(
@@ -915,20 +915,20 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                   </div>
 
                   {/* COLUMNA 2: Costos adicionales e impuestos */}
-                  <div className="space-y-4 border-r border-emerald-100 pr-4">
-                    <h5 className="font-medium text-emerald-900 pb-2 border-b border-emerald-100 flex items-center">
-                      <span className="inline-block w-5 h-5 bg-emerald-50 border-2 border-emerald-300 rounded-full mr-2"></span>
+                  <div className="space-y-4 border-r border-gray-200 pr-4">
+                    <h5 className="font-medium text-orange-600 pb-2 border-b border-gray-200 flex items-center">
+                      <span className="inline-block w-5 h-5 bg-gray-50 border-2 border-orange-500 rounded-full mr-2"></span>
                       Commissions and Taxes - Advertisers
                     </h5>
 
                     <div>
-                      <label className="flex justify-between text-sm font-medium text-emerald-600 mb-1">
+                      <label className="flex justify-between text-sm font-medium text-gray-600 mb-1">
                         <span>Agency Commission (AVBs)</span>
                         <span className="text-gray-500">
                           {formData.agencyCommission}%
                         </span>
                       </label>
-                      <div className="mt-1 block w-full border-2 border-emerald-100 rounded-md p-2 bg-emerald-50 text-gray-900 font-medium">
+                      <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
                         {formatCurrency(
                           (formData.investment *
                             (formData.agencyCommission || 0)) /
@@ -941,7 +941,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                     </div>
 
                     <div>
-                      <label className="flex justify-between text-sm font-medium text-emerald-600 mb-1">
+                      <label className="flex justify-between text-sm font-medium text-gray-600 mb-1">
                         <span>Local Taxes</span>
                         <span>
                           {formData.market === "Mexico" ||
@@ -952,7 +952,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                             : "0%"}
                         </span>
                       </label>
-                      <div className="flex-1 block border-2 border-emerald-100 rounded-md p-2 bg-emerald-50 text-gray-900 font-medium">
+                      <div className="flex-1 block border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
                         {formatCurrency(
                           (formData.investment * (formData.localTaxes || 0)) /
                             100
@@ -964,20 +964,20 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                     </div>
 
                     <div className="py-3">
-                      <div className="w-full border-t border-emerald-200"></div>
+                      <div className="w-full border-t border-gray-200"></div>
                     </div>
 
-                    <h5 className="font-medium text-emerald-900 pb-2 border-b border-emerald-100 flex items-center">
-                      <span className="inline-block w-5 h-5 bg-emerald-50 border-2 border-emerald-300 rounded-full mr-2"></span>
+                    <h5 className="font-medium text-orange-600 pb-2 border-b border-gray-200 flex items-center">
+                      <span className="inline-block w-5 h-5 bg-gray-50 border-2 border-orange-500 rounded-full mr-2"></span>
                       Commissions and Taxes - Customers
                     </h5>
 
                     <div>
-                      <label className="flex justify-between text-sm font-medium text-emerald-600 mb-1">
+                      <label className="flex justify-between text-sm font-medium text-gray-600 mb-1">
                         <span>Customer Commission</span>
                         <span className="text-gray-500">0%</span>
                       </label>
-                      <div className="mt-1 block w-full border-2 border-emerald-100 rounded-md p-2 bg-emerald-50 text-gray-900 font-medium">
+                      <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
                         {formatCurrency(0)}
                       </div>
                       <p className="text-xs text-gray-500 mt-1">
@@ -986,11 +986,11 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                     </div>
 
                     <div>
-                      <label className="flex justify-between text-sm font-medium text-emerald-600 mb-1">
+                      <label className="flex justify-between text-sm font-medium text-gray-600 mb-1">
                         <span>Customer Tax</span>
                         <span className="text-gray-500">0%</span>
                       </label>
-                      <div className="mt-1 block w-full border-2 border-emerald-100 rounded-md p-2 bg-emerald-50 text-gray-900 font-medium">
+                      <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
                         {formatCurrency(0)}
                       </div>
                       <p className="text-xs text-gray-500 mt-1">
@@ -1001,16 +1001,16 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
 
                   {/* COLUMNA 3: Resultados finales */}
                   <div className="space-y-4">
-                    <h5 className="font-medium text-emerald-900 pb-2 border-b border-emerald-100 flex items-center">
-                      <span className="inline-block w-5 h-5 bg-emerald-200 border-2 border-emerald-400 rounded-full mr-2"></span>
+                    <h5 className="font-medium text-orange-600 pb-2 border-b border-gray-200 flex items-center">
+                      <span className="inline-block w-5 h-5 bg-orange-100 border-2 border-orange-500 rounded-full mr-2"></span>
                       Calculated Rates
                     </h5>
 
                     <div>
-                      <label className="block text-sm font-medium text-emerald-600 mb-1">
+                      <label className="block text-sm font-medium text-gray-600 mb-1">
                         Unit Price
                       </label>
-                      <div className="mt-1 block w-full border-2 border-emerald-100 rounded-md p-2 bg-emerald-50 text-gray-900 font-medium">
+                      <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
                         {formData.unitCost
                           ? `$${formData.unitCost.toFixed(4)}`
                           : "$0.0000"}
@@ -1021,10 +1021,10 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-emerald-600 mb-1">
+                      <label className="block text-sm font-medium text-gray-600 mb-1">
                         USMC Rate
                       </label>
-                      <div className="mt-1 block w-full border-2 border-emerald-100 rounded-md p-2 bg-emerald-50 text-gray-900 font-medium">
+                      <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
                         {formData.usmcRate
                           ? `$${formData.usmcRate.toFixed(2)}`
                           : "$0.00"}
@@ -1035,10 +1035,10 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-emerald-600 mb-1">
+                      <label className="block text-sm font-medium text-gray-600 mb-1">
                         Customer Rate
                       </label>
-                      <div className="mt-1 block w-full border-2 border-emerald-100 rounded-md p-2 bg-emerald-50 text-gray-900 font-medium">
+                      <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
                         {formData.customerNetRate
                           ? `$${formData.customerNetRate.toFixed(2)}`
                           : "$0.00"}
@@ -1054,10 +1054,10 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
           </div>
 
           {/* Sección de Notas */}
-          <div className="bg-gradient-to-br from-white to-amber-50 shadow-sm border border-amber-100 rounded-xl p-5 md:col-span-3">
-            <h3 className="text-lg font-medium text-amber-900 mb-4 flex items-center">
+          <div className="bg-white shadow-sm border border-gray-200 rounded-xl p-5 md:col-span-3">
+            <h3 className="text-lg font-medium text-orange-600 mb-4 flex items-center">
               <svg
-                className="h-5 w-5 mr-2 text-amber-500"
+                className="h-5 w-5 mr-2 text-orange-500"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
@@ -1071,9 +1071,9 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
               Notes
             </h3>
 
-            <div className="bg-white rounded-lg border border-amber-100 p-4">
-              <h4 className="text-amber-800 font-medium mb-3 flex items-center">
-                <div className="h-6 w-6 rounded-full bg-amber-600 text-white font-medium flex items-center justify-center text-xs mr-2">
+            <div className="bg-white rounded-lg border border-gray-200 p-4">
+              <h4 className="text-orange-700 font-medium mb-3 flex items-center">
+                <div className="h-6 w-6 rounded-full bg-orange-200 text-orange-700 font-medium flex items-center justify-center text-xs mr-2 shadow-sm">
                   4
                 </div>
                 Additional Information
@@ -1081,31 +1081,31 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-amber-600 mb-1">
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
                     Note for Customer IO
                   </label>
                   <textarea
-                    className="mt-1 block w-full border-2 border-amber-100 focus:border-amber-300 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors min-h-[80px]"
+                    className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors min-h-[80px]"
                     placeholder="Information that will appear on the customer order"
                   ></textarea>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-amber-600 mb-1">
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
                     Note for Publisher IO
                   </label>
                   <textarea
-                    className="mt-1 block w-full border-2 border-amber-100 focus:border-amber-300 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors min-h-[80px]"
+                    className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors min-h-[80px]"
                     placeholder="Information that will appear on the publisher order"
                   ></textarea>
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-amber-600 mb-1">
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
                     Edit Log Note
                   </label>
                   <textarea
-                    className="mt-1 block w-full border-2 border-amber-100 focus:border-amber-300 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors min-h-[80px]"
+                    className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors min-h-[80px]"
                     placeholder="Internal comments or notes about changes"
                   ></textarea>
                 </div>
@@ -1118,7 +1118,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
         <div className="mt-6 bg-gray-50 rounded-xl border border-gray-200 p-4 flex justify-between items-center">
           <div className="flex items-center">
             <svg
-              className="h-5 w-5 text-gray-400 mr-2"
+              className="h-5 w-5 text-orange-400 mr-2"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
@@ -1140,13 +1140,13 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
             <button
               type="button"
               onClick={onCancel}
-              className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+              className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors flex items-center"
+              className="px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors flex items-center"
             >
               <svg
                 className="h-4 w-4 mr-1"

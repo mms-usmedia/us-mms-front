@@ -43,9 +43,9 @@ const CampaignDocuments: React.FC<CampaignDocumentsProps> = ({
   return (
     <div className="bg-white shadow-sm border border-gray-100 rounded-b-xl p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg font-medium text-blue-900 flex items-center">
+        <h2 className="text-lg font-medium text-orange-600 flex items-center">
           <svg
-            className="h-5 w-5 mr-2 text-blue-500"
+            className="h-5 w-5 mr-2 text-orange-500"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
@@ -60,7 +60,7 @@ const CampaignDocuments: React.FC<CampaignDocumentsProps> = ({
         </h2>
         <button
           onClick={() => document.getElementById("document-upload")?.click()}
-          className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-md shadow-sm text-sm font-medium transition-colors flex items-center gap-2"
+          className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-md shadow-sm text-sm font-medium transition-colors flex items-center gap-2"
           disabled={isUploading}
         >
           {isUploading ? (
@@ -122,18 +122,18 @@ const CampaignDocuments: React.FC<CampaignDocumentsProps> = ({
       </div>
 
       {isUploading && (
-        <div className="mb-6 bg-blue-50 p-4 rounded-lg border border-blue-100">
+        <div className="mb-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
           <div className="flex justify-between items-center mb-1">
-            <span className="text-sm font-medium text-blue-700">
+            <span className="text-sm font-medium text-gray-700">
               Uploading documents...
             </span>
-            <span className="text-sm font-medium text-blue-700">
+            <span className="text-sm font-medium text-gray-700">
               {Math.round(uploadProgress)}%
             </span>
           </div>
-          <div className="w-full bg-blue-200 rounded-full h-2.5">
+          <div className="w-full bg-gray-200 rounded-full h-2.5">
             <div
-              className="bg-blue-600 h-2.5 rounded-full transition-all duration-300 ease-in-out"
+              className="bg-orange-600 h-2.5 rounded-full transition-all duration-300 ease-in-out"
               style={{ width: `${uploadProgress}%` }}
             ></div>
           </div>
@@ -141,10 +141,10 @@ const CampaignDocuments: React.FC<CampaignDocumentsProps> = ({
       )}
 
       {documents.length > 0 ? (
-        <div className="rounded-lg overflow-hidden border border-gray-200 bg-gradient-to-b from-blue-50 to-white">
-          <div className="bg-blue-50 px-4 py-3 border-b border-blue-100">
+        <div className="rounded-lg overflow-hidden border border-gray-200 bg-gradient-to-b from-gray-50 to-white">
+          <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
             <div className="flex justify-between items-center">
-              <p className="text-sm font-medium text-blue-700">
+              <p className="text-sm font-medium text-gray-700">
                 {documents.length} document{documents.length !== 1 ? "s" : ""}{" "}
                 uploaded
               </p>
@@ -167,7 +167,7 @@ const CampaignDocuments: React.FC<CampaignDocumentsProps> = ({
                       {doc.name}
                     </p>
                     <div className="flex text-xs text-gray-500 mt-1">
-                      <span className="text-blue-700 font-medium">
+                      <span className="text-gray-700 font-medium">
                         {formatFileSize(doc.size)}
                       </span>
                       <span className="mx-2">•</span>
@@ -183,7 +183,7 @@ const CampaignDocuments: React.FC<CampaignDocumentsProps> = ({
                 </div>
                 <div className="flex items-center space-x-2">
                   <button
-                    className="p-1.5 text-blue-500 hover:text-blue-700 rounded-full hover:bg-blue-100 transition-colors"
+                    className="p-1.5 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100 transition-colors"
                     title="Download"
                   >
                     <svg
@@ -227,16 +227,16 @@ const CampaignDocuments: React.FC<CampaignDocumentsProps> = ({
           </div>
         </div>
       ) : (
-        <div className="rounded-lg overflow-hidden border border-gray-200 bg-gradient-to-b from-blue-50 to-white">
-          <div className="bg-blue-50 px-4 py-3 border-b border-blue-100">
-            <p className="text-sm font-medium text-blue-700">
+        <div className="rounded-lg overflow-hidden border border-gray-200 bg-gradient-to-b from-gray-50 to-white">
+          <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
+            <p className="text-sm font-medium text-gray-700">
               No documents available
             </p>
           </div>
           <div className="p-8 text-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="mx-auto h-12 w-12 text-blue-300"
+              className="mx-auto h-12 w-12 text-gray-300"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

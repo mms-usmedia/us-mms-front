@@ -160,10 +160,10 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
   // Si no, mostramos la tabla de ad units
   return (
     <div className="bg-white shadow-sm border border-gray-100 rounded-b-xl overflow-hidden">
-      <div className="flex justify-between items-center p-5 border-b border-gray-200 bg-gradient-to-r from-indigo-50 to-white">
-        <h2 className="text-lg font-medium text-indigo-900 flex items-center">
+      <div className="flex justify-between items-center p-5 border-b border-gray-200 bg-orange-50">
+        <h2 className="text-lg font-medium text-orange-600 flex items-center">
           <svg
-            className="h-5 w-5 mr-2 text-indigo-500"
+            className="h-5 w-5 mr-2 text-orange-500"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
@@ -174,7 +174,7 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
         </h2>
         <button
           onClick={handleNewAdUnit}
-          className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md shadow-sm text-sm font-medium transition-colors flex items-center gap-1"
+          className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-md shadow-sm text-sm font-medium transition-colors flex items-center gap-1"
         >
           <svg
             className="h-4 w-4"
@@ -562,7 +562,7 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                             e.stopPropagation();
                             handleEditAdUnit(unit);
                           }}
-                          className="text-indigo-600 hover:text-indigo-800"
+                          className="text-orange-600 hover:text-orange-800"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"

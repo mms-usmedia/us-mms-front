@@ -215,7 +215,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
       case "Negotiating":
         return "bg-blue-50 text-blue-700 border-blue-100";
       case "Won":
-        return "bg-indigo-50 text-indigo-700 border-indigo-100";
+        return "bg-orange-50 text-orange-700 border-orange-100";
       case "Approved":
         return "bg-green-50 text-green-700 border-green-100";
       case "Materials & Creatives OK":
@@ -259,7 +259,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
               type="text"
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 placeholder-gray-500 bg-gray-50"
+              className="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm text-gray-900 placeholder-gray-500 bg-gray-50"
               placeholder="Search by name, ID or organization..."
             />
           </div>
@@ -268,8 +268,8 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
             onClick={() => setShowFilters(!showFilters)}
             className={`flex items-center px-3 py-2.5 rounded-lg shadow-sm border ${
               showFilters
-                ? "bg-indigo-50 text-indigo-700 border-indigo-200"
-                : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
+                ? "bg-orange-50 text-orange-700 border-orange-200"
+                : "bg-white text-orange-600 border-gray-200 hover:bg-gray-50"
             }`}
           >
             <svg
@@ -286,7 +286,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
             </svg>
             Filters
             {hasActiveFilters && (
-              <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-100 text-xs font-medium text-indigo-800">
+              <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-orange-100 text-xs font-medium text-orange-800">
                 {(searchTerm ? 1 : 0) +
                   (selectedOrganization ? 1 : 0) +
                   (selectedStatus.length > 0 ? 1 : 0) +
@@ -337,7 +337,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
                   <input
                     type="text"
                     id="organization-search"
-                    className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 bg-gray-50"
+                    className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm text-gray-900 bg-gray-50"
                     placeholder="Select or search organization"
                     value={orgSearchTerm}
                     onChange={(e) => setOrgSearchTerm(e.target.value)}
@@ -418,7 +418,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
                       id="start-date"
                       value={startDateFilter}
                       onChange={(e) => onStartDateChange(e.target.value)}
-                      className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 bg-gray-50"
+                      className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm text-gray-900 bg-gray-50"
                       placeholder="Start date"
                     />
                   </div>
@@ -431,7 +431,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
                       id="end-date"
                       value={endDateFilter}
                       onChange={(e) => onEndDateChange(e.target.value)}
-                      className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 bg-gray-50"
+                      className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm text-gray-900 bg-gray-50"
                       placeholder="End date"
                     />
                   </div>
@@ -450,7 +450,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
                   <input
                     type="text"
                     id="owner-search"
-                    className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 bg-gray-50"
+                    className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm text-gray-900 bg-gray-50"
                     placeholder="Select campaign owner"
                     value={ownerSearchTerm}
                     onChange={(e) => setOwnerSearchTerm(e.target.value)}
