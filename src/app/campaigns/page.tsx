@@ -16,6 +16,7 @@ interface Campaign {
   id: string;
   name: string;
   organizationName: string;
+  campaignType: "IO-based" | "Programmatic";
   organizationType:
     | "Agency"
     | "Advertiser"
@@ -48,6 +49,7 @@ const mockCampaigns: Campaign[] = [
     name:
       "Banorte_Banorte_Hotsale _Credito Pyme _Linkedin_Mex_Junio25_Linkedin_Jun_Mexico",
     organizationName: "Havas Media-Mexico",
+    campaignType: "IO-based",
     organizationType: "Agency",
     startDate: "2025-06-01",
     endDate: "2025-06-30",
@@ -61,6 +63,7 @@ const mockCampaigns: Campaign[] = [
     name:
       "Nintendo_Nintendo_Display Digital_Wetransfer_Static_Bra_Mex_Chi_Col_Per_May_Jun_25_Wetransfer_Jun_Brazil,Chile,Colombia,Mexico,Peru",
     organizationName: "Omnet-United States-OMG",
+    campaignType: "IO-based",
     organizationType: "Agency",
     startDate: "2025-06-02",
     endDate: "2025-06-28",
@@ -73,6 +76,7 @@ const mockCampaigns: Campaign[] = [
     id: "22045",
     name: "Paramount+_De Férias Com o Ex__Jun_Brazil",
     organizationName: "Paramount",
+    campaignType: "Programmatic",
     organizationType: "Direct",
     startDate: "2025-06-03",
     endDate: "2025-06-25",
@@ -85,6 +89,7 @@ const mockCampaigns: Campaign[] = [
     id: "22046",
     name: "Pernod Ricard_Buhero Negro - PG_OneFootball_Jun_Argentina",
     organizationName: "Carat-Argentina",
+    campaignType: "IO-based",
     organizationType: "Agency",
     startDate: "2025-06-04",
     endDate: "2025-06-30",
@@ -97,6 +102,7 @@ const mockCampaigns: Campaign[] = [
     id: "22047",
     name: "PUIG_PUIG BANDERAS_Wetransfer_Jun_Mexico",
     organizationName: "Starcom-Mexico",
+    campaignType: "Programmatic",
     organizationType: "Agency",
     startDate: "2025-06-05",
     endDate: "2025-06-30",
@@ -109,6 +115,7 @@ const mockCampaigns: Campaign[] = [
     id: "22048",
     name: "Red Hat_Connected Campaign_TikTok_Jun_Latam",
     organizationName: "OMD- Argentina",
+    campaignType: "IO-based",
     organizationType: "Agency",
     startDate: "2025-06-06",
     endDate: "2025-06-30",
@@ -121,6 +128,7 @@ const mockCampaigns: Campaign[] = [
     id: "22049",
     name: "Yakult_Campana anual_Wetransfer_Jun_Mexico",
     organizationName: "Yakult",
+    campaignType: "Programmatic",
     organizationType: "Direct",
     startDate: "2025-06-07",
     endDate: "2025-06-30",
@@ -133,6 +141,7 @@ const mockCampaigns: Campaign[] = [
     id: "22050",
     name: "Spotify Brazil_Fan Life - Fase 2_Vevo_Jun_Brazil",
     organizationName: "Soko",
+    campaignType: "IO-based",
     organizationType: "Agency",
     startDate: "2025-06-08",
     endDate: "2025-06-28",
@@ -145,6 +154,7 @@ const mockCampaigns: Campaign[] = [
     id: "22051",
     name: "Muv_Mynt_MAP_Jun",
     organizationName: "MUV-Brasil-WPP",
+    campaignType: "Programmatic",
     organizationType: "Agency",
     startDate: "2025-06-09",
     endDate: "2025-06-30",
@@ -157,6 +167,7 @@ const mockCampaigns: Campaign[] = [
     id: "22052",
     name: "Levis_Levis Pride__Jun_Mexico",
     organizationName: "UM - Mexico - IPG",
+    campaignType: "IO-based",
     organizationType: "Agency",
     startDate: "2025-06-10",
     endDate: "2025-06-30",
@@ -358,6 +369,18 @@ export default function CampaignsListPage() {
     }
   };
 
+  // Function to get styles for campaign type
+  const getCampaignTypeStyles = (type: string) => {
+    switch (type) {
+      case "IO-based":
+        return "bg-blue-100 text-blue-800 border border-blue-200 px-2 py-1 rounded-md text-xs shadow-sm";
+      case "Programmatic":
+        return "bg-purple-100 text-purple-800 border border-purple-200 px-2 py-1 rounded-md text-xs shadow-sm";
+      default:
+        return "bg-gray-50 text-gray-700 border border-gray-100 px-2 py-1 rounded-md text-xs shadow-sm";
+    }
+  };
+
   // Render loading while authentication loads
   if (isLoading) {
     return (
@@ -473,6 +496,20 @@ export default function CampaignsListPage() {
                         <div className="whitespace-nowrap flex items-center">
                           Organization
                           {sortField === "organizationName" && (
+                            <span className="ml-1">
+                              {sortDirection === "asc" ? "↑" : "↓"}
+                            </span>
+                          )}
+                        </div>
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors w-28"
+                        onClick={() => handleSort("campaignType")}
+                      >
+                        <div className="whitespace-nowrap flex items-center">
+                          Campaign Type
+                          {sortField === "campaignType" && (
                             <span className="ml-1">
                               {sortDirection === "asc" ? "↑" : "↓"}
                             </span>
@@ -603,6 +640,15 @@ export default function CampaignsListPage() {
                               campaign.organizationName,
                               orgTruncateLength
                             )}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span
+                            className={getCampaignTypeStyles(
+                              campaign.campaignType
+                            )}
+                          >
+                            {campaign.campaignType}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">

@@ -4,6 +4,8 @@
 export interface Campaign {
   id: string;
   name: string;
+  // Nuevo campo para tipo de campaña
+  campaignType: "IO-based" | "Programmatic";
   organizationType:
     | "Agency"
     | "Advertiser"

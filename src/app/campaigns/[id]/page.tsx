@@ -432,7 +432,18 @@ export default function CampaignDetailPage() {
                   <h1 className="text-3xl font-bold text-gray-800 mb-2">
                     {campaign.name}
                   </h1>
-                  <p className="text-gray-600">ID: {campaign.id}</p>
+                  <div className="flex items-center">
+                    <span
+                      className={`text-xs font-medium px-3 py-1 rounded-full mr-2 ${
+                        campaign.campaignType === "IO-based"
+                          ? "bg-blue-100 text-blue-800"
+                          : "bg-purple-100 text-purple-800"
+                      }`}
+                    >
+                      {campaign.campaignType}
+                    </span>
+                    <p className="text-gray-600">ID: {campaign.id}</p>
+                  </div>
                 </div>
                 <div className="flex items-center space-x-3">
                   <StatusBadgeLarge status={campaign.status} />

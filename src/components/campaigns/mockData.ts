@@ -7,6 +7,7 @@ export const mockCampaigns: Campaign[] = [
     id: "22043",
     name:
       "Banorte_Banorte_Hotsale _Credito Pyme _Linkedin_Mex_Junio25_Linkedin_Jun_Mexico",
+    campaignType: "IO-based",
     organizationType: "Agency",
     startDate: "2025-06-01",
     endDate: "2025-06-30",
@@ -90,6 +91,7 @@ export const mockCampaigns: Campaign[] = [
     id: "22044",
     name:
       "Nintendo_Nintendo_Display Digital_Wetransfer_Static_Bra_Mex_Chi_Col_Per_May_Jun_25_Wetransfer_Jun_Brazil,Chile,Colombia,Mexico,Peru",
+    campaignType: "IO-based",
     organizationType: "Agency",
     startDate: "2025-06-02",
     endDate: "2025-06-28",
@@ -197,6 +199,7 @@ export const mockCampaigns: Campaign[] = [
   {
     id: "22045",
     name: "Paramount+_De Férias Com o Ex__Jun_Brazil",
+    campaignType: "Programmatic",
     organizationType: "Direct",
     startDate: "2025-06-03",
     endDate: "2025-06-25",
@@ -278,6 +281,7 @@ export const mockCampaigns: Campaign[] = [
   {
     id: "22046",
     name: "Pernod Ricard_Buhero Negro - PG_OneFootball_Jun_Argentina",
+    campaignType: "IO-based",
     organizationType: "Agency",
     startDate: "2025-06-04",
     endDate: "2025-06-30",
@@ -359,6 +363,7 @@ export const mockCampaigns: Campaign[] = [
   {
     id: "22047",
     name: "PUIG_PUIG BANDERAS_Wetransfer_Jun_Mexico",
+    campaignType: "Programmatic",
     organizationType: "Agency",
     startDate: "2025-06-05",
     endDate: "2025-06-30",
@@ -441,6 +446,7 @@ export const mockCampaigns: Campaign[] = [
   {
     id: "22048",
     name: "Red Hat_Connected Campaign_TikTok_Jun_Latam",
+    campaignType: "IO-based",
     organizationType: "Agency",
     startDate: "2025-06-06",
     endDate: "2025-06-30",
@@ -548,6 +554,7 @@ export const mockCampaigns: Campaign[] = [
   {
     id: "22049",
     name: "Yakult_Campana anual_Wetransfer_Jun_Mexico",
+    campaignType: "Programmatic",
     organizationType: "Direct",
     startDate: "2025-06-07",
     endDate: "2025-06-30",
@@ -628,6 +635,7 @@ export const mockCampaigns: Campaign[] = [
   {
     id: "22050",
     name: "Spotify Brazil_Fan Life - Fase 2_Vevo_Jun_Brazil",
+    campaignType: "IO-based",
     organizationType: "Agency",
     startDate: "2025-06-08",
     endDate: "2025-06-28",
@@ -709,6 +717,7 @@ export const mockCampaigns: Campaign[] = [
   {
     id: "22051",
     name: "Muv_Mynt_MAP_Jun",
+    campaignType: "Programmatic",
     organizationType: "Agency",
     startDate: "2025-06-09",
     endDate: "2025-06-30",
@@ -790,6 +799,7 @@ export const mockCampaigns: Campaign[] = [
   {
     id: "22052",
     name: "Levis_Levis Pride__Jun_Mexico",
+    campaignType: "IO-based",
     organizationType: "Agency",
     startDate: "2025-06-10",
     endDate: "2025-06-30",
