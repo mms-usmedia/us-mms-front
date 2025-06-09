@@ -20,7 +20,8 @@ type OrganizationType =
   | "Advertiser"
   | "Publisher"
   | "Holding Agency"
-  | "Holding Advertiser";
+  | "Holding Advertiser"
+  | "Direct";
 
 // Type for campaigns
 interface Campaign {

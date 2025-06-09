@@ -9,7 +9,8 @@ export interface Campaign {
     | "Advertiser"
     | "Publisher"
     | "Holding Agency"
-    | "Holding Advertiser";
+    | "Holding Advertiser"
+    | "Direct";
   startDate: string;
   endDate: string;
   status:
