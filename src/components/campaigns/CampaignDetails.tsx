@@ -634,28 +634,26 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                   </p>
                 )}
               </div>
-              {campaign.organizationType === "Publisher" && (
-                <div>
-                  <p className="text-sm font-medium text-gray-700">
-                    Organization Publisher
+              <div>
+                <p className="text-sm font-medium text-gray-700">
+                  Organization Publisher
+                </p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                    value={editedCampaign.organizationPublisher || ""}
+                    onChange={(e) =>
+                      handleChange("organizationPublisher", e.target.value)
+                    }
+                    placeholder="Organization Publisher"
+                  />
+                ) : (
+                  <p className="mt-1 text-sm text-gray-900 font-medium">
+                    {campaign.organizationPublisher || "-"}
                   </p>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
-                      value={editedCampaign.organizationPublisher || ""}
-                      onChange={(e) =>
-                        handleChange("organizationPublisher", e.target.value)
-                      }
-                      placeholder="Organization Publisher"
-                    />
-                  ) : (
-                    <p className="mt-1 text-sm text-gray-900 font-medium">
-                      {campaign.organizationPublisher || "-"}
-                    </p>
-                  )}
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
 

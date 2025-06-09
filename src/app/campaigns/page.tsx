@@ -617,69 +617,170 @@ export default function CampaignsListPage() {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-100">
-                    {filteredCampaigns.map((campaign) => (
-                      <tr
-                        key={campaign.id}
-                        className="hover:bg-gray-50 transition-colors cursor-pointer"
-                        onClick={() => router.push(`/campaigns/${campaign.id}`)}
-                      >
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
-                          {campaign.id}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-orange-600 hover:text-orange-800 max-w-[12rem] overflow-hidden transition-all duration-300 ease-in-out">
-                          <span
-                            title={campaign.name}
-                            className="hover:underline"
-                          >
-                            {truncateText(campaign.name, nameTruncateLength)}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 max-w-[14rem] overflow-hidden transition-all duration-300 ease-in-out">
-                          <span title={campaign.organizationName}>
-                            {truncateText(
-                              campaign.organizationName,
-                              orgTruncateLength
+                    {filteredCampaigns.length > 0 ? (
+                      filteredCampaigns.map((campaign) => (
+                        <tr
+                          key={campaign.id}
+                          className="hover:bg-gray-50 transition-colors cursor-pointer"
+                          onClick={() =>
+                            router.push(`/campaigns/${campaign.id}`)
+                          }
+                        >
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
+                            {campaign.id}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-orange-600 hover:text-orange-800 max-w-[12rem] overflow-hidden transition-all duration-300 ease-in-out">
+                            <span
+                              title={campaign.name}
+                              className="hover:underline"
+                            >
+                              {truncateText(campaign.name, nameTruncateLength)}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 max-w-[14rem] overflow-hidden transition-all duration-300 ease-in-out">
+                            <span title={campaign.organizationName}>
+                              {truncateText(
+                                campaign.organizationName,
+                                orgTruncateLength
+                              )}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span
+                              className={getCampaignTypeStyles(
+                                campaign.campaignType
+                              )}
+                            >
+                              {campaign.campaignType}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span
+                              className={getOrganizationTypeStyles(
+                                campaign.organizationType
+                              )}
+                            >
+                              {campaign.organizationType}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                            {formatDate(campaign.startDate)}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                            {formatDate(campaign.endDate)}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                            {formatNumber(campaign.units)}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
+                            {formatCurrency(campaign.budget)}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                            {campaign.grossMargin.toFixed(1)}%
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <StatusBadge status={campaign.status} />
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={11} className="px-6 py-16 text-center">
+                          <div className="flex flex-col items-center justify-center">
+                            <svg
+                              className="w-16 h-16 text-orange-200 mb-4"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={1.5}
+                                d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
+                            {searchTerm ||
+                            selectedOrganization ||
+                            selectedStatus.length > 0 ||
+                            startDateFilter ||
+                            endDateFilter ||
+                            selectedOwner ? (
+                              <>
+                                <h3 className="text-lg font-medium text-gray-900 mb-1">
+                                  No se encontraron campañas
+                                </h3>
+                                <p className="text-gray-500 max-w-sm text-center mb-6">
+                                  No hay campañas que coincidan con los
+                                  criterios de búsqueda. Intenta ajustar los
+                                  filtros para ver resultados.
+                                </p>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSearchTerm("");
+                                    setSelectedOrganization("");
+                                    setSelectedStatus([]);
+                                    setStartDateFilter("");
+                                    setEndDateFilter("");
+                                    setSelectedOwner("");
+                                  }}
+                                  className="px-4 py-2 bg-orange-100 text-orange-700 rounded-md hover:bg-orange-200 transition-colors font-medium text-sm flex items-center"
+                                >
+                                  <svg
+                                    className="w-4 h-4 mr-2"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                                    />
+                                  </svg>
+                                  Limpiar filtros
+                                </button>
+                              </>
+                            ) : (
+                              <>
+                                <h3 className="text-lg font-medium text-gray-900 mb-1">
+                                  No hay campañas
+                                </h3>
+                                <p className="text-gray-500 max-w-sm text-center mb-6">
+                                  No hay campañas creadas en el sistema. Empieza
+                                  creando tu primera campaña.
+                                </p>
+                                <Link
+                                  href="/campaigns/new"
+                                  className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition-colors font-medium text-sm flex items-center"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <svg
+                                    className="w-4 h-4 mr-2"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M12 4v16m8-8H4"
+                                    />
+                                  </svg>
+                                  Crear campaña
+                                </Link>
+                              </>
                             )}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span
-                            className={getCampaignTypeStyles(
-                              campaign.campaignType
-                            )}
-                          >
-                            {campaign.campaignType}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span
-                            className={getOrganizationTypeStyles(
-                              campaign.organizationType
-                            )}
-                          >
-                            {campaign.organizationType}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                          {formatDate(campaign.startDate)}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                          {formatDate(campaign.endDate)}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                          {formatNumber(campaign.units)}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
-                          {formatCurrency(campaign.budget)}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                          {campaign.grossMargin.toFixed(1)}%
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <StatusBadge status={campaign.status} />
+                          </div>
                         </td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </table>
               </div>
