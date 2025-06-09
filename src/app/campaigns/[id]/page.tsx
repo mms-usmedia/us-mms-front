@@ -22,6 +22,10 @@ import CampaignActivity from "@/components/campaigns/CampaignActivity";
 // Importar datos mock
 import { getMockCampaignById } from "@/components/campaigns/mockData";
 
+// Importar utilidades
+import { truncateText } from "@/components/campaigns/utils";
+import useTruncate from "@/hooks/useTruncate";
+
 // Componente personalizado para mostrar un badge de estado más grande en el header
 const StatusBadgeLarge = ({ status }: { status: string }) => {
   // Función para obtener los estilos según el estado
@@ -234,7 +238,7 @@ export default function CampaignDetailPage() {
   const router = useRouter();
   const params = useParams();
   const { user, isLoading, isAuthenticated } = useAuth();
-  const {} = useSidebar();
+  const { isCollapsed } = useSidebar();
   const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<
@@ -243,6 +247,9 @@ export default function CampaignDetailPage() {
   const [documents, setDocuments] = useState<Document[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+
+  // Usar el hook personalizado para determinar la longitud máxima del título
+  const maxTitleLength = useTruncate(70, isCollapsed);
 
   // Obtener el ID de la campaña de los parámetros de la URL
   const campaignId = Array.isArray(params.id) ? params.id[0] : params.id;
@@ -429,8 +436,11 @@ export default function CampaignDetailPage() {
               </Link>
               <div className="flex items-center justify-between">
                 <div>
-                  <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                    {campaign.name}
+                  <h1
+                    className="text-3xl font-bold text-gray-800 mb-2"
+                    title={campaign.name}
+                  >
+                    {truncateText(campaign.name, maxTitleLength)}
                   </h1>
                   <div className="flex items-center">
                     <span

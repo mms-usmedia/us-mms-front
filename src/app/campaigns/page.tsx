@@ -10,6 +10,7 @@ import Header from "@/components/layout/Header";
 import StatusBadge from "@/components/ui/StatusBadge";
 import SearchFilter from "@/components/campaigns/SearchFilter";
 import Link from "next/link";
+import useTruncate from "@/hooks/useTruncate";
 
 // Types for campaigns
 interface Campaign {
@@ -182,18 +183,22 @@ export default function CampaignsListPage() {
   const router = useRouter();
   const { user, isLoading, isAuthenticated } = useAuth();
   const { isCollapsed } = useSidebar();
-  const [campaigns] = useState<Campaign[]>(mockCampaigns);
+  const [campaigns, setCampaigns] = useState<Campaign[]>(mockCampaigns);
   const [filteredCampaigns, setFilteredCampaigns] = useState<Campaign[]>(
     mockCampaigns
   );
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedOrganization, setSelectedOrganization] = useState<string>("");
   const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
-  const [sortField, setSortField] = useState<string>("startDate");
+  const [sortField, setSortField] = useState<string>("id");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const [startDateFilter, setStartDateFilter] = useState<string>("");
   const [endDateFilter, setEndDateFilter] = useState<string>("");
   const [selectedOwner, setSelectedOwner] = useState<string>("");
+
+  // Usar el hook personalizado para el truncamiento
+  const nameTruncateLength = useTruncate(40, isCollapsed);
+  const orgTruncateLength = useTruncate(35, isCollapsed);
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -201,14 +206,6 @@ export default function CampaignsListPage() {
       router.push("/login");
     }
   }, [isLoading, isAuthenticated, router]);
-
-  // Adjust truncation size based on sidebar state
-  const nameTruncateLength = useMemo(() => (isCollapsed ? 30 : 25), [
-    isCollapsed,
-  ]);
-  const orgTruncateLength = useMemo(() => (isCollapsed ? 28 : 22), [
-    isCollapsed,
-  ]);
 
   // Apply filters when criteria change
   useEffect(() => {
