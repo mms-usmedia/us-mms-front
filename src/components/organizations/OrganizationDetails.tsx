@@ -179,34 +179,34 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
   return (
     <div className="bg-white shadow-sm rounded-lg">
       {!hideActionButtons && (
-        <div className="flex justify-end items-center p-4">
-          <div className="flex items-center gap-2">
+        <div className="flex justify-end items-center p-4 bg-white border-b border-gray-200">
+          <div className="flex items-center gap-3">
             {isEditing ? (
               <>
                 <button
                   onClick={handleSave}
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
+                  className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
                 >
                   <FaSave className="h-4 w-4" />
-                  Save Changes
+                  Guardar Cambios
                 </button>
                 {!editMode && (
                   <button
                     onClick={handleCancel}
-                    className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
+                    className="px-4 py-2.5 bg-white hover:bg-gray-100 text-gray-700 rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm border border-gray-300"
                   >
                     <FaTimes className="h-4 w-4" />
-                    Cancel
+                    Cancelar
                   </button>
                 )}
               </>
             ) : (
               <button
                 onClick={() => setIsEditing(true)}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
+                className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
               >
                 <FaEdit className="h-4 w-4" />
-                Edit Details
+                Editar Detalles
               </button>
             )}
           </div>
@@ -216,57 +216,61 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
       <div className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Basic Information */}
-          <div className="space-y-6 bg-gradient-to-b from-indigo-50 to-white p-4 rounded-lg shadow-sm border border-indigo-100">
-            <h3 className="text-lg font-medium text-indigo-800 border-b border-indigo-200 pb-2">
-              <FaBuilding className="inline mr-2 text-indigo-500" /> Basic
-              Information
+          <div className="space-y-6 bg-white p-6 rounded-lg shadow-md border border-gray-200">
+            <h3 className="text-xl font-semibold text-gray-800 border-b border-gray-200 pb-3 flex items-center">
+              <FaBuilding className="mr-2 text-indigo-500" />
+              <span>Información Básica</span>
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Name
+                <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
+                  Nombre
                 </label>
                 {isEditing ? (
                   <input
                     type="text"
                     value={editedOrganization.name}
                     onChange={(e) => handleChange("name", e.target.value)}
-                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                    className="w-full px-3 py-2 border border-gray-300 focus:border-indigo-500 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500 text-gray-900 bg-white"
                   />
                 ) : (
-                  <p className="text-gray-800">{organization.name}</p>
+                  <p className="text-gray-800 font-medium">
+                    {organization.name}
+                  </p>
                 )}
               </div>
 
               {/* Legal Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Legal Name
+                <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
+                  Nombre Legal
                 </label>
                 {isEditing ? (
                   <input
                     type="text"
                     value={editedOrganization.legalName}
                     onChange={(e) => handleChange("legalName", e.target.value)}
-                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                    className="w-full px-3 py-2 border border-gray-300 focus:border-indigo-500 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500 text-gray-900 bg-white"
                   />
                 ) : (
-                  <p className="text-gray-800">{organization.legalName}</p>
+                  <p className="text-gray-800 font-medium">
+                    {organization.legalName}
+                  </p>
                 )}
               </div>
 
               {/* Type */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Type
+                <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
+                  Tipo
                 </label>
                 {isEditing ? (
                   <select
                     value={editedOrganization.type}
                     onChange={(e) => handleChange("type", e.target.value)}
-                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                    className="w-full px-3 py-2 border border-gray-300 focus:border-indigo-500 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500 text-gray-900 bg-white"
                   >
                     {organizationTypes.map((type) => (
                       <option key={type} value={type}>
@@ -275,20 +279,46 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                     ))}
                   </select>
                 ) : (
-                  <p className="text-gray-800">{organization.type}</p>
+                  <div>
+                    {organization.type === "Agency" && (
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-sm font-medium bg-blue-100 text-blue-800">
+                        {organization.type}
+                      </span>
+                    )}
+                    {organization.type === "Advertiser" && (
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-sm font-medium bg-green-100 text-green-800">
+                        {organization.type}
+                      </span>
+                    )}
+                    {organization.type === "Publisher" && (
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-sm font-medium bg-purple-100 text-purple-800">
+                        {organization.type}
+                      </span>
+                    )}
+                    {organization.type === "Holding Agency" && (
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">
+                        {organization.type}
+                      </span>
+                    )}
+                    {organization.type === "Holding Advertiser" && (
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-sm font-medium bg-amber-100 text-amber-800">
+                        {organization.type}
+                      </span>
+                    )}
+                  </div>
                 )}
               </div>
 
               {/* Country */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Country
+                <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
+                  País
                 </label>
                 {isEditing ? (
                   <select
                     value={editedOrganization.country}
                     onChange={(e) => handleChange("country", e.target.value)}
-                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                    className="w-full px-3 py-2 border border-gray-300 focus:border-indigo-500 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500 text-gray-900 bg-white"
                   >
                     {countries.map((country) => (
                       <option key={country} value={country}>
@@ -297,24 +327,26 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                     ))}
                   </select>
                 ) : (
-                  <p className="text-gray-800">{organization.country}</p>
+                  <p className="text-gray-800 font-medium">
+                    {organization.country}
+                  </p>
                 )}
               </div>
 
               {/* Tax ID */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Tax ID
+                <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
+                  Identificación Fiscal
                 </label>
                 {isEditing ? (
                   <input
                     type="text"
                     value={editedOrganization.taxId}
                     onChange={(e) => handleChange("taxId", e.target.value)}
-                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                    className="w-full px-3 py-2 border border-gray-300 focus:border-indigo-500 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500 text-gray-900 bg-white"
                   />
                 ) : (
-                  <p className="text-gray-800 font-mono">
+                  <p className="text-gray-800 font-mono font-medium">
                     {organization.taxId}
                   </p>
                 )}
@@ -322,16 +354,16 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
 
               {/* Industry */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Industry
+                <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
+                  Industria
                 </label>
                 {isEditing ? (
                   <select
                     value={editedOrganization.industry || ""}
                     onChange={(e) => handleChange("industry", e.target.value)}
-                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                    className="w-full px-3 py-2 border border-gray-300 focus:border-indigo-500 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500 text-gray-900 bg-white"
                   >
-                    <option value="">Select industry</option>
+                    <option value="">Seleccionar industria</option>
                     {industries.map((industry) => (
                       <option key={industry} value={industry}>
                         {industry}
@@ -339,23 +371,27 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                     ))}
                   </select>
                 ) : (
-                  <p className="text-gray-800">
-                    {organization.industry || "N/A"}
+                  <p className="text-gray-800 font-medium">
+                    {organization.industry || (
+                      <span className="text-gray-500 italic">
+                        No especificado
+                      </span>
+                    )}
                   </p>
                 )}
               </div>
 
               {/* Website */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Website
+                <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
+                  Sitio Web
                 </label>
                 {isEditing ? (
                   <input
                     type="text"
                     value={editedOrganization.website || ""}
                     onChange={(e) => handleChange("website", e.target.value)}
-                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                    className="w-full px-3 py-2 border border-gray-300 focus:border-indigo-500 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500 text-gray-900 bg-white"
                   />
                 ) : (
                   <p className="text-gray-800">
@@ -364,31 +400,60 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                         href={organization.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-indigo-600 hover:text-indigo-800 flex items-center"
+                        className="text-indigo-600 hover:text-indigo-800 flex items-center font-medium"
                       >
                         <FaGlobe className="mr-1" />
                         {organization.website}
                       </a>
                     ) : (
-                      "N/A"
+                      <span className="text-gray-500 italic">
+                        No especificado
+                      </span>
                     )}
                   </p>
                 )}
               </div>
+
+              {/* Holding Name (only if not a holding) */}
+              {!editedOrganization.isHolding && (
+                <div>
+                  <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
+                    Nombre de Holding
+                  </label>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={editedOrganization.holdingName || ""}
+                      onChange={(e) =>
+                        handleChange("holdingName", e.target.value)
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 focus:border-indigo-500 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500 text-gray-900 bg-white"
+                    />
+                  ) : (
+                    <p className="text-gray-800 font-medium">
+                      {organization.holdingName || (
+                        <span className="text-gray-500 italic">
+                          No especificado
+                        </span>
+                      )}
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Holding Information */}
-            <div className="space-y-3 mt-3">
+            <div className="space-y-3 mt-5">
               {/* Is Holding y Big Six cuando no está en modo edición */}
               {!isEditing && (
                 <div className="flex flex-wrap gap-2 mb-3">
                   {organization.isHolding && (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-50 text-purple-700 border border-purple-200">
-                      Holding Company
+                    <span className="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800 border border-indigo-200">
+                      <FaBuilding className="mr-1" /> Holding Company
                     </span>
                   )}
                   {organization.isBigSix && (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200">
+                    <span className="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium bg-amber-100 text-amber-800 border border-amber-200">
                       Big Six Group
                     </span>
                   )}
@@ -398,7 +463,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
               {/* Is Holding */}
               <div>
                 {isEditing ? (
-                  <div className="flex items-center">
+                  <div className="flex items-center p-2 bg-gray-50 rounded-md">
                     <input
                       type="checkbox"
                       id="isHolding"
@@ -410,7 +475,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                     />
                     <label
                       htmlFor="isHolding"
-                      className="ml-2 text-sm text-gray-700"
+                      className="ml-2 text-sm font-medium text-gray-700"
                     >
                       Holding Company
                     </label>
@@ -421,7 +486,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
               {/* Is Big Six */}
               <div>
                 {isEditing ? (
-                  <div className="flex items-center">
+                  <div className="flex items-center p-2 bg-gray-50 rounded-md">
                     <input
                       type="checkbox"
                       id="isBigSix"
@@ -433,61 +498,42 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                     />
                     <label
                       htmlFor="isBigSix"
-                      className="ml-2 text-sm text-gray-700"
+                      className="ml-2 text-sm font-medium text-gray-700"
                     >
                       Big Six Group
                     </label>
                   </div>
                 ) : null}
               </div>
-
-              {/* Holding Name (only if not a holding) */}
-              {!editedOrganization.isHolding && (
-                <div className="mt-3">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Holding Name
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={editedOrganization.holdingName || ""}
-                      onChange={(e) =>
-                        handleChange("holdingName", e.target.value)
-                      }
-                      className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
-                    />
-                  ) : (
-                    <p className="text-gray-800">
-                      {organization.holdingName || "N/A"}
-                    </p>
-                  )}
-                </div>
-              )}
             </div>
           </div>
 
           {/* Contact Information */}
-          <div className="space-y-6 bg-gradient-to-b from-blue-50 to-white p-4 rounded-lg shadow-sm border border-blue-100">
-            <h3 className="text-lg font-medium text-blue-800 border-b border-blue-200 pb-2">
-              <FaMapMarkerAlt className="inline mr-2 text-blue-500" /> Contact
-              Information
+          <div className="space-y-6 bg-white p-6 rounded-lg shadow-md border border-gray-200">
+            <h3 className="text-xl font-semibold text-gray-800 border-b border-gray-200 pb-3 flex items-center">
+              <FaMapMarkerAlt className="mr-2 text-blue-500" />
+              <span>Información de Contacto</span>
             </h3>
             <div className="space-y-4">
               {/* Address */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Address
+                <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
+                  Dirección
                 </label>
                 {isEditing ? (
                   <input
                     type="text"
                     value={editedOrganization.address || ""}
                     onChange={(e) => handleChange("address", e.target.value)}
-                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                    className="w-full px-3 py-2 border border-gray-300 focus:border-blue-500 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-900 bg-white"
                   />
                 ) : (
-                  <p className="text-gray-800">
-                    {organization.address || "N/A"}
+                  <p className="text-gray-800 font-medium">
+                    {organization.address || (
+                      <span className="text-gray-500 italic">
+                        No especificado
+                      </span>
+                    )}
                   </p>
                 )}
               </div>
@@ -495,55 +541,67 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
               {/* City, State, Zip in one row */}
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    City
+                  <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
+                    Ciudad
                   </label>
                   {isEditing ? (
                     <input
                       type="text"
                       value={editedOrganization.city || ""}
                       onChange={(e) => handleChange("city", e.target.value)}
-                      className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                      className="w-full px-3 py-2 border border-gray-300 focus:border-blue-500 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-900 bg-white"
                     />
                   ) : (
-                    <p className="text-gray-800">
-                      {organization.city || "N/A"}
+                    <p className="text-gray-800 font-medium">
+                      {organization.city || (
+                        <span className="text-gray-500 italic">
+                          No especificado
+                        </span>
+                      )}
                     </p>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    State/Province
+                  <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
+                    Estado/Provincia
                   </label>
                   {isEditing ? (
                     <input
                       type="text"
                       value={editedOrganization.state || ""}
                       onChange={(e) => handleChange("state", e.target.value)}
-                      className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                      className="w-full px-3 py-2 border border-gray-300 focus:border-blue-500 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-900 bg-white"
                     />
                   ) : (
-                    <p className="text-gray-800">
-                      {organization.state || "N/A"}
+                    <p className="text-gray-800 font-medium">
+                      {organization.state || (
+                        <span className="text-gray-500 italic">
+                          No especificado
+                        </span>
+                      )}
                     </p>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Zip/Postal Code
+                  <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
+                    Código Postal
                   </label>
                   {isEditing ? (
                     <input
                       type="text"
                       value={editedOrganization.zipCode || ""}
                       onChange={(e) => handleChange("zipCode", e.target.value)}
-                      className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                      className="w-full px-3 py-2 border border-gray-300 focus:border-blue-500 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-900 bg-white"
                     />
                   ) : (
-                    <p className="text-gray-800">
-                      {organization.zipCode || "N/A"}
+                    <p className="text-gray-800 font-medium">
+                      {organization.zipCode || (
+                        <span className="text-gray-500 italic">
+                          No especificado
+                        </span>
+                      )}
                     </p>
                   )}
                 </div>
@@ -551,30 +609,37 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
 
               {/* Phone */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Phone
+                <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
+                  Teléfono
                 </label>
                 {isEditing ? (
                   <input
                     type="text"
                     value={editedOrganization.phone || ""}
                     onChange={(e) => handleChange("phone", e.target.value)}
-                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                    className="w-full px-3 py-2 border border-gray-300 focus:border-blue-500 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-900 bg-white"
                   />
                 ) : (
-                  <p className="text-gray-800">{organization.phone || "N/A"}</p>
+                  <p className="text-gray-800 font-medium">
+                    {organization.phone || (
+                      <span className="text-gray-500 italic">
+                        No especificado
+                      </span>
+                    )}
+                  </p>
                 )}
               </div>
 
               {/* Primary Contact Information */}
-              <div className="border-t pt-4 mt-4">
-                <h4 className="text-md font-medium text-gray-700 mb-3">
-                  Primary Contact
+              <div className="border-t border-gray-200 pt-4 mt-4">
+                <h4 className="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                  <FaIdCard className="mr-2 text-blue-500" />
+                  Contacto Principal
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Contact Name
+                    <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
+                      Nombre de Contacto
                     </label>
                     {isEditing ? (
                       <input
@@ -583,17 +648,21 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                         onChange={(e) =>
                           handleChange("contactName", e.target.value)
                         }
-                        className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                        className="w-full px-3 py-2 border border-gray-300 focus:border-blue-500 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-900 bg-white"
                       />
                     ) : (
-                      <p className="text-gray-800">
-                        {organization.contactName || "N/A"}
+                      <p className="text-gray-800 font-medium">
+                        {organization.contactName || (
+                          <span className="text-gray-500 italic">
+                            No especificado
+                          </span>
+                        )}
                       </p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Contact Email
+                    <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
+                      Email de Contacto
                     </label>
                     {isEditing ? (
                       <input
@@ -602,19 +671,35 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                         onChange={(e) =>
                           handleChange("contactEmail", e.target.value)
                         }
-                        className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                        className="w-full px-3 py-2 border border-gray-300 focus:border-blue-500 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-900 bg-white"
                       />
                     ) : (
                       <p className="text-gray-800">
                         {organization.contactEmail ? (
                           <a
                             href={`mailto:${organization.contactEmail}`}
-                            className="text-indigo-600 hover:text-indigo-800"
+                            className="text-blue-600 hover:text-blue-800 font-medium flex items-center"
                           >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4 mr-1"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                              />
+                            </svg>
                             {organization.contactEmail}
                           </a>
                         ) : (
-                          "N/A"
+                          <span className="text-gray-500 italic">
+                            No especificado
+                          </span>
                         )}
                       </p>
                     )}
@@ -625,16 +710,16 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
           </div>
 
           {/* Billing Information */}
-          <div className="space-y-6 bg-gradient-to-b from-purple-50 to-white p-4 rounded-lg shadow-sm border border-purple-100">
-            <h3 className="text-lg font-medium text-purple-800 border-b border-purple-200 pb-2">
-              <FaIdCard className="inline mr-2 text-purple-500" /> Billing
-              Information
+          <div className="space-y-6 bg-white p-6 rounded-lg shadow-md border border-gray-200">
+            <h3 className="text-xl font-semibold text-gray-800 border-b border-gray-200 pb-3 flex items-center">
+              <FaIdCard className="mr-2 text-purple-500" />
+              <span>Información de Facturación</span>
             </h3>
             <div className="mt-4 space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Currency
+                  <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
+                    Moneda
                   </label>
                   {isEditing ? (
                     <select
@@ -642,9 +727,9 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                       onChange={(e) =>
                         handleChange("billingCurrency", e.target.value)
                       }
-                      className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                      className="w-full px-3 py-2 border border-gray-300 focus:border-purple-500 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 text-gray-900 bg-white"
                     >
-                      <option value="">Select currency</option>
+                      <option value="">Seleccionar moneda</option>
                       {currencies.map((currency) => (
                         <option key={currency} value={currency}>
                           {currency}
@@ -652,14 +737,18 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                       ))}
                     </select>
                   ) : (
-                    <p className="text-gray-800">
-                      {organization.billingCurrency || "N/A"}
+                    <p className="text-gray-800 font-medium">
+                      {organization.billingCurrency || (
+                        <span className="text-gray-500 italic">
+                          No especificado
+                        </span>
+                      )}
                     </p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Payment Terms
+                  <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
+                    Términos de Pago
                   </label>
                   {isEditing ? (
                     <select
@@ -667,9 +756,9 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                       onChange={(e) =>
                         handleChange("paymentTerms", e.target.value)
                       }
-                      className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                      className="w-full px-3 py-2 border border-gray-300 focus:border-purple-500 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 text-gray-900 bg-white"
                     >
-                      <option value="">Select terms</option>
+                      <option value="">Seleccionar términos</option>
                       {paymentTermsOptions.map((term) => (
                         <option key={term} value={term}>
                           {term}
@@ -677,15 +766,19 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                       ))}
                     </select>
                   ) : (
-                    <p className="text-gray-800">
-                      {organization.paymentTerms || "N/A"}
+                    <p className="text-gray-800 font-medium">
+                      {organization.paymentTerms || (
+                        <span className="text-gray-500 italic">
+                          No especificado
+                        </span>
+                      )}
                     </p>
                   )}
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Billing Address
+                <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
+                  Dirección de Facturación
                 </label>
                 {isEditing ? (
                   <textarea
@@ -694,11 +787,15 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                       handleChange("billingAddress", e.target.value)
                     }
                     rows={2}
-                    className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                    className="w-full px-3 py-2 border border-gray-300 focus:border-purple-500 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 text-gray-900 bg-white"
                   />
                 ) : (
-                  <p className="text-gray-800">
-                    {organization.billingAddress || "Same as physical address"}
+                  <p className="text-gray-800 font-medium">
+                    {organization.billingAddress || (
+                      <span className="text-gray-500 italic">
+                        Igual que la dirección física
+                      </span>
+                    )}
                   </p>
                 )}
               </div>
@@ -706,21 +803,39 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
           </div>
 
           {/* Description */}
-          <div className="space-y-6 bg-gradient-to-b from-emerald-50 to-white p-4 rounded-lg shadow-sm border border-emerald-100">
-            <h3 className="text-lg font-medium text-emerald-800 border-b border-emerald-200 pb-2">
-              Description
+          <div className="space-y-6 bg-white p-6 rounded-lg shadow-md border border-gray-200">
+            <h3 className="text-xl font-semibold text-gray-800 border-b border-gray-200 pb-3 flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 mr-2 text-emerald-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+              <span>Descripción</span>
             </h3>
             {isEditing ? (
               <textarea
                 value={editedOrganization.description || ""}
                 onChange={(e) => handleChange("description", e.target.value)}
                 rows={3}
-                className="mt-1 text-sm w-full p-3 border-2 border-emerald-100 focus:border-emerald-300 rounded bg-white min-h-[100px] text-gray-900 focus:ring-0 transition-colors"
+                className="mt-1 text-sm w-full p-3 border border-gray-300 focus:border-emerald-500 rounded-md focus:outline-none focus:ring-1 focus:ring-emerald-500 bg-white min-h-[120px] text-gray-900 transition-colors"
                 placeholder="Agregar descripción de la organización..."
               />
             ) : (
-              <div className="mt-1 text-sm text-gray-900 p-3 border border-emerald-100 rounded bg-white min-h-[100px] shadow-inner">
-                {organization.description || "No description available."}
+              <div className="mt-1 text-gray-800 font-medium p-3 bg-white min-h-[120px]">
+                {organization.description || (
+                  <span className="text-gray-500 italic">
+                    Sin descripción disponible.
+                  </span>
+                )}
               </div>
             )}
           </div>

@@ -452,69 +452,26 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                   </p>
                 )}
               </div>
-              {campaign.organizationType === "Publisher" && (
-                <div>
-                  <p className="text-sm font-medium text-indigo-600">
-                    Organization Publisher
+              <div>
+                <p className="text-sm font-medium text-indigo-600">
+                  Customer Billing Party
+                </p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                    value={editedCampaign.customerBillingParty || ""}
+                    onChange={(e) =>
+                      handleChange("customerBillingParty", e.target.value)
+                    }
+                    placeholder="Customer Billing Party"
+                  />
+                ) : (
+                  <p className="mt-1 text-sm text-gray-900 font-medium">
+                    {campaign.customerBillingParty || "-"}
                   </p>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
-                      value={editedCampaign.organizationPublisher || ""}
-                      onChange={(e) =>
-                        handleChange("organizationPublisher", e.target.value)
-                      }
-                      placeholder="Organization Publisher"
-                    />
-                  ) : (
-                    <p className="mt-1 text-sm text-gray-900 font-medium">
-                      {campaign.organizationPublisher || "-"}
-                    </p>
-                  )}
-                </div>
-              )}
-              {campaign.organizationType !== "Publisher" && (
-                <div>
-                  <p className="text-sm font-medium text-indigo-600">Market</p>
-                  {isEditing ? (
-                    <div className="relative mt-1">
-                      <select
-                        className="text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
-                        value={editedCampaign.targetMarket || ""}
-                        onChange={(e) =>
-                          handleChange("targetMarket", e.target.value)
-                        }
-                      >
-                        <option value="">Seleccionar mercado...</option>
-                        {marketOptions.map((market) => (
-                          <option key={market} value={market}>
-                            {market}
-                          </option>
-                        ))}
-                      </select>
-                      <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                        <svg
-                          className="h-5 w-5 text-indigo-500"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  ) : (
-                    <p className="mt-1 text-sm text-gray-900">
-                      {campaign.targetMarket || "-"}
-                    </p>
-                  )}
-                </div>
-              )}
+                )}
+              </div>
               <div>
                 <p className="text-sm font-medium text-indigo-600">
                   US Media Billing Party
@@ -556,21 +513,21 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
               </div>
               <div>
                 <p className="text-sm font-medium text-indigo-600">
-                  Customer Billing Party
+                  Billing Contact
                 </p>
                 {isEditing ? (
                   <input
                     type="text"
                     className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
-                    value={editedCampaign.customerBillingParty || ""}
+                    value={editedCampaign.billingContact || ""}
                     onChange={(e) =>
-                      handleChange("customerBillingParty", e.target.value)
+                      handleChange("billingContact", e.target.value)
                     }
-                    placeholder="Customer Billing Party"
+                    placeholder="Billing Contact"
                   />
                 ) : (
                   <p className="mt-1 text-sm text-gray-900 font-medium">
-                    {campaign.customerBillingParty || "-"}
+                    {campaign.billingContact || "-"}
                   </p>
                 )}
               </div>
@@ -594,26 +551,47 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                   </p>
                 )}
               </div>
-              <div>
-                <p className="text-sm font-medium text-indigo-600">
-                  Billing Contact
-                </p>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
-                    value={editedCampaign.billingContact || ""}
-                    onChange={(e) =>
-                      handleChange("billingContact", e.target.value)
-                    }
-                    placeholder="Billing Contact"
-                  />
-                ) : (
-                  <p className="mt-1 text-sm text-gray-900 font-medium">
-                    {campaign.billingContact || "-"}
-                  </p>
-                )}
-              </div>
+              {campaign.organizationType !== "Publisher" && (
+                <div>
+                  <p className="text-sm font-medium text-indigo-600">Market</p>
+                  {isEditing ? (
+                    <div className="relative mt-1">
+                      <select
+                        className="text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
+                        value={editedCampaign.targetMarket || ""}
+                        onChange={(e) =>
+                          handleChange("targetMarket", e.target.value)
+                        }
+                      >
+                        <option value="">Seleccionar mercado...</option>
+                        {marketOptions.map((market) => (
+                          <option key={market} value={market}>
+                            {market}
+                          </option>
+                        ))}
+                      </select>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                        <svg
+                          className="h-5 w-5 text-indigo-500"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="mt-1 text-sm text-gray-900">
+                      {campaign.targetMarket || "-"}
+                    </p>
+                  )}
+                </div>
+              )}
               <div>
                 <p className="text-sm font-medium text-indigo-600">CIO Owner</p>
                 {isEditing ? (
@@ -658,162 +636,27 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                   </p>
                 )}
               </div>
-
-              {/* Campos específicos para campañas programáticas */}
               {campaign.organizationType === "Publisher" && (
-                <>
-                  <div>
-                    <p className="text-sm font-medium text-indigo-600">
-                      Commission Rate (%)
+                <div>
+                  <p className="text-sm font-medium text-indigo-600">
+                    Organization Publisher
+                  </p>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                      value={editedCampaign.organizationPublisher || ""}
+                      onChange={(e) =>
+                        handleChange("organizationPublisher", e.target.value)
+                      }
+                      placeholder="Organization Publisher"
+                    />
+                  ) : (
+                    <p className="mt-1 text-sm text-gray-900 font-medium">
+                      {campaign.organizationPublisher || "-"}
                     </p>
-                    {isEditing ? (
-                      <input
-                        type="number"
-                        className="mt-1 text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
-                        value={editedCampaign.commissionRate || 15}
-                        onChange={(e) =>
-                          handleChange("commissionRate", Number(e.target.value))
-                        }
-                        min="0"
-                        max="100"
-                        step="0.5"
-                      />
-                    ) : (
-                      <p className="mt-1 text-sm text-gray-900 font-medium">
-                        {campaign.commissionRate || 15}%
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-indigo-600">
-                      DSP Used
-                    </p>
-                    {isEditing ? (
-                      <div className="relative mt-1">
-                        <select
-                          className="text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
-                          value={editedCampaign.dspUsed || ""}
-                          onChange={(e) =>
-                            handleChange("dspUsed", e.target.value)
-                          }
-                        >
-                          <option value="">Seleccionar DSP...</option>
-                          <option value="DV360">DV360</option>
-                          <option value="The Trade Desk">The Trade Desk</option>
-                          <option value="MediaMath">MediaMath</option>
-                          <option value="Amazon DSP">Amazon DSP</option>
-                          <option value="Xandr">Xandr</option>
-                          <option value="Verizon Media">Verizon Media</option>
-                        </select>
-                        <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                          <svg
-                            className="h-5 w-5 text-indigo-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                    ) : (
-                      <p className="mt-1 text-sm text-gray-900">
-                        {campaign.dspUsed || "-"}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-indigo-600">
-                      Programmatic Type
-                    </p>
-                    {isEditing ? (
-                      <div className="relative mt-1">
-                        <select
-                          className="text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
-                          value={editedCampaign.programmaticType || "Standard"}
-                          onChange={(e) =>
-                            handleChange("programmaticType", e.target.value)
-                          }
-                        >
-                          <option value="Standard">Standard</option>
-                          <option value="PMP">PMP (Private Marketplace)</option>
-                          <option value="PG">
-                            PG (Programmatic Guaranteed)
-                          </option>
-                        </select>
-                        <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                          <svg
-                            className="h-5 w-5 text-indigo-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                    ) : (
-                      <p className="mt-1 text-sm text-gray-900">
-                        {campaign.programmaticType || "Standard"}
-                      </p>
-                    )}
-                  </div>
-                </>
-              )}
-
-              {/* Campos específicos para campañas IO-based (cuando no es Publisher) */}
-              {campaign.organizationType !== "Publisher" && (
-                <>
-                  <div>
-                    <p className="text-sm font-medium text-indigo-600">
-                      Market
-                    </p>
-                    {isEditing ? (
-                      <div className="relative mt-1">
-                        <select
-                          className="text-sm w-full border-2 border-indigo-100 focus:border-indigo-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
-                          value={editedCampaign.targetMarket || ""}
-                          onChange={(e) =>
-                            handleChange("targetMarket", e.target.value)
-                          }
-                        >
-                          <option value="">Seleccionar mercado...</option>
-                          {marketOptions.map((market) => (
-                            <option key={market} value={market}>
-                              {market}
-                            </option>
-                          ))}
-                        </select>
-                        <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                          <svg
-                            className="h-5 w-5 text-indigo-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                    ) : (
-                      <p className="mt-1 text-sm text-gray-900">
-                        {campaign.targetMarket || "-"}
-                      </p>
-                    )}
-                  </div>
-                </>
+                  )}
+                </div>
               )}
             </div>
           </div>
