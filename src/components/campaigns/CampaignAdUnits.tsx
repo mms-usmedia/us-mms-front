@@ -253,13 +253,13 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                 scope="col"
                 className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Unit Cost
+                Publisher Final Rate
               </th>
               <th
                 scope="col"
                 className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                USMC Rate
+                Customer Final Negotiated Rate
               </th>
               <th
                 scope="col"
@@ -429,7 +429,7 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                     )}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                    {/* Unit Cost no es editable - calculado automáticamente */}
+                    {/* Publisher Final Rate no es editable - calculado automáticamente */}
                     {editingAdUnit === unit.id ? (
                       <div className="w-full p-1 border border-gray-200 rounded text-sm bg-gray-50">
                         ${editedAdUnit?.unitCost?.toFixed(2)}
@@ -439,7 +439,7 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                     )}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                    {/* USMC Rate no es editable - calculado automáticamente */}
+                    {/* Customer Final Negotiated Rate no es editable - calculado automáticamente */}
                     {editingAdUnit === unit.id ? (
                       <div className="w-full p-1 border border-gray-200 rounded text-sm bg-gray-50">
                         ${editedAdUnit?.usmcRate?.toFixed(2)}
@@ -449,7 +449,7 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                     )}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                    {/* Customer Net Rate no es editable - calculado automáticamente */}
+                    {/* Customer Investment no es editable - calculado automáticamente */}
                     {editingAdUnit === unit.id ? (
                       <div className="w-full p-1 border border-gray-200 rounded text-sm bg-gray-50">
                         ${editedAdUnit?.customerNetRate?.toFixed(2)}

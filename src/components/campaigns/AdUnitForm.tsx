@@ -40,6 +40,12 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
   const [showPublisherDropdown, setShowPublisherDropdown] = useState(false);
   const [fileUploaded, setFileUploaded] = useState<File | null>(null);
 
+  // Estados para controlar la expansión/contracción de secciones
+  const [expandedSections, setExpandedSections] = useState({
+    publisherHiddenCosts: false,
+    customerHiddenCosts: true, // Expandido por defecto
+  });
+
   // Estados para controlar el desbloqueo secuencial de campos
   const [fieldsEnabled, setFieldsEnabled] = useState({
     market: false,
@@ -92,6 +98,23 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       publisherCommission: 0,
     }
   );
+
+  // Estados para los descuentos y costos ocultos
+  const [publisherDiscounts, setPublisherDiscounts] = useState<
+    Array<{ id: string; name: string; value: number }>
+  >([]);
+  const [publisherHiddenCosts, setPublisherHiddenCosts] = useState<
+    Array<{ id: string; name: string; value: number }>
+  >([]);
+  const [customerDiscounts, setCustomerDiscounts] = useState<
+    Array<{ id: string; name: string; value: number }>
+  >([]);
+  const [customerHiddenCosts, setCustomerHiddenCosts] = useState<
+    Array<{ id: string; name: string; value: number }>
+  >([
+    { id: "1", name: "AVB (Agency Volume Bonus)", value: 0 },
+    { id: "2", name: "Local taxes", value: formData.localTaxes || 0 },
+  ]);
 
   // Buscar el publisher si estamos editando
   useEffect(() => {
@@ -324,7 +347,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
     setFormData((prev) => {
       const updated = {
         ...prev,
-        [field]: value,
+        [field]: value === "" ? 0 : value,
       };
 
       // Desbloquear campos secuencialmente según la selección
@@ -437,6 +460,91 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
     });
 
     onSave(finalData);
+  };
+
+  // Función para añadir un descuento a Publisher
+  const addPublisherDiscount = () => {
+    const newId = `pd-${Date.now()}`;
+    setPublisherDiscounts([
+      ...publisherDiscounts,
+      { id: newId, name: "", value: 0 },
+    ]);
+  };
+
+  // Función para añadir un costo oculto a Publisher
+  const addPublisherHiddenCost = () => {
+    const newId = `phc-${Date.now()}`;
+    setPublisherHiddenCosts([
+      ...publisherHiddenCosts,
+      { id: newId, name: "", value: 0 },
+    ]);
+  };
+
+  // Función para añadir un descuento a Customer
+  const addCustomerDiscount = () => {
+    const newId = `cd-${Date.now()}`;
+    setCustomerDiscounts([
+      ...customerDiscounts,
+      { id: newId, name: "", value: 0 },
+    ]);
+  };
+
+  // Función para añadir un costo oculto a Customer
+  const addCustomerHiddenCost = () => {
+    const newId = `chc-${Date.now()}`;
+    setCustomerHiddenCosts([
+      ...customerHiddenCosts,
+      { id: newId, name: "", value: 0 },
+    ]);
+  };
+
+  // Función para actualizar un descuento o costo oculto
+  const updateItem = (
+    items: Array<{ id: string; name: string; value: number }>,
+    setItems: React.Dispatch<
+      React.SetStateAction<Array<{ id: string; name: string; value: number }>>
+    >,
+    id: string,
+    field: "name" | "value",
+    value: string | number
+  ) => {
+    const updatedItems = items.map((item) =>
+      item.id === id
+        ? {
+            ...item,
+            [field]:
+              field === "value" ? (value === "" ? "" : Number(value)) : value,
+          }
+        : item
+    );
+    setItems(updatedItems);
+  };
+
+  // Función para eliminar un descuento o costo oculto
+  const removeItem = (
+    items: Array<{ id: string; name: string; value: number }>,
+    setItems: React.Dispatch<
+      React.SetStateAction<Array<{ id: string; name: string; value: number }>>
+    >,
+    id: string
+  ) => {
+    const updatedItems = items.filter((item) => item.id !== id);
+    setItems(updatedItems);
+  };
+
+  // Funciones para expandir/contraer secciones específicas
+  const togglePublisherHiddenCosts = () => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      publisherHiddenCosts: !prev.publisherHiddenCosts,
+    }));
+  };
+
+  const toggleCustomerHiddenCosts = () => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      customerHiddenCosts: !prev.customerHiddenCosts,
+    }));
   };
 
   return (
@@ -944,62 +1052,14 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                       </div>
                       <div className="relative flex justify-center">
                         <span className="px-2 bg-white text-sm text-gray-600 font-medium">
-                          Choose one of the two fields
+                          Enter value below
                         </span>
                       </div>
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-gray-600 mb-1">
-                        Desired Gross Margin (%)
-                      </label>
-                      <div className="flex items-center">
-                        <input
-                          type="number"
-                          step="0.1"
-                          min="0"
-                          max="100"
-                          className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors font-bold"
-                          value={formData.grossMargin || ""}
-                          onChange={(e) =>
-                            handleChange("grossMargin", Number(e.target.value))
-                          }
-                          placeholder="Ex: 30"
-                        />
-                        <span className="ml-2 text-gray-600">%</span>
-                        {formData.grossMargin !== undefined &&
-                          formData.grossMargin > 0 && (
-                            <span
-                              className={`ml-2 px-2 py-1 rounded-full text-xs font-medium ${
-                                formData.grossMargin >= 25
-                                  ? "bg-green-100 text-green-800"
-                                  : formData.grossMargin >= 15
-                                  ? "bg-yellow-100 text-yellow-800"
-                                  : "bg-red-100 text-red-800"
-                              }`}
-                            >
-                              {formData.grossMargin >= 25
-                                ? "Excellent"
-                                : formData.grossMargin >= 15
-                                ? "Acceptable"
-                                : "Low"}
-                            </span>
-                          )}
-                      </div>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Automatically affects the customer rate
-                      </p>
-                    </div>
-
-                    <div className="flex items-center justify-center my-2">
-                      <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-xs font-medium">
-                        or
-                      </span>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-600 mb-1">
-                        Customer Rate
+                        Customer Net Rate
                       </label>
                       <div className="flex items-center">
                         <span className="text-gray-500 font-medium mr-2">
@@ -1029,12 +1089,121 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                   <div className="space-y-4 border-r border-gray-200 pr-4">
                     <h5 className="font-medium text-orange-600 pb-2 border-b border-gray-200 flex items-center">
                       <span className="inline-block w-5 h-5 bg-gray-50 border-2 border-orange-500 rounded-full mr-2"></span>
-                      Commissions and Taxes - Advertisers
+                      Calculator - Publisher
                     </h5>
+
+                    {/* Descuentos Publisher - Botón para agregar */}
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <label className="text-sm font-medium text-gray-600">
+                          Discounts
+                        </label>
+                        <button
+                          type="button"
+                          className="p-1 bg-orange-100 text-orange-600 rounded-full hover:bg-orange-200"
+                          onClick={addPublisherDiscount}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+
+                      {publisherDiscounts.length === 0 ? (
+                        <p className="text-xs text-gray-500 italic mb-2">
+                          Click + to add publisher discounts
+                        </p>
+                      ) : (
+                        <div className="space-y-2 mb-2">
+                          {publisherDiscounts.map((discount) => (
+                            <div
+                              key={discount.id}
+                              className="border border-gray-200 rounded-md p-2 flex items-center"
+                            >
+                              <div className="flex-1 pr-2">
+                                <input
+                                  type="text"
+                                  className="w-full border-gray-200 rounded-md p-1 text-sm"
+                                  value={discount.name}
+                                  onChange={(e) =>
+                                    updateItem(
+                                      publisherDiscounts,
+                                      setPublisherDiscounts,
+                                      discount.id,
+                                      "name",
+                                      e.target.value
+                                    )
+                                  }
+                                  placeholder="Discount name"
+                                />
+                              </div>
+                              <div className="w-24 flex items-center">
+                                <input
+                                  type="number"
+                                  className="w-full border-gray-200 rounded-md p-1 text-sm"
+                                  value={
+                                    discount.value === 0 ? "" : discount.value
+                                  }
+                                  onChange={(e) =>
+                                    updateItem(
+                                      publisherDiscounts,
+                                      setPublisherDiscounts,
+                                      discount.id,
+                                      "value",
+                                      e.target.value
+                                    )
+                                  }
+                                  placeholder="0"
+                                  min="0"
+                                  max="100"
+                                  step="0.01"
+                                />
+                                <span className="ml-1 text-gray-600">%</span>
+                              </div>
+                              <button
+                                type="button"
+                                className="ml-2 p-1 text-red-500 hover:bg-red-50 rounded-full"
+                                onClick={() =>
+                                  removeItem(
+                                    publisherDiscounts,
+                                    setPublisherDiscounts,
+                                    discount.id
+                                  )
+                                }
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-4 w-4"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
 
                     <div>
                       <label className="flex justify-between text-sm font-medium text-gray-600 mb-1">
-                        <span>Agency Commission (AVBs)</span>
+                        <span>US Media Commission</span>
                         <span className="text-gray-500">
                           {formData.agencyCommission}%
                         </span>
@@ -1047,31 +1216,141 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                         )}
                       </div>
                       <p className="text-xs text-gray-500 mt-1">
-                        Automatically obtained from the Publisher
+                        Fixed value from backend
                       </p>
                     </div>
 
+                    {/* Hidden Costs Publisher - Sección contraíble */}
                     <div>
-                      <label className="flex justify-between text-sm font-medium text-gray-600 mb-1">
-                        <span>Local Taxes</span>
-                        <span>
-                          {formData.market === "Mexico" ||
-                          formData.market === "México"
-                            ? "16%"
-                            : formData.market === "Colombia"
-                            ? "19%"
-                            : "0%"}
-                        </span>
-                      </label>
-                      <div className="flex-1 block border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
-                        {formatCurrency(
-                          (formData.investment * (formData.localTaxes || 0)) /
-                            100
-                        )}
+                      <div className="flex justify-between items-center mb-2">
+                        <label className="text-sm font-medium text-gray-600">
+                          Hidden Costs
+                        </label>
+                        <button
+                          type="button"
+                          className="p-1 text-gray-600 rounded-full hover:bg-gray-100"
+                          onClick={togglePublisherHiddenCosts}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className={`h-5 w-5 transition-transform ${
+                              expandedSections.publisherHiddenCosts
+                                ? "rotate-180"
+                                : ""
+                            }`}
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </button>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Based on the selected market
-                      </p>
+
+                      {!expandedSections.publisherHiddenCosts ? (
+                        <p className="text-xs text-gray-500 italic mb-2">
+                          Click to expand hidden costs
+                        </p>
+                      ) : (
+                        <div className="space-y-2 mb-2">
+                          {publisherHiddenCosts.map((cost) => (
+                            <div
+                              key={cost.id}
+                              className="border border-gray-200 rounded-md p-2 flex items-center"
+                            >
+                              <div className="flex-1 pr-2">
+                                <input
+                                  type="text"
+                                  className="w-full border-gray-200 rounded-md p-1 text-sm"
+                                  value={cost.name}
+                                  onChange={(e) =>
+                                    updateItem(
+                                      publisherHiddenCosts,
+                                      setPublisherHiddenCosts,
+                                      cost.id,
+                                      "name",
+                                      e.target.value
+                                    )
+                                  }
+                                  placeholder="Cost name"
+                                />
+                              </div>
+                              <div className="w-24 flex items-center">
+                                <input
+                                  type="number"
+                                  className="w-full border-gray-200 rounded-md p-1 text-sm"
+                                  value={cost.value === 0 ? "" : cost.value}
+                                  onChange={(e) =>
+                                    updateItem(
+                                      publisherHiddenCosts,
+                                      setPublisherHiddenCosts,
+                                      cost.id,
+                                      "value",
+                                      e.target.value
+                                    )
+                                  }
+                                  placeholder="0"
+                                  min="0"
+                                  max="100"
+                                  step="0.01"
+                                />
+                                <span className="ml-1 text-gray-600">%</span>
+                              </div>
+                              <button
+                                type="button"
+                                className="ml-2 p-1 text-red-500 hover:bg-red-50 rounded-full"
+                                onClick={() =>
+                                  removeItem(
+                                    publisherHiddenCosts,
+                                    setPublisherHiddenCosts,
+                                    cost.id
+                                  )
+                                }
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-4 w-4"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
+                          ))}
+
+                          {/* Botón para agregar más costos ocultos */}
+                          <div className="flex justify-center">
+                            <button
+                              type="button"
+                              className="p-1 bg-orange-100 text-orange-600 rounded-full hover:bg-orange-200"
+                              onClick={addPublisherHiddenCost}
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-5 w-5"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <div className="py-3">
@@ -1080,33 +1359,254 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
 
                     <h5 className="font-medium text-orange-600 pb-2 border-b border-gray-200 flex items-center">
                       <span className="inline-block w-5 h-5 bg-gray-50 border-2 border-orange-500 rounded-full mr-2"></span>
-                      Commissions and Taxes - Customers
+                      Calculator - Customer
                     </h5>
 
+                    {/* Descuentos Customer - Botón para agregar */}
                     <div>
-                      <label className="flex justify-between text-sm font-medium text-gray-600 mb-1">
-                        <span>Customer Commission</span>
-                        <span className="text-gray-500">0%</span>
-                      </label>
-                      <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
-                        {formatCurrency(0)}
+                      <div className="flex justify-between items-center mb-2">
+                        <label className="text-sm font-medium text-gray-600">
+                          Discounts
+                        </label>
+                        <button
+                          type="button"
+                          className="p-1 bg-orange-100 text-orange-600 rounded-full hover:bg-orange-200"
+                          onClick={addCustomerDiscount}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </button>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Commission applied to customer
-                      </p>
+
+                      {customerDiscounts.length === 0 ? (
+                        <p className="text-xs text-gray-500 italic mb-2">
+                          Click + to add customer discounts
+                        </p>
+                      ) : (
+                        <div className="space-y-2 mb-2">
+                          {customerDiscounts.map((discount) => (
+                            <div
+                              key={discount.id}
+                              className="border border-gray-200 rounded-md p-2 flex items-center"
+                            >
+                              <div className="flex-1 pr-2">
+                                <input
+                                  type="text"
+                                  className="w-full border-gray-200 rounded-md p-1 text-sm"
+                                  value={discount.name}
+                                  onChange={(e) =>
+                                    updateItem(
+                                      customerDiscounts,
+                                      setCustomerDiscounts,
+                                      discount.id,
+                                      "name",
+                                      e.target.value
+                                    )
+                                  }
+                                  placeholder="Discount name"
+                                />
+                              </div>
+                              <div className="w-24 flex items-center">
+                                <input
+                                  type="number"
+                                  className="w-full border-gray-200 rounded-md p-1 text-sm"
+                                  value={
+                                    discount.value === 0 ? "" : discount.value
+                                  }
+                                  onChange={(e) =>
+                                    updateItem(
+                                      customerDiscounts,
+                                      setCustomerDiscounts,
+                                      discount.id,
+                                      "value",
+                                      e.target.value
+                                    )
+                                  }
+                                  placeholder="0"
+                                  min="0"
+                                  max="100"
+                                  step="0.01"
+                                />
+                                <span className="ml-1 text-gray-600">%</span>
+                              </div>
+                              <button
+                                type="button"
+                                className="ml-2 p-1 text-red-500 hover:bg-red-50 rounded-full"
+                                onClick={() =>
+                                  removeItem(
+                                    customerDiscounts,
+                                    setCustomerDiscounts,
+                                    discount.id
+                                  )
+                                }
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-4 w-4"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
 
+                    {/* Hidden Costs Customer - Sección expandida por defecto */}
                     <div>
-                      <label className="flex justify-between text-sm font-medium text-gray-600 mb-1">
-                        <span>Customer Tax</span>
-                        <span className="text-gray-500">0%</span>
-                      </label>
-                      <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
-                        {formatCurrency(0)}
+                      <div className="flex justify-between items-center mb-2">
+                        <label className="text-sm font-medium text-gray-600">
+                          Hidden Costs
+                        </label>
+                        <button
+                          type="button"
+                          className="p-1 text-gray-600 rounded-full hover:bg-gray-100"
+                          onClick={toggleCustomerHiddenCosts}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className={`h-5 w-5 transition-transform ${
+                              expandedSections.customerHiddenCosts
+                                ? "rotate-180"
+                                : ""
+                            }`}
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </button>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Tax applied to customer
-                      </p>
+
+                      {!expandedSections.customerHiddenCosts ? (
+                        <p className="text-xs text-gray-500 italic mb-2">
+                          Click to expand hidden costs
+                        </p>
+                      ) : (
+                        <div className="space-y-2 mb-2">
+                          {customerHiddenCosts.map((cost) => (
+                            <div
+                              key={cost.id}
+                              className="border border-gray-200 rounded-md p-2 flex items-center"
+                            >
+                              <div className="flex-1 pr-2">
+                                <input
+                                  type="text"
+                                  className="w-full border-gray-200 rounded-md p-1 text-sm"
+                                  value={cost.name}
+                                  onChange={(e) =>
+                                    updateItem(
+                                      customerHiddenCosts,
+                                      setCustomerHiddenCosts,
+                                      cost.id,
+                                      "name",
+                                      e.target.value
+                                    )
+                                  }
+                                  placeholder="Cost name"
+                                  readOnly={cost.id === "1" || cost.id === "2"} // AVB y Local taxes no se pueden editar
+                                />
+                              </div>
+                              <div className="w-24 flex items-center">
+                                <input
+                                  type="number"
+                                  className="w-full border-gray-200 rounded-md p-1 text-sm"
+                                  value={cost.value === 0 ? "" : cost.value}
+                                  onChange={(e) =>
+                                    updateItem(
+                                      customerHiddenCosts,
+                                      setCustomerHiddenCosts,
+                                      cost.id,
+                                      "value",
+                                      e.target.value
+                                    )
+                                  }
+                                  placeholder="0"
+                                  min="0"
+                                  max="100"
+                                  step="0.01"
+                                  readOnly={cost.id === "2"} // Solo Local taxes es readonly
+                                />
+                                <span className="ml-1 text-gray-600">%</span>
+                              </div>
+                              {cost.id !== "1" &&
+                              cost.id !== "2" && ( // No mostrar botón de eliminar para AVB y Local taxes
+                                  <button
+                                    type="button"
+                                    className="ml-2 p-1 text-red-500 hover:bg-red-50 rounded-full"
+                                    onClick={() =>
+                                      removeItem(
+                                        customerHiddenCosts,
+                                        setCustomerHiddenCosts,
+                                        cost.id
+                                      )
+                                    }
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-4 w-4"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M6 18L18 6M6 6l12 12"
+                                      />
+                                    </svg>
+                                  </button>
+                                )}
+                            </div>
+                          ))}
+
+                          {/* Botón para agregar más costos ocultos */}
+                          <div className="flex justify-center">
+                            <button
+                              type="button"
+                              className="p-1 bg-orange-100 text-orange-600 rounded-full hover:bg-orange-200"
+                              onClick={addCustomerHiddenCost}
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-5 w-5"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -1119,7 +1619,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
 
                     <div>
                       <label className="block text-sm font-medium text-gray-600 mb-1">
-                        Unit Price
+                        Publisher Final Rate
                       </label>
                       <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
                         {formData.unitCost
@@ -1133,7 +1633,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
 
                     <div>
                       <label className="block text-sm font-medium text-gray-600 mb-1">
-                        USMC Rate
+                        Customer Final Negotiated Rate
                       </label>
                       <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
                         {formData.usmcRate
@@ -1141,13 +1641,13 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                           : "$0.00"}
                       </div>
                       <p className="text-xs text-gray-500 mt-1">
-                        80% of the customer rate
+                        Final rate negotiated with customer
                       </p>
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-gray-600 mb-1">
-                        Customer Rate
+                        Customer Net Rate
                       </label>
                       <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
                         {formData.customerNetRate
@@ -1156,6 +1656,78 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                       </div>
                       <p className="text-xs text-gray-500 mt-1">
                         What we charge the customer
+                      </p>
+                    </div>
+
+                    <div className="py-3">
+                      <div className="w-full border-t border-gray-200"></div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-1">
+                        Gross Margin (%)
+                      </label>
+                      <div className="flex items-center">
+                        <input
+                          type="number"
+                          step="0.1"
+                          min="0"
+                          max="100"
+                          className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors font-bold"
+                          value={
+                            formData.grossMargin === 0
+                              ? ""
+                              : formData.grossMargin
+                          }
+                          onChange={(e) => {
+                            const val =
+                              e.target.value === ""
+                                ? ""
+                                : Number(e.target.value);
+                            handleChange("grossMargin", val);
+                          }}
+                          placeholder="Ex: 30"
+                        />
+                        <span className="ml-2 text-gray-600">%</span>
+                        {formData.grossMargin !== undefined &&
+                          formData.grossMargin > 0 && (
+                            <span
+                              className={`ml-2 px-2 py-1 rounded-full text-xs font-medium ${
+                                formData.grossMargin >= 25
+                                  ? "bg-green-100 text-green-800"
+                                  : formData.grossMargin >= 15
+                                  ? "bg-yellow-100 text-yellow-800"
+                                  : "bg-red-100 text-red-800"
+                              }`}
+                            >
+                              {formData.grossMargin >= 25
+                                ? "Excellent"
+                                : formData.grossMargin >= 15
+                                ? "Acceptable"
+                                : "Low"}
+                            </span>
+                          )}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-1">
+                        Gross Margin ($)
+                      </label>
+                      <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
+                        {formData.grossMargin &&
+                        formData.customerNetRate &&
+                        formData.publisherOpenRate
+                          ? formatCurrency(
+                              ((formData.customerNetRate -
+                                formData.publisherOpenRate) *
+                                formData.units) /
+                                1000
+                            )
+                          : "$0.00"}
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Calculated based on rates and units
                       </p>
                     </div>
                   </div>
