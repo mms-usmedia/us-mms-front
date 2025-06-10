@@ -188,7 +188,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                   className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
                 >
                   <FaSave className="h-4 w-4" />
-                  Guardar Cambios
+                  Save changes
                 </button>
                 {!editMode && (
                   <button
@@ -196,7 +196,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                     className="px-4 py-2.5 bg-white hover:bg-gray-100 text-gray-700 rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm border border-gray-300"
                   >
                     <FaTimes className="h-4 w-4" />
-                    Cancelar
+                    Cancel
                   </button>
                 )}
               </>
@@ -206,7 +206,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                 className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
               >
                 <FaEdit className="h-4 w-4" />
-                Editar Detalles
+                Edit Details
               </button>
             )}
           </div>
@@ -219,14 +219,14 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
           <div className="space-y-6 bg-white p-6 rounded-lg shadow-md border border-gray-200">
             <h3 className="text-xl font-semibold text-gray-800 border-b border-gray-200 pb-3 flex items-center">
               <FaBuilding className="mr-2 text-indigo-500" />
-              <span>Información Básica</span>
+              <span>Basic Information</span>
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Name */}
               <div>
                 <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
-                  Nombre
+                  Name
                 </label>
                 {isEditing ? (
                   <input
@@ -245,7 +245,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
               {/* Legal Name */}
               <div>
                 <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
-                  Nombre Legal
+                  Legal Name
                 </label>
                 {isEditing ? (
                   <input
@@ -264,7 +264,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
               {/* Type */}
               <div>
                 <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
-                  Tipo
+                  Type
                 </label>
                 {isEditing ? (
                   <select
@@ -312,7 +312,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
               {/* Country */}
               <div>
                 <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
-                  País
+                  Country
                 </label>
                 {isEditing ? (
                   <select
@@ -336,7 +336,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
               {/* Tax ID */}
               <div>
                 <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
-                  Identificación Fiscal
+                  Tax ID
                 </label>
                 {isEditing ? (
                   <input
@@ -355,7 +355,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
               {/* Industry */}
               <div>
                 <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
-                  Industria
+                  Industry
                 </label>
                 {isEditing ? (
                   <select
@@ -384,7 +384,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
               {/* Website */}
               <div>
                 <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
-                  Sitio Web
+                Website
                 </label>
                 {isEditing ? (
                   <input
@@ -407,7 +407,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                       </a>
                     ) : (
                       <span className="text-gray-500 italic">
-                        No especificado
+                        Not specified
                       </span>
                     )}
                   </p>
@@ -418,7 +418,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
               {!editedOrganization.isHolding && (
                 <div>
                   <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
-                    Nombre de Holding
+                  Holding Name
                   </label>
                   {isEditing ? (
                     <input
@@ -433,7 +433,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                     <p className="text-gray-800 font-medium">
                       {organization.holdingName || (
                         <span className="text-gray-500 italic">
-                          No especificado
+                          Not specified
                         </span>
                       )}
                     </p>
@@ -512,13 +512,13 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
           <div className="space-y-6 bg-white p-6 rounded-lg shadow-md border border-gray-200">
             <h3 className="text-xl font-semibold text-gray-800 border-b border-gray-200 pb-3 flex items-center">
               <FaMapMarkerAlt className="mr-2 text-blue-500" />
-              <span>Información de Contacto</span>
+              <span>Contact Information</span>
             </h3>
             <div className="space-y-4">
               {/* Address */}
               <div>
                 <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
-                  Dirección
+                Address
                 </label>
                 {isEditing ? (
                   <input
@@ -531,7 +531,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                   <p className="text-gray-800 font-medium">
                     {organization.address || (
                       <span className="text-gray-500 italic">
-                        No especificado
+                        Not specified
                       </span>
                     )}
                   </p>
@@ -542,7 +542,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
               <div className="grid grid-cols-3 gap-4">
                 <div>
                   <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
-                    Ciudad
+                  City
                   </label>
                   {isEditing ? (
                     <input
@@ -555,7 +555,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                     <p className="text-gray-800 font-medium">
                       {organization.city || (
                         <span className="text-gray-500 italic">
-                          No especificado
+                          Not specified
                         </span>
                       )}
                     </p>
@@ -564,7 +564,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
 
                 <div>
                   <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
-                    Estado/Provincia
+                    State/Province
                   </label>
                   {isEditing ? (
                     <input
@@ -577,7 +577,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                     <p className="text-gray-800 font-medium">
                       {organization.state || (
                         <span className="text-gray-500 italic">
-                          No especificado
+                         Not specified
                         </span>
                       )}
                     </p>
@@ -586,7 +586,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
 
                 <div>
                   <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
-                    Código Postal
+                    Zip Code
                   </label>
                   {isEditing ? (
                     <input
@@ -599,7 +599,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                     <p className="text-gray-800 font-medium">
                       {organization.zipCode || (
                         <span className="text-gray-500 italic">
-                          No especificado
+                          Not specified
                         </span>
                       )}
                     </p>
@@ -610,7 +610,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
               {/* Phone */}
               <div>
                 <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
-                  Teléfono
+                  Phone
                 </label>
                 {isEditing ? (
                   <input
@@ -623,7 +623,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                   <p className="text-gray-800 font-medium">
                     {organization.phone || (
                       <span className="text-gray-500 italic">
-                        No especificado
+                        Not specified
                       </span>
                     )}
                   </p>
@@ -634,12 +634,12 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
               <div className="border-t border-gray-200 pt-4 mt-4">
                 <h4 className="text-md font-semibold text-gray-800 mb-3 flex items-center">
                   <FaIdCard className="mr-2 text-blue-500" />
-                  Contacto Principal
+                  Primary Contact
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
-                      Nombre de Contacto
+                      Name
                     </label>
                     {isEditing ? (
                       <input
@@ -654,7 +654,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                       <p className="text-gray-800 font-medium">
                         {organization.contactName || (
                           <span className="text-gray-500 italic">
-                            No especificado
+                            Not specified
                           </span>
                         )}
                       </p>
@@ -662,7 +662,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                   </div>
                   <div>
                     <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
-                      Email de Contacto
+                      Email
                     </label>
                     {isEditing ? (
                       <input
@@ -698,7 +698,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                           </a>
                         ) : (
                           <span className="text-gray-500 italic">
-                            No especificado
+                            Not specified
                           </span>
                         )}
                       </p>
@@ -713,13 +713,13 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
           <div className="space-y-6 bg-white p-6 rounded-lg shadow-md border border-gray-200">
             <h3 className="text-xl font-semibold text-gray-800 border-b border-gray-200 pb-3 flex items-center">
               <FaIdCard className="mr-2 text-purple-500" />
-              <span>Información de Facturación</span>
+              <span>Billing Information</span>
             </h3>
             <div className="mt-4 space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
-                    Moneda
+                    Currency
                   </label>
                   {isEditing ? (
                     <select
@@ -740,7 +740,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                     <p className="text-gray-800 font-medium">
                       {organization.billingCurrency || (
                         <span className="text-gray-500 italic">
-                          No especificado
+                          Not specified
                         </span>
                       )}
                     </p>
@@ -748,7 +748,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                 </div>
                 <div>
                   <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
-                    Términos de Pago
+                    Payment Terms
                   </label>
                   {isEditing ? (
                     <select
@@ -758,7 +758,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                       }
                       className="w-full px-3 py-2 border border-gray-300 focus:border-purple-500 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 text-gray-900 bg-white"
                     >
-                      <option value="">Seleccionar términos</option>
+                      <option value="">Select payment terms</option>
                       {paymentTermsOptions.map((term) => (
                         <option key={term} value={term}>
                           {term}
@@ -769,7 +769,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                     <p className="text-gray-800 font-medium">
                       {organization.paymentTerms || (
                         <span className="text-gray-500 italic">
-                          No especificado
+                          Not specified
                         </span>
                       )}
                     </p>
@@ -778,7 +778,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
               </div>
               <div>
                 <label className="block text-xs uppercase tracking-wide font-semibold text-gray-600 mb-1">
-                  Dirección de Facturación
+                  Billing Address
                 </label>
                 {isEditing ? (
                   <textarea
@@ -793,7 +793,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                   <p className="text-gray-800 font-medium">
                     {organization.billingAddress || (
                       <span className="text-gray-500 italic">
-                        Igual que la dirección física
+                        Same as physical address
                       </span>
                     )}
                   </p>
@@ -819,7 +819,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
                   d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                 />
               </svg>
-              <span>Descripción</span>
+              <span>Description</span>
             </h3>
             {isEditing ? (
               <textarea
@@ -833,7 +833,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
               <div className="mt-1 text-gray-800 font-medium p-3 bg-white min-h-[120px]">
                 {organization.description || (
                   <span className="text-gray-500 italic">
-                    Sin descripción disponible.
+                    No description available.
                   </span>
                 )}
               </div>
