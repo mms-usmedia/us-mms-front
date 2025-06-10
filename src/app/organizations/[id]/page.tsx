@@ -14,6 +14,7 @@ import OrganizationDetails from "@/components/organizations/OrganizationDetails"
 import OrganizationContacts from "@/components/organizations/OrganizationContacts";
 import OrganizationRates from "@/components/organizations/OrganizationRates";
 import OrganizationCampaigns from "@/components/organizations/OrganizationCampaigns";
+import OrganizationTrade from "@/components/organizations/OrganizationTrade";
 
 // Organization interface
 interface Organization {
@@ -486,11 +487,12 @@ export default function OrganizationDetailPage() {
   const [organization, setOrganization] = useState<Organization | null>(null);
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<
-    "details" | "contacts" | "rates" | "campaigns"
+    "details" | "contacts" | "rates" | "campaigns" | "trade"
   >("details");
   const [isEditingDetails, setIsEditingDetails] = useState(false);
   const [showAddContactForm, setShowAddContactForm] = useState(false);
   const [showAddRateForm, setShowAddRateForm] = useState(false);
+  const [showAddIncentiveForm, setShowAddIncentiveForm] = useState(false);
 
   // Función global para agregar contacto, disponible para todos los componentes
   useEffect(() => {
@@ -551,6 +553,16 @@ export default function OrganizationDetailPage() {
       organization &&
       organization.type !== "Publisher" &&
       activeTab === "rates"
+    ) {
+      setActiveTab("details");
+    }
+
+    // Cambiar de pestaña si se selecciona trade en una organización no-Agency
+    if (
+      organization &&
+      organization.type !== "Agency" &&
+      organization.type !== "Holding Agency" &&
+      activeTab === "trade"
     ) {
       setActiveTab("details");
     }
@@ -655,6 +667,10 @@ export default function OrganizationDetailPage() {
                     ...(organization.type === "Publisher"
                       ? [{ id: "rates", name: "Rates" }]
                       : []),
+                    ...(organization.type === "Agency" ||
+                    organization.type === "Holding Agency"
+                      ? [{ id: "trade", name: "Trade" }]
+                      : []),
                     { id: "campaigns", name: "Campaigns" },
                   ].map((tab) => (
                     <button
@@ -666,6 +682,7 @@ export default function OrganizationDetailPage() {
                             | "contacts"
                             | "rates"
                             | "campaigns"
+                            | "trade"
                         )
                       }
                       className={`
@@ -808,6 +825,33 @@ export default function OrganizationDetailPage() {
                       Add Rate
                     </button>
                   )}
+                  {activeTab === "trade" &&
+                    (organization.type === "Agency" ||
+                      organization.type === "Holding Agency") && (
+                      <button
+                        onClick={() => {
+                          console.log("Botón Add Incentive clickeado");
+                          setShowAddIncentiveForm(true);
+                        }}
+                        className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-md text-sm font-medium flex items-center gap-2 shadow-sm"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                          />
+                        </svg>
+                        Add Incentive
+                      </button>
+                    )}
                 </div>
               </div>
             </div>
@@ -845,6 +889,18 @@ export default function OrganizationDetailPage() {
                   />
                 </div>
               )}
+              {activeTab === "trade" &&
+                (organization.type === "Agency" ||
+                  organization.type === "Holding Agency") && (
+                  <div id="organization-trade">
+                    <OrganizationTrade
+                      organization={organization}
+                      hideActionButtons={true}
+                      showAddIncentiveForm={showAddIncentiveForm}
+                      onFormDisplay={() => setShowAddIncentiveForm(false)}
+                    />
+                  </div>
+                )}
               {activeTab === "campaigns" && (
                 <OrganizationCampaigns organizationId={organization.id} />
               )}
