@@ -278,7 +278,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-sm font-medium text-gray-700">
-                  Organization Type
+                  Organization Customer Type
                 </p>
                 {isEditing ? (
                   <div className="relative">
@@ -472,46 +472,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-700">
-                  US Media Billing Party
-                </p>
-                {isEditing ? (
-                  <div className="relative mt-1">
-                    <div className="flex items-center border-2 border-orange-100 focus-within:border-orange-300 rounded bg-white">
-                      <input
-                        type="text"
-                        className="text-sm w-full p-2 bg-white rounded text-gray-900 focus:ring-0 border-0 focus:outline-none"
-                        value={billingPartySearch}
-                        onChange={(e) => setBillingPartySearch(e.target.value)}
-                        placeholder="Search billing party"
-                      />
-                      <FaSearch className="mr-2 text-gray-400" />
-                    </div>
-                    {billingPartySearch && (
-                      <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
-                        {filteredBillingParties.map((party) => (
-                          <div
-                            key={party}
-                            className="px-4 py-2 hover:bg-orange-50 cursor-pointer text-sm"
-                            onClick={() => {
-                              handleChange("billingParty", party);
-                              setBillingPartySearch("");
-                            }}
-                          >
-                            {party}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <p className="mt-1 text-sm text-gray-900">
-                    {campaign.billingParty}
-                  </p>
-                )}
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-700">
-                  Billing Contact
+                  Customer Billing Contact
                 </p>
                 {isEditing ? (
                   <input
@@ -531,7 +492,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-700">
-                  Agency Contact
+                  Customer Main Contact
                 </p>
                 {isEditing ? (
                   <input
@@ -549,47 +510,6 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                   </p>
                 )}
               </div>
-              {campaign.organizationType !== "Publisher" && (
-                <div>
-                  <p className="text-sm font-medium text-gray-700">Market</p>
-                  {isEditing ? (
-                    <div className="relative mt-1">
-                      <select
-                        className="text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
-                        value={editedCampaign.targetMarket || ""}
-                        onChange={(e) =>
-                          handleChange("targetMarket", e.target.value)
-                        }
-                      >
-                        <option value="">Seleccionar mercado...</option>
-                        {marketOptions.map((market) => (
-                          <option key={market} value={market}>
-                            {market}
-                          </option>
-                        ))}
-                      </select>
-                      <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                        <svg
-                          className="h-5 w-5 text-orange-500"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  ) : (
-                    <p className="mt-1 text-sm text-gray-900">
-                      {campaign.targetMarket || "-"}
-                    </p>
-                  )}
-                </div>
-              )}
               <div>
                 <p className="text-sm font-medium text-gray-700">CIO Owner</p>
                 {isEditing ? (
@@ -634,6 +554,47 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                   </p>
                 )}
               </div>
+              {campaign.organizationType !== "Publisher" && (
+                <div>
+                  <p className="text-sm font-medium text-gray-700">Market</p>
+                  {isEditing ? (
+                    <div className="relative mt-1">
+                      <select
+                        className="text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
+                        value={editedCampaign.targetMarket || ""}
+                        onChange={(e) =>
+                          handleChange("targetMarket", e.target.value)
+                        }
+                      >
+                        <option value="">Seleccionar mercado...</option>
+                        {marketOptions.map((market) => (
+                          <option key={market} value={market}>
+                            {market}
+                          </option>
+                        ))}
+                      </select>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                        <svg
+                          className="h-5 w-5 text-orange-500"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="mt-1 text-sm text-gray-900">
+                      {campaign.targetMarket || "-"}
+                    </p>
+                  )}
+                </div>
+              )}
               <div>
                 <p className="text-sm font-medium text-gray-700">
                   Organization Publisher
@@ -743,7 +704,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
               >
                 <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
               </svg>
-              <span className="text-orange-600">US Media Contacts</span>
+              <span className="text-orange-600">US Media Information</span>
             </h2>
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -784,45 +745,6 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 ) : (
                   <p className="mt-1 text-sm text-gray-900 font-medium bg-orange-50 px-2 py-1 rounded-md inline-block border border-orange-100">
                     {campaign.salesperson || "-"}
-                  </p>
-                )}
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-700">Trafficker</p>
-                {isEditing ? (
-                  <div className="relative">
-                    <select
-                      className="mt-1 text-sm w-full border-2 border-gray-200 focus:border-gray-400 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
-                      value={editedCampaign.trafficker || ""}
-                      onChange={(e) =>
-                        handleChange("trafficker", e.target.value)
-                      }
-                    >
-                      <option value="">Seleccionar...</option>
-                      <option value="Octavio Martínez">Octavio Martínez</option>
-                      <option value="Ana Sobreyra">Ana Sobreyra</option>
-                      <option value="Luciana Egurrola">Luciana Egurrola</option>
-                      <option value="Carlos Rodriguez">Carlos Rodriguez</option>
-                      <option value="Maria Fernandez">Maria Fernandez</option>
-                    </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none mt-1">
-                      <svg
-                        className="h-5 w-5 text-gray-500"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                ) : (
-                  <p className="mt-1 text-sm text-gray-900 font-medium bg-orange-50 px-2 py-1 rounded-md inline-block border border-orange-100">
-                    {campaign.trafficker || "-"}
                   </p>
                 )}
               </div>
@@ -905,6 +827,84 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 ) : (
                   <p className="mt-1 text-sm text-gray-900 font-medium bg-orange-50 px-2 py-1 rounded-md inline-block border border-orange-100">
                     {campaign.adOpsLeader || "-"}
+                  </p>
+                )}
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-700">Trafficker</p>
+                {isEditing ? (
+                  <div className="relative">
+                    <select
+                      className="mt-1 text-sm w-full border-2 border-gray-200 focus:border-gray-400 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
+                      value={editedCampaign.trafficker || ""}
+                      onChange={(e) =>
+                        handleChange("trafficker", e.target.value)
+                      }
+                    >
+                      <option value="">Seleccionar...</option>
+                      <option value="Octavio Martínez">Octavio Martínez</option>
+                      <option value="Ana Sobreyra">Ana Sobreyra</option>
+                      <option value="Luciana Egurrola">Luciana Egurrola</option>
+                      <option value="Carlos Rodriguez">Carlos Rodriguez</option>
+                      <option value="Maria Fernandez">Maria Fernandez</option>
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none mt-1">
+                      <svg
+                        className="h-5 w-5 text-gray-500"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="mt-1 text-sm text-gray-900 font-medium bg-orange-50 px-2 py-1 rounded-md inline-block border border-orange-100">
+                    {campaign.trafficker || "-"}
+                  </p>
+                )}
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-700">
+                  US Media Billing Party
+                </p>
+                {isEditing ? (
+                  <div className="relative mt-1">
+                    <div className="flex items-center border-2 border-orange-100 focus-within:border-orange-300 rounded bg-white">
+                      <input
+                        type="text"
+                        className="text-sm w-full p-2 bg-white rounded text-gray-900 focus:ring-0 border-0 focus:outline-none"
+                        value={billingPartySearch}
+                        onChange={(e) => setBillingPartySearch(e.target.value)}
+                        placeholder="Search billing party"
+                      />
+                      <FaSearch className="mr-2 text-gray-400" />
+                    </div>
+                    {billingPartySearch && (
+                      <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
+                        {filteredBillingParties.map((party) => (
+                          <div
+                            key={party}
+                            className="px-4 py-2 hover:bg-orange-50 cursor-pointer text-sm"
+                            onClick={() => {
+                              handleChange("billingParty", party);
+                              setBillingPartySearch("");
+                            }}
+                          >
+                            {party}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <p className="mt-1 text-sm text-gray-900 font-medium bg-orange-50 px-2 py-1 rounded-md inline-block border border-orange-100">
+                    {campaign.billingParty}
                   </p>
                 )}
               </div>
