@@ -32,7 +32,10 @@ const PublisherInsertionOrderForm: React.FC<
     notes: billingServerNotes[BillingServerType.PUBLISHER_AD_SERVER],
     dateSent: today,
     sendBy: "",
-    investment: adUnits.reduce((total, unit) => total + unit.investment, 0),
+    customerInvestment: adUnits.reduce(
+      (total, unit) => total + unit.customerInvestment,
+      0
+    ),
     market: adUnits.length > 0 ? adUnits[0].market : "",
     adUnits: adUnits,
     internalNotes: "",
@@ -219,7 +222,7 @@ const PublisherInsertionOrderForm: React.FC<
                 <input
                   type="number"
                   className="mt-1 block w-full border-2 border-amber-100 rounded p-2 text-gray-900 bg-amber-50 transition-colors"
-                  value={pio.investment}
+                  value={pio.customerInvestment}
                   readOnly
                 />
               </div>
@@ -244,7 +247,7 @@ const PublisherInsertionOrderForm: React.FC<
                 required
               >
                 <option value={BillingServerType.CUSTOMER_AD_SERVER}>
-                Customer Ad Server
+                  Customer Ad Server
                 </option>
                 <option value={BillingServerType.PUBLISHER_AD_SERVER}>
                   Publisher Ad Server
@@ -385,7 +388,7 @@ const PublisherInsertionOrderForm: React.FC<
                     ${unit.unitCost.toFixed(2)}
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-700">
-                    ${unit.investment.toLocaleString()}
+                    ${unit.customerInvestment.toLocaleString()}
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-700">
                     {unit.startDate}
@@ -404,7 +407,7 @@ const PublisherInsertionOrderForm: React.FC<
                   Total Investment:
                 </td>
                 <td className="px-3 py-2 whitespace-nowrap text-sm font-bold text-blue-900">
-                  ${pio.investment.toLocaleString()}
+                  ${pio.customerInvestment.toLocaleString()}
                 </td>
                 <td colSpan={2}></td>
               </tr>

@@ -82,8 +82,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       model: "CPM",
       margin: "29.6%",
       unitCost: 0,
-      investment: 0,
-      usmcRate: 0,
+      customerInvestment: 0,
       customerNetRate: 0,
       startDate: new Date().toISOString().split("T")[0],
       endDate: new Date(new Date().setMonth(new Date().getMonth() + 1))
@@ -253,60 +252,90 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
   const calculateFinancials = (data: AdUnit): AdUnit => {
     const updated = { ...data };
 
+    // Calcular descuentos del Publisher
+    let publisherDiscountTotal = 0;
+    publisherDiscounts.forEach((discount) => {
+      publisherDiscountTotal += discount.value / 100;
+    });
+
+    // Calcular costos ocultos del Publisher
+    let publisherHiddenCostTotal = 0;
+    publisherHiddenCosts.forEach((cost) => {
+      publisherHiddenCostTotal += cost.value / 100;
+    });
+
+    // Calcular descuentos del Customer
+    let customerDiscountTotal = 0;
+    customerDiscounts.forEach((discount) => {
+      customerDiscountTotal += discount.value / 100;
+    });
+
+    // Calcular costos ocultos del Customer
+    let customerHiddenCostTotal = 0;
+    customerHiddenCosts.forEach((cost) => {
+      customerHiddenCostTotal += cost.value / 100;
+    });
+
+    // Calcular Publisher Final Rate (Publisher open rate - disccounts y hidden costs)
+    if (updated.publisherOpenRate) {
+      const discountAmount = updated.publisherOpenRate * publisherDiscountTotal;
+      const hiddenCostAmount =
+        updated.publisherOpenRate * publisherHiddenCostTotal;
+      updated.unitCost =
+        updated.publisherOpenRate - discountAmount + hiddenCostAmount;
+    }
+
+    // Calcular Customer Final Negotiated Rate (Customer net rate - customer discounts)
+    let finalNegotiatedRate = 0;
+    if (updated.customerNetRate) {
+      const customerDiscountAmount =
+        updated.customerNetRate * customerDiscountTotal;
+      const customerHiddenCostAmount =
+        updated.customerNetRate * customerHiddenCostTotal;
+      finalNegotiatedRate =
+        updated.customerNetRate -
+        customerDiscountAmount +
+        customerHiddenCostAmount;
+    }
+
+    // Calcular Customer Investment (Units * Customer Final Negotiated Price)
+    if (updated.units && finalNegotiatedRate) {
+      updated.customerInvestment = parseFloat(
+        ((updated.units * finalNegotiatedRate) / 1000).toFixed(2)
+      );
+    }
+
     // Si tenemos unidades y una tarifa del publisher, calculamos el costo
-    if (updated.units && updated.publisherOpenRate) {
+    if (updated.units && updated.unitCost) {
       // Calcular el costo neto del publisher (lo que le pagamos al medio)
       updated.publisherNetCost = parseFloat(
-        ((updated.publisherOpenRate * updated.units) / 1000).toFixed(2)
+        ((updated.unitCost * updated.units) / 1000).toFixed(2)
       );
-
-      // Calcular la inversión total si tenemos unidades y costo neto
-      if (!updated.investment) {
-        updated.investment = updated.publisherNetCost;
-      }
     }
 
     // Si tenemos tarifa de publisher pero no tarifa de customer o margen bruto, establecemos valores predeterminados
-    if (
-      updated.publisherOpenRate &&
-      !updated.customerNetRate &&
-      !updated.grossMargin
-    ) {
+    if (updated.unitCost && !updated.customerNetRate && !updated.grossMargin) {
       // Establecer un margen bruto predeterminado del 30%
       updated.grossMargin = 30;
 
       // Calcular la tarifa del customer basada en el margen deseado
       const marginPercentage = updated.grossMargin / 100;
       updated.customerNetRate = parseFloat(
-        (updated.publisherOpenRate / (1 - marginPercentage)).toFixed(2)
+        (updated.unitCost / (1 - marginPercentage)).toFixed(2)
       );
     }
 
-    // Si tenemos tarifa del customer, calculamos la tarifa USMC (lo que recibimos)
-    if (updated.customerNetRate) {
-      updated.usmcRate = parseFloat((updated.customerNetRate * 0.8).toFixed(2));
-    }
-
     // Si tenemos tarifa del customer y tarifa del publisher, calculamos el margen bruto
-    if (
-      updated.customerNetRate &&
-      updated.publisherOpenRate &&
-      !updated.grossMargin
-    ) {
-      const marginValue =
-        1 - updated.publisherOpenRate / updated.customerNetRate;
+    if (updated.customerNetRate && updated.unitCost && !updated.grossMargin) {
+      const marginValue = 1 - updated.unitCost / updated.customerNetRate;
       updated.grossMargin = parseFloat((marginValue * 100).toFixed(2));
     }
 
     // Si tenemos margen bruto y tarifa del publisher, calculamos la tarifa del customer
-    if (
-      updated.grossMargin &&
-      updated.publisherOpenRate &&
-      !updated.customerNetRate
-    ) {
+    if (updated.grossMargin && updated.unitCost && !updated.customerNetRate) {
       const marginPercentage = updated.grossMargin / 100;
       updated.customerNetRate = parseFloat(
-        (updated.publisherOpenRate / (1 - marginPercentage)).toFixed(2)
+        (updated.unitCost / (1 - marginPercentage)).toFixed(2)
       );
     }
 
@@ -428,7 +457,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       // Recalcular valores dependientes
       if (
         field === "units" ||
-        field === "investment" ||
+        field === "customerInvestment" ||
         field === "localTaxes" ||
         field === "publisherOpenRate" ||
         field === "publisherCommission" ||
@@ -469,6 +498,8 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       ...publisherDiscounts,
       { id: newId, name: "", value: 0 },
     ]);
+    // Recalcular cuando se añade
+    setFormData((prevData) => calculateFinancials(prevData));
   };
 
   // Función para añadir un costo oculto a Publisher
@@ -478,6 +509,8 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       ...publisherHiddenCosts,
       { id: newId, name: "", value: 0 },
     ]);
+    // Recalcular cuando se añade
+    setFormData((prevData) => calculateFinancials(prevData));
   };
 
   // Función para añadir un descuento a Customer
@@ -487,6 +520,8 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       ...customerDiscounts,
       { id: newId, name: "", value: 0 },
     ]);
+    // Recalcular cuando se añade
+    setFormData((prevData) => calculateFinancials(prevData));
   };
 
   // Función para añadir un costo oculto a Customer
@@ -496,6 +531,8 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       ...customerHiddenCosts,
       { id: newId, name: "", value: 0 },
     ]);
+    // Recalcular cuando se añade
+    setFormData((prevData) => calculateFinancials(prevData));
   };
 
   // Función para actualizar un descuento o costo oculto
@@ -513,11 +550,16 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
         ? {
             ...item,
             [field]:
-              field === "value" ? (value === "" ? "" : Number(value)) : value,
+              field === "value" ? (value === "" ? 0 : Number(value)) : value,
           }
         : item
     );
     setItems(updatedItems);
+
+    // Recalcular los financieros cuando se actualiza un descuento o costo
+    if (field === "value") {
+      setFormData((prevData) => calculateFinancials(prevData));
+    }
   };
 
   // Función para eliminar un descuento o costo oculto
@@ -530,6 +572,8 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
   ) => {
     const updatedItems = items.filter((item) => item.id !== id);
     setItems(updatedItems);
+    // Recalcular cuando se elimina
+    setFormData((prevData) => calculateFinancials(prevData));
   };
 
   // Funciones para expandir/contraer secciones específicas
@@ -546,6 +590,16 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       customerHiddenCosts: !prev.customerHiddenCosts,
     }));
   };
+
+  // Efecto para recalcular cuando cambian los descuentos o costos ocultos
+  useEffect(() => {
+    setFormData((prevData) => calculateFinancials(prevData));
+  }, [
+    publisherDiscounts,
+    publisherHiddenCosts,
+    customerDiscounts,
+    customerHiddenCosts,
+  ]);
 
   return (
     <div className="bg-white shadow-lg border border-gray-200 rounded-xl overflow-hidden">
@@ -1059,7 +1113,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
 
                     <div>
                       <label className="block text-sm font-medium text-gray-600 mb-1">
-                        Customer Net Rate
+                        Customer Investment
                       </label>
                       <div className="flex items-center">
                         <span className="text-gray-500 font-medium mr-2">
@@ -1069,10 +1123,10 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                           type="number"
                           step="0.01"
                           className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors font-bold"
-                          value={formData.customerNetRate || ""}
+                          value={formData.customerInvestment || ""}
                           onChange={(e) =>
                             handleChange(
-                              "customerNetRate",
+                              "customerInvestment",
                               Number(e.target.value)
                             )
                           }
@@ -1080,7 +1134,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                         />
                       </div>
                       <p className="text-xs text-gray-500 mt-1">
-                        Automatically affects the gross margin
+                        Lo que le cobramos al cliente sin descuentos
                       </p>
                     </div>
                   </div>
@@ -1210,7 +1264,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                       </label>
                       <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
                         {formatCurrency(
-                          (formData.investment *
+                          (formData.customerInvestment *
                             (formData.agencyCommission || 0)) /
                             100
                         )}
@@ -1627,7 +1681,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                           : "$0.0000"}
                       </div>
                       <p className="text-xs text-gray-500 mt-1">
-                        Automatically calculated
+                        Publisher Open Rate - Discounts + Hidden Costs
                       </p>
                     </div>
 
@@ -1636,12 +1690,12 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                         Customer Final Negotiated Rate
                       </label>
                       <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
-                        {formData.usmcRate
-                          ? `$${formData.usmcRate.toFixed(2)}`
+                        {formData.customerNetRate
+                          ? `$${(formData.customerNetRate * 0.85).toFixed(2)}`
                           : "$0.00"}
                       </div>
                       <p className="text-xs text-gray-500 mt-1">
-                        Final rate negotiated with customer
+                        Customer Net Rate - Discounts + Hidden Costs
                       </p>
                     </div>
 
@@ -1655,7 +1709,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                           : "$0.00"}
                       </div>
                       <p className="text-xs text-gray-500 mt-1">
-                        What we charge the customer
+                        Base rate before discounts and hidden costs
                       </p>
                     </div>
 
@@ -1716,13 +1770,13 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                       </label>
                       <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
                         {formData.grossMargin &&
-                        formData.customerNetRate &&
-                        formData.publisherOpenRate
+                        formData.unitCost &&
+                        formData.units &&
+                        formData.customerInvestment &&
+                        formData.publisherNetCost
                           ? formatCurrency(
-                              ((formData.customerNetRate -
-                                formData.publisherOpenRate) *
-                                formData.units) /
-                                1000
+                              formData.customerInvestment -
+                                formData.publisherNetCost
                             )
                           : "$0.00"}
                       </div>

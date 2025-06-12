@@ -73,8 +73,7 @@ export interface AdUnit {
   model: string;
   margin: string;
   unitCost: number;
-  investment: number;
-  usmcRate: number;
+  customerInvestment: number;
   customerNetRate: number;
   startDate: string;
   endDate: string;
@@ -117,7 +116,7 @@ export interface PublisherInsertionOrder {
   internalNotes?: string;
   dateSent: string;
   sendBy: string;
-  investment: number;
+  customerInvestment: number;
   market: string;
   adUnits: AdUnit[];
 }

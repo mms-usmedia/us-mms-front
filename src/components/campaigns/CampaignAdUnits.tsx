@@ -38,11 +38,11 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
 
     if (field === "units") {
       // Si cambian las units, recalculamos unit cost
-      if (updatedUnit.investment && value) {
-        const unitCost = (updatedUnit.investment / value) * 1000;
+      if (updatedUnit.customerInvestment && value) {
+        const unitCost = (updatedUnit.customerInvestment / value) * 1000;
         updatedUnit.unitCost = parseFloat(unitCost.toFixed(2));
       }
-    } else if (field === "investment") {
+    } else if (field === "customerInvestment") {
       // Si cambia la inversión, recalculamos unit cost
       if (updatedUnit.units && value) {
         const unitCost = (value / updatedUnit.units) * 1000;
@@ -50,15 +50,13 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
       }
     }
 
-    // Calculamos el margen, USMC Rate y Customer Net Rate
+    // Calculamos el margen y Customer Net Rate
     updatedUnit.margin = "29.6%"; // Ejemplo
 
-    // USMC Rate podría ser un porcentaje del Unit Cost
-    const usmcRate = updatedUnit.unitCost ? updatedUnit.unitCost * 0.8 : 0;
-    updatedUnit.usmcRate = parseFloat(usmcRate.toFixed(2));
-
-    // Customer Net Rate podría ser igual al Unit Cost
-    updatedUnit.customerNetRate = updatedUnit.unitCost || 0;
+    // Customer Net Rate calculado a partir del Unit Cost y margen
+    updatedUnit.customerNetRate = updatedUnit.unitCost
+      ? updatedUnit.unitCost * 1.5
+      : 0;
 
     setEditedAdUnit(updatedUnit);
   };
@@ -75,7 +73,7 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
 
       // Si cambia units o investment, recalcular los valores dependientes
       if (
-        (field === "units" || field === "investment") &&
+        (field === "units" || field === "customerInvestment") &&
         typeof value === "number"
       ) {
         calculateDependentValues(field, value);
@@ -442,10 +440,14 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                     {/* Customer Final Negotiated Rate no es editable - calculado automáticamente */}
                     {editingAdUnit === unit.id ? (
                       <div className="w-full p-1 border border-gray-200 rounded text-sm bg-gray-50">
-                        ${editedAdUnit?.usmcRate?.toFixed(2)}
+                        $
+                        {(editedAdUnit?.customerNetRate
+                          ? editedAdUnit.customerNetRate * 0.85
+                          : 0
+                        ).toFixed(2)}
                       </div>
                     ) : (
-                      `$${unit.usmcRate.toFixed(2)}`
+                      `$${(unit.customerNetRate * 0.85).toFixed(2)}`
                     )}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
@@ -463,17 +465,17 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
                       <input
                         type="number"
                         className="w-full p-1 border rounded text-sm"
-                        value={editedAdUnit?.investment || 0}
+                        value={editedAdUnit?.customerInvestment || 0}
                         onChange={(e) =>
                           handleAdUnitChange(
-                            "investment",
+                            "customerInvestment",
                             parseFloat(e.target.value)
                           )
                         }
                         onClick={(e) => e.stopPropagation()}
                       />
                     ) : (
-                      formatCurrency(unit.investment)
+                      formatCurrency(unit.customerInvestment)
                     )}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm">
