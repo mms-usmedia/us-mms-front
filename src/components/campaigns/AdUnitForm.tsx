@@ -17,6 +17,41 @@ import {
   getOpenRate,
 } from "./publisherData";
 
+// Función para formatear números con comas para miles y puntos para decimales
+const formatNumber = (
+  value: number | undefined,
+  decimals: number = 2
+): string => {
+  if (value === undefined || value === null) return "0";
+  return value.toLocaleString("en-US", {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+};
+
+// Función para formatear números mientras el usuario escribe
+const formatNumberInput = (value: string): string => {
+  // Eliminar cualquier carácter que no sea número o punto
+  const cleanValue = value.replace(/[^\d.]/g, "");
+
+  // Dividir en parte entera y decimal
+  const parts = cleanValue.split(".");
+  const integerPart = parts[0];
+  const decimalPart = parts.length > 1 ? parts[1] : "";
+
+  // Formatear parte entera con comas
+  let formattedInteger = "";
+  for (let i = 0; i < integerPart.length; i++) {
+    if (i > 0 && (integerPart.length - i) % 3 === 0) {
+      formattedInteger += ",";
+    }
+    formattedInteger += integerPart[i];
+  }
+
+  // Retornar el número formateado
+  return decimalPart ? `${formattedInteger}.${decimalPart}` : formattedInteger;
+};
+
 interface AdUnitFormProps {
   adUnit?: AdUnit; // Si es null, estamos creando una nueva ad unit
   _campaignId: string; // Cambiado a _campaignId para indicar que no se usa
@@ -627,7 +662,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
           </button>
           <button
             type="button"
-            onClick={(e) => handleSubmit((e as unknown) as React.FormEvent)}
+            onClick={(e) => handleSubmit(e as unknown as React.FormEvent)}
             className="px-3 py-1 border border-orange-500 bg-orange-500 rounded-md text-sm font-medium text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-colors"
           >
             {isEditing ? "Save Changes" : "Create"}
@@ -1069,12 +1104,23 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                         Units
                       </label>
                       <input
-                        type="number"
+                        type="text"
                         className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors font-medium"
-                        value={formData.units}
-                        onChange={(e) =>
-                          handleChange("units", Number(e.target.value))
+                        value={
+                          formData.units
+                            ? formatNumberInput(formData.units.toString())
+                            : ""
                         }
+                        onChange={(e) => {
+                          const cleanValue = e.target.value.replace(
+                            /[^\d]/g,
+                            ""
+                          );
+                          handleChange(
+                            "units",
+                            cleanValue ? Number(cleanValue) : 0
+                          );
+                        }}
                       />
                     </div>
 
@@ -1088,7 +1134,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                         </span>
                         <div className="flex-1 block border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
                           {formData.publisherOpenRate
-                            ? formData.publisherOpenRate.toFixed(2)
+                            ? formatNumber(formData.publisherOpenRate, 2)
                             : "0.00"}
                         </div>
                       </div>
@@ -1120,16 +1166,32 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                           $
                         </span>
                         <input
-                          type="number"
-                          step="0.01"
+                          type="text"
                           className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors font-bold"
-                          value={formData.customerInvestment || ""}
-                          onChange={(e) =>
+                          value={
+                            formData.customerInvestment
+                              ? formatNumberInput(
+                                  formData.customerInvestment.toString()
+                                )
+                              : ""
+                          }
+                          onChange={(e) => {
+                            // Permitir números y un punto decimal
+                            const cleanValue = e.target.value.replace(
+                              /[^\d.]/g,
+                              ""
+                            );
+                            // Asegurar que solo haya un punto decimal
+                            const parts = cleanValue.split(".");
+                            const formattedValue =
+                              parts.length > 2
+                                ? parts[0] + "." + parts.slice(1).join("")
+                                : cleanValue;
                             handleChange(
                               "customerInvestment",
-                              Number(e.target.value)
-                            )
-                          }
+                              formattedValue ? Number(formattedValue) : 0
+                            );
+                          }}
                           placeholder="0.00"
                         />
                       </div>
@@ -1607,7 +1669,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                                 <span className="ml-1 text-gray-600">%</span>
                               </div>
                               {cost.id !== "1" &&
-                              cost.id !== "2" && ( // No mostrar botón de eliminar para AVB y Local taxes
+                                cost.id !== "2" && ( // No mostrar botón de eliminar para AVB y Local taxes
                                   <button
                                     type="button"
                                     className="ml-2 p-1 text-red-500 hover:bg-red-50 rounded-full"
@@ -1677,8 +1739,8 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                       </label>
                       <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
                         {formData.unitCost
-                          ? `$${formData.unitCost.toFixed(4)}`
-                          : "$0.0000"}
+                          ? `$${formatNumber(formData.unitCost, 2)}`
+                          : "$0.00"}
                       </div>
                       <p className="text-xs text-gray-500 mt-1">
                         Publisher Open Rate - Discounts + Hidden Costs
@@ -1691,7 +1753,10 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                       </label>
                       <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
                         {formData.customerNetRate
-                          ? `$${(formData.customerNetRate * 0.85).toFixed(2)}`
+                          ? `$${formatNumber(
+                              formData.customerNetRate * 0.85,
+                              2
+                            )}`
                           : "$0.00"}
                       </div>
                       <p className="text-xs text-gray-500 mt-1">
@@ -1705,7 +1770,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                       </label>
                       <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
                         {formData.customerNetRate
-                          ? `$${formData.customerNetRate.toFixed(2)}`
+                          ? `$${formatNumber(formData.customerNetRate, 2)}`
                           : "$0.00"}
                       </div>
                       <p className="text-xs text-gray-500 mt-1">
@@ -1723,22 +1788,36 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                       </label>
                       <div className="flex items-center">
                         <input
-                          type="number"
-                          step="0.1"
-                          min="0"
-                          max="100"
+                          type="text"
                           className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors font-bold"
                           value={
-                            formData.grossMargin === 0
+                            !formData.grossMargin || formData.grossMargin === 0
                               ? ""
-                              : formData.grossMargin
+                              : formatNumberInput(
+                                  formData.grossMargin.toString()
+                                )
                           }
                           onChange={(e) => {
+                            // Permitir números y un punto decimal
+                            const cleanValue = e.target.value.replace(
+                              /[^\d.]/g,
+                              ""
+                            );
+                            // Asegurar que solo haya un punto decimal
+                            const parts = cleanValue.split(".");
+                            const formattedValue =
+                              parts.length > 2
+                                ? parts[0] + "." + parts.slice(1).join("")
+                                : cleanValue;
+
                             const val =
-                              e.target.value === ""
+                              formattedValue === ""
                                 ? ""
-                                : Number(e.target.value);
-                            handleChange("grossMargin", val);
+                                : Number(formattedValue);
+                            // Limitar a 100%
+                            const limitedVal =
+                              typeof val === "number" && val > 100 ? 100 : val;
+                            handleChange("grossMargin", limitedVal);
                           }}
                           placeholder="Ex: 30"
                         />

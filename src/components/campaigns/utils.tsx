@@ -10,8 +10,8 @@ export const formatCurrency = (amount: number) => {
   return (
     "$" +
     amount.toLocaleString("en-US", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
     })
   );
 };
@@ -19,8 +19,11 @@ export const formatCurrency = (amount: number) => {
 /**
  * Formatea un número con separadores de miles
  */
-export const formatNumber = (num: number) => {
-  return new Intl.NumberFormat("en-US").format(num);
+export const formatNumber = (num: number, decimals: number = 0) => {
+  return new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  }).format(num);
 };
 
 /**
