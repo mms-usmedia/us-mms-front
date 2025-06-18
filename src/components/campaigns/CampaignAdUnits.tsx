@@ -29,6 +29,9 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
   const [adUnitToDelete, setAdUnitToDelete] = useState<string | null>(null);
   const [showAdUnitForm, setShowAdUnitForm] = useState(false);
   const [selectedAdUnit, setSelectedAdUnit] = useState<AdUnit | null>(null);
+  // Nuevos estados para la funcionalidad de selección y duplicación
+  const [selectionMode, setSelectionMode] = useState(false);
+  const [selectedAdUnits, setSelectedAdUnits] = useState<string[]>([]);
 
   // Función para calcular valores dependientes cuando cambia la inversión o las unidades
   const calculateDependentValues = (field: string, value: number) => {
@@ -142,6 +145,49 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
     setSelectedAdUnit(null);
   };
 
+  // Nuevas funciones para la selección y duplicación
+  const toggleSelectionMode = () => {
+    setSelectionMode(!selectionMode);
+    // Limpiar selecciones al desactivar el modo
+    if (selectionMode) {
+      setSelectedAdUnits([]);
+    }
+  };
+
+  const handleSelectAllAdUnits = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      // Seleccionar todas las ad units
+      const allAdUnitIds = campaign.adUnits?.map((unit) => unit.id) || [];
+      setSelectedAdUnits(allAdUnitIds);
+    } else {
+      // Deseleccionar todas
+      setSelectedAdUnits([]);
+    }
+  };
+
+  const handleSelectAdUnit = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    adUnitId: string
+  ) => {
+    e.stopPropagation(); // Evitar que se abra el formulario de edición
+
+    setSelectedAdUnits((prev) => {
+      if (prev.includes(adUnitId)) {
+        return prev.filter((id) => id !== adUnitId);
+      } else {
+        return [...prev, adUnitId];
+      }
+    });
+  };
+
+  const handleDuplicateSelected = () => {
+    // Aquí iría la lógica para duplicar las ad units seleccionadas
+    console.log("Ad units a duplicar:", selectedAdUnits);
+    // Después de duplicar, desactivar el modo de selección
+    setSelectionMode(false);
+    setSelectedAdUnits([]);
+  };
+
   // Si estamos mostrando el formulario, lo renderizamos
   if (showAdUnitForm) {
     return (
@@ -170,29 +216,87 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
           </svg>
           Ad Units
         </h2>
-        <button
-          onClick={handleNewAdUnit}
-          className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-md shadow-sm text-sm font-medium transition-colors flex items-center gap-1"
-        >
-          <svg
-            className="h-4 w-4"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={
+              selectionMode ? handleDuplicateSelected : toggleSelectionMode
+            }
+            className={`px-4 py-2 ${
+              selectionMode
+                ? "bg-orange-500 hover:bg-orange-600"
+                : "bg-gray-500 hover:bg-gray-600"
+            } text-white rounded-md shadow-sm text-sm font-medium transition-colors flex items-center gap-1`}
           >
-            <path
-              fillRule="evenodd"
-              d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-              clipRule="evenodd"
-            />
-          </svg>
-          New Ad Unit
-        </button>
+            {selectionMode ? (
+              <>
+                <svg
+                  className="h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M8 2a1 1 0 000 2h2a1 1 0 100-2H8z" />
+                  <path d="M3 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6h-4.586l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L10.414 13H15v3a2 2 0 01-2 2H5a2 2 0 01-2-2V5zM15 11h2a1 1 0 110 2h-2v-2z" />
+                </svg>
+                Duplicate
+              </>
+            ) : (
+              <>
+                <svg
+                  className="h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                  <path
+                    fillRule="evenodd"
+                    d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                Seleccionar
+              </>
+            )}
+          </button>
+          <button
+            onClick={handleNewAdUnit}
+            className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-md shadow-sm text-sm font-medium transition-colors flex items-center gap-1"
+          >
+            <svg
+              className="h-4 w-4"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                clipRule="evenodd"
+              />
+            </svg>
+            New Ad Unit
+          </button>
+        </div>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
+              {selectionMode && (
+                <th scope="col" className="px-4 py-3 w-10">
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded cursor-pointer"
+                    checked={
+                      selectedAdUnits.length ===
+                        (campaign.adUnits?.length || 0) &&
+                      (campaign.adUnits?.length || 0) > 0
+                    }
+                    onChange={handleSelectAllAdUnits}
+                  />
+                </th>
+              )}
               <th
                 scope="col"
                 className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -290,9 +394,26 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
               campaign.adUnits.map((unit) => (
                 <tr
                   key={unit.id}
-                  className="hover:bg-gray-50 cursor-pointer"
-                  onClick={() => handleEditAdUnit(unit)}
+                  className={`hover:bg-gray-50 cursor-pointer ${
+                    selectionMode && selectedAdUnits.includes(unit.id)
+                      ? "bg-orange-50 border-l-4 border-orange-400"
+                      : ""
+                  }`}
+                  onClick={() => !selectionMode && handleEditAdUnit(unit)}
                 >
+                  {selectionMode && (
+                    <td
+                      className="px-4 py-3 whitespace-nowrap w-10"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded cursor-pointer"
+                        checked={selectedAdUnits.includes(unit.id)}
+                        onChange={(e) => handleSelectAdUnit(e, unit.id)}
+                      />
+                    </td>
+                  )}
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
                     {/* Line no es editable */}
                     {unit.line}
