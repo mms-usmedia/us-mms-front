@@ -3,10 +3,10 @@ import { TradeIncentive } from "@/data/mockTradeData";
 
 // Define incentive types with color classes
 const incentiveTypeColors = {
-  Fixed: "bg-blue-50 text-blue-700 border-blue-100",
-  Volume: "bg-emerald-50 text-emerald-700 border-emerald-100",
+  Fixed: "bg-orange-50 text-orange-700 border-orange-100",
+  Volume: "bg-orange-100 text-orange-800 border-orange-200",
   Scale: "bg-amber-50 text-amber-700 border-amber-100",
-  OnTop: "bg-purple-50 text-purple-700 border-purple-100",
+  OnTop: "bg-orange-200 text-orange-900 border-orange-300",
 };
 
 interface TradeIncentiveFiltersProps {
@@ -145,7 +145,7 @@ const TradeIncentiveFilters: React.FC<TradeIncentiveFiltersProps> = ({
               type="text"
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 placeholder-gray-500 bg-gray-50"
+              className="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm text-gray-900 placeholder-gray-500 bg-gray-50"
               placeholder="Search by description, country or percentage..."
             />
           </div>
@@ -154,8 +154,8 @@ const TradeIncentiveFilters: React.FC<TradeIncentiveFiltersProps> = ({
             onClick={() => setShowFilters(!showFilters)}
             className={`flex items-center px-3 py-2.5 rounded-lg shadow-sm border ${
               showFilters
-                ? "bg-indigo-50 text-indigo-700 border-indigo-200"
-                : "bg-white text-indigo-600 border-gray-200 hover:bg-gray-50"
+                ? "bg-orange-50 text-orange-700 border-orange-200"
+                : "bg-white text-orange-600 border-gray-200 hover:bg-gray-50"
             }`}
           >
             <svg
@@ -172,7 +172,7 @@ const TradeIncentiveFilters: React.FC<TradeIncentiveFiltersProps> = ({
             </svg>
             Filters
             {hasActiveFilters && (
-              <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-100 text-xs font-medium text-indigo-800">
+              <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-orange-100 text-xs font-medium text-orange-800">
                 {(searchTerm ? 1 : 0) +
                   (selectedCountry !== "All" ? 1 : 0) +
                   (selectedProductType !== "All" ? 1 : 0) +
@@ -221,7 +221,7 @@ const TradeIncentiveFilters: React.FC<TradeIncentiveFiltersProps> = ({
                   <input
                     type="text"
                     id="country-search"
-                    className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 bg-gray-50"
+                    className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm text-gray-900 bg-gray-50"
                     placeholder="Select or search country"
                     value={countrySearchTerm}
                     onChange={(e) => setCountrySearchTerm(e.target.value)}
@@ -294,7 +294,7 @@ const TradeIncentiveFilters: React.FC<TradeIncentiveFiltersProps> = ({
                 </label>
                 <select
                   id="product-type"
-                  className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 bg-gray-50"
+                  className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm text-gray-900 bg-gray-50"
                   value={selectedProductType}
                   onChange={(e) => onProductTypeChange(e.target.value)}
                 >

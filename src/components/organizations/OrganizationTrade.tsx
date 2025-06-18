@@ -38,14 +38,11 @@ const OrganizationTrade: React.FC<OrganizationTradeProps> = ({
   const [filteredIncentives, setFilteredIncentives] = useState<
     TradeIncentive[]
   >([]);
-  const [isAddingIncentive, setIsAddingIncentive] = useState(
-    showAddIncentiveForm
-  );
+  const [isAddingIncentive, setIsAddingIncentive] =
+    useState(showAddIncentiveForm);
   const [isEditingIncentive, setIsEditingIncentive] = useState(false);
-  const [
-    currentIncentive,
-    setCurrentIncentive,
-  ] = useState<TradeIncentive | null>(null);
+  const [currentIncentive, setCurrentIncentive] =
+    useState<TradeIncentive | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [incentiveToDelete, setIncentiveToDelete] = useState<string | null>(
     null
@@ -179,9 +176,7 @@ const OrganizationTrade: React.FC<OrganizationTradeProps> = ({
     } else {
       // Create new incentive
       const newIncentive: TradeIncentive = {
-        id: `inc${Math.random()
-          .toString(36)
-          .substr(2, 9)}`,
+        id: `inc${Math.random().toString(36).substr(2, 9)}`,
         organizationId: organization.id,
         country: formData.country || "",
         productType: formData.productType || "All",
@@ -230,7 +225,7 @@ const OrganizationTrade: React.FC<OrganizationTradeProps> = ({
         <div className="px-6 pb-4 flex justify-end">
           <button
             onClick={handleAddIncentive}
-            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium flex items-center gap-2 shadow-sm"
+            className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-md text-sm font-medium flex items-center gap-2 shadow-sm"
           >
             <PlusIcon className="h-4 w-4" />
             Add Incentive
@@ -366,7 +361,7 @@ const OrganizationTrade: React.FC<OrganizationTradeProps> = ({
                                 e.stopPropagation();
                                 handleEditIncentive(incentive);
                               }}
-                              className="text-indigo-600 hover:text-indigo-800 p-1.5 rounded-full hover:bg-indigo-50 transition-colors"
+                              className="text-orange-600 hover:text-orange-800 p-1.5 rounded-full hover:bg-orange-50 transition-colors"
                               title="Edit"
                             >
                               <svg

@@ -81,10 +81,7 @@ const OrganizationContacts: React.FC<OrganizationContactsProps> = ({
           id: "contact1",
           firstName: organization.contactName?.split(" ")[0] || "",
           lastName:
-            organization.contactName
-              ?.split(" ")
-              .slice(1)
-              .join(" ") || "",
+            organization.contactName?.split(" ").slice(1).join(" ") || "",
           position: "Chief Executive Officer",
           email: organization.contactEmail || "",
           phone: "+1 234 567 890",
@@ -395,7 +392,7 @@ const OrganizationContacts: React.FC<OrganizationContactsProps> = ({
           <button
             onClick={handleAddContact}
             data-action="add-contact"
-            className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
+            className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
           >
             <FaUserPlus className="h-4 w-4" />
             Add Contact
@@ -405,14 +402,14 @@ const OrganizationContacts: React.FC<OrganizationContactsProps> = ({
 
       <div className="flex flex-col md:flex-row">
         {/* Contact list */}
-        <div className="w-full md:w-1/3 border-r border-gray-200 bg-violet-50 bg-opacity-50">
+        <div className="w-full md:w-1/3 border-r border-gray-200 bg-orange-50 bg-opacity-50">
           <div className="p-4">
             {contacts.length === 0 ? (
               <div className="text-center py-6 text-gray-500">
                 <p>No contacts added yet.</p>
                 <button
                   onClick={handleAddContact}
-                  className="mt-2 px-3 py-1.5 bg-violet-100 hover:bg-violet-200 text-violet-700 rounded-md text-sm font-medium transition-colors inline-flex items-center gap-1"
+                  className="mt-2 px-3 py-1.5 bg-orange-100 hover:bg-orange-200 text-orange-700 rounded-md text-sm font-medium transition-colors inline-flex items-center gap-1"
                 >
                   <FaUserPlus className="h-3.5 w-3.5" />
                   Add your first contact
@@ -426,14 +423,14 @@ const OrganizationContacts: React.FC<OrganizationContactsProps> = ({
                     onClick={() => handleSelectContact(contact)}
                     className={`p-3 rounded-md cursor-pointer transition-colors ${
                       selectedContact && selectedContact.id === contact.id
-                        ? "bg-violet-100 border border-violet-200 shadow-sm"
-                        : "hover:bg-violet-50 border border-transparent"
+                        ? "bg-orange-100 border border-orange-200 shadow-sm"
+                        : "hover:bg-orange-50 border border-transparent"
                     }`}
                   >
                     <div className="flex justify-between items-start">
                       <div>
                         <div className="font-medium text-gray-900 flex items-center">
-                          <FaUser className="h-3.5 w-3.5 mr-1.5 text-violet-600" />
+                          <FaUser className="h-3.5 w-3.5 mr-1.5 text-orange-600" />
                           {contact.firstName} {contact.lastName}
                           {contact.isPrimary && (
                             <FaStar className="ml-1.5 h-3 w-3 text-amber-500" />
@@ -442,7 +439,7 @@ const OrganizationContacts: React.FC<OrganizationContactsProps> = ({
                         <div className="text-sm text-gray-500">
                           {contact.position}
                         </div>
-                        <div className="text-xs text-violet-600 mt-1 flex items-center">
+                        <div className="text-xs text-orange-600 mt-1 flex items-center">
                           <FaEnvelope className="h-3 w-3 mr-1" />
                           {contact.email}
                         </div>
@@ -477,7 +474,7 @@ const OrganizationContacts: React.FC<OrganizationContactsProps> = ({
                 <div className="flex gap-2">
                   <button
                     onClick={handleSaveNewContact}
-                    className="px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
+                    className="px-3 py-1.5 bg-orange-600 hover:bg-orange-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
                   >
                     <FaSave className="h-3.5 w-3.5" />
                     Save
@@ -492,8 +489,8 @@ const OrganizationContacts: React.FC<OrganizationContactsProps> = ({
                 </div>
               </div>
 
-              <div className="space-y-4 bg-gradient-to-b from-violet-50 to-white p-4 rounded-lg shadow-sm border border-violet-100">
-                <h4 className="font-medium text-violet-800 pb-2 border-b border-violet-200">
+              <div className="space-y-4 bg-gradient-to-b from-orange-50 to-white p-4 rounded-lg shadow-sm border border-orange-100">
+                <h4 className="font-medium text-orange-800 pb-2 border-b border-orange-200">
                   Contact Details
                 </h4>
 
@@ -851,7 +848,7 @@ const OrganizationContacts: React.FC<OrganizationContactsProps> = ({
             <div>
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium text-gray-800 flex items-center">
-                  <FaUser className="mr-2 text-violet-600" />
+                  <FaUser className="mr-2 text-orange-600" />
                   {`${selectedContact.firstName} ${selectedContact.lastName}`}
                   {selectedContact.isPrimary && (
                     <span className="ml-2 flex items-center text-sm text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100">
@@ -865,7 +862,7 @@ const OrganizationContacts: React.FC<OrganizationContactsProps> = ({
                     <>
                       <button
                         onClick={handleSaveEditedContact}
-                        className="px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
+                        className="px-3 py-1.5 bg-orange-600 hover:bg-orange-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
                       >
                         <FaSave className="h-3.5 w-3.5" />
                         Save
@@ -881,7 +878,7 @@ const OrganizationContacts: React.FC<OrganizationContactsProps> = ({
                   ) : (
                     <button
                       onClick={handleEditContact}
-                      className="px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
+                      className="px-3 py-1.5 bg-orange-600 hover:bg-orange-700 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
                     >
                       <FaEdit className="h-3.5 w-3.5" />
                       Edit
@@ -891,8 +888,8 @@ const OrganizationContacts: React.FC<OrganizationContactsProps> = ({
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4 bg-gradient-to-b from-violet-50 to-white p-4 rounded-lg shadow-sm border border-violet-100">
-                  <h4 className="font-medium text-violet-800 pb-2 border-b border-violet-200">
+                <div className="space-y-4 bg-gradient-to-b from-orange-50 to-white p-4 rounded-lg shadow-sm border border-orange-100">
+                  <h4 className="font-medium text-orange-800 pb-2 border-b border-orange-200">
                     Contact Information
                   </h4>
                   {/* Name */}
@@ -954,7 +951,7 @@ const OrganizationContacts: React.FC<OrganizationContactsProps> = ({
                               // Llamar al método para guardar los cambios
                               handleSaveEditedContact();
                             }}
-                            className="ml-2 text-xs bg-violet-50 hover:bg-violet-100 text-violet-700 font-medium py-1 px-2 rounded border border-violet-200 inline-flex items-center"
+                            className="ml-2 text-xs bg-orange-50 hover:bg-orange-100 text-orange-700 font-medium py-1 px-2 rounded border border-orange-200 inline-flex items-center"
                           >
                             <FaStar className="h-3 w-3 mr-1" />
                             Make Primary
@@ -1009,12 +1006,12 @@ const OrganizationContacts: React.FC<OrganizationContactsProps> = ({
                       <p className="text-gray-800 flex items-center">
                         {selectedContact.linkedin ? (
                           <>
-                            <FaLinkedin className="text-indigo-600 mr-2" />
+                            <FaLinkedin className="text-orange-600 mr-2" />
                             <a
                               href={selectedContact.linkedin}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-indigo-600 hover:text-indigo-800"
+                              className="text-orange-600 hover:text-orange-800"
                             >
                               View Profile
                             </a>
@@ -1027,8 +1024,8 @@ const OrganizationContacts: React.FC<OrganizationContactsProps> = ({
                   </div>
                 </div>
 
-                <div className="space-y-4 bg-gradient-to-b from-blue-50 to-white p-4 rounded-lg shadow-sm border border-blue-100">
-                  <h4 className="font-medium text-blue-800 pb-2 border-b border-blue-200">
+                <div className="space-y-4 bg-gradient-to-b from-orange-50 to-white p-4 rounded-lg shadow-sm border border-orange-100">
+                  <h4 className="font-medium text-orange-800 pb-2 border-b border-orange-200">
                     Communication Details
                   </h4>
                   {/* Email */}
@@ -1047,10 +1044,10 @@ const OrganizationContacts: React.FC<OrganizationContactsProps> = ({
                       />
                     ) : (
                       <p className="text-gray-800 flex items-center">
-                        <FaEnvelope className="text-indigo-600 mr-2" />
+                        <FaEnvelope className="text-orange-600 mr-2" />
                         <a
                           href={`mailto:${selectedContact.email}`}
-                          className="text-indigo-600 hover:text-indigo-800"
+                          className="text-orange-600 hover:text-orange-800"
                         >
                           {selectedContact.email}
                         </a>
@@ -1076,10 +1073,10 @@ const OrganizationContacts: React.FC<OrganizationContactsProps> = ({
                       <p className="text-gray-800 flex items-center">
                         {selectedContact.phone ? (
                           <>
-                            <FaPhone className="text-indigo-600 mr-2" />
+                            <FaPhone className="text-orange-600 mr-2" />
                             <a
                               href={`tel:${selectedContact.phone}`}
-                              className="text-indigo-600 hover:text-indigo-800"
+                              className="text-orange-600 hover:text-orange-800"
                             >
                               {selectedContact.phone}
                             </a>
@@ -1157,7 +1154,7 @@ const OrganizationContacts: React.FC<OrganizationContactsProps> = ({
                 <p className="text-sm">or</p>
                 <button
                   onClick={handleAddContact}
-                  className="mt-2 px-3 py-1.5 bg-violet-100 hover:bg-violet-200 text-violet-700 rounded-md text-sm font-medium transition-colors inline-flex items-center gap-1"
+                  className="mt-2 px-3 py-1.5 bg-orange-100 hover:bg-orange-200 text-orange-700 rounded-md text-sm font-medium transition-colors inline-flex items-center gap-1"
                 >
                   <FaUserPlus className="h-3.5 w-3.5" />
                   Add a new contact

@@ -313,93 +313,6 @@ export default function OrganizationsListPage() {
     }
   };
 
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case "Agency":
-        return (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 mr-1 text-blue-600"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z"
-              clipRule="evenodd"
-            />
-          </svg>
-        );
-      case "Advertiser":
-        return (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 mr-1 text-purple-600"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-          </svg>
-        );
-      case "Publisher":
-        return (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 mr-1 text-amber-600"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-              clipRule="evenodd"
-            />
-          </svg>
-        );
-      case "Holding Agency":
-        return (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 mr-1 text-indigo-600"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10.496 2.132a1 1 0 00-.992 0l-7 4A1 1 0 003 8v7a1 1 0 100 2h14a1 1 0 100-2V8a1 1 0 00.496-1.868l-7-4zM6 9a1 1 0 00-1 1v3a1 1 0 102 0v-3a1 1 0 00-1-1zm3 1a1 1 0 012 0v3a1 1 0 11-2 0v-3zm5-1a1 1 0 00-1 1v3a1 1 0 102 0v-3a1 1 0 00-1-1z"
-              clipRule="evenodd"
-            />
-          </svg>
-        );
-      case "Holding Advertiser":
-        return (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 mr-1 text-rose-600"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
-          </svg>
-        );
-      default:
-        return (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 mr-1 text-gray-600"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10 2a1 1 0 00-1 1v1a1 1 0 002 0V3a1 1 0 00-1-1zM4 4h3a3 3 0 006 0h3a2 2 0 012 2v9a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zm2.5 7a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm2.45 4a2.5 2.5 0 10-4.9 0h4.9zM12 9a1 1 0 100 2h3a1 1 0 100-2h-3zm-1 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z"
-              clipRule="evenodd"
-            />
-          </svg>
-        );
-    }
-  };
-
   const getStatusBadge = (status: string) => {
     if (status === "Active") {
       return (
@@ -446,9 +359,10 @@ export default function OrganizationsListPage() {
       : text;
   };
 
-  const nameTruncateLength = useMemo(() => (isCollapsed ? 30 : 25), [
-    isCollapsed,
-  ]);
+  const nameTruncateLength = useMemo(
+    () => (isCollapsed ? 30 : 25),
+    [isCollapsed]
+  );
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -487,11 +401,11 @@ export default function OrganizationsListPage() {
                   <thead className="bg-gray-50">
                     <tr>
                       <th
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors"
                         onClick={() => handleSort("name")}
                       >
                         <div className="whitespace-nowrap flex items-center">
-                          Organization
+                          Name
                           {sortField === "name" && (
                             <span className="ml-1">
                               {sortDirection === "asc" ? "↑" : "↓"}
@@ -500,7 +414,7 @@ export default function OrganizationsListPage() {
                         </div>
                       </th>
                       <th
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors"
                         onClick={() => handleSort("type")}
                       >
                         <div className="whitespace-nowrap flex items-center">
@@ -513,7 +427,7 @@ export default function OrganizationsListPage() {
                         </div>
                       </th>
                       <th
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors"
                         onClick={() => handleSort("country")}
                       >
                         <div className="whitespace-nowrap flex items-center">
@@ -526,7 +440,7 @@ export default function OrganizationsListPage() {
                         </div>
                       </th>
                       <th
-                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors"
+                        className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors"
                         onClick={() => handleSort("holdingName")}
                       >
                         <div className="whitespace-nowrap flex items-center">
@@ -565,13 +479,8 @@ export default function OrganizationsListPage() {
                         }}
                       >
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center text-sm">
-                            <div className="flex-shrink-0">
-                              {getTypeIcon(org.type)}
-                            </div>
-                            <div className="ml-1 font-medium text-indigo-600 hover:text-indigo-900">
-                              {truncateText(org.name, nameTruncateLength)}
-                            </div>
+                          <div className="text-sm font-medium text-orange-600 hover:text-orange-800">
+                            {truncateText(org.name, nameTruncateLength)}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -608,7 +517,7 @@ export default function OrganizationsListPage() {
                               href={org.website}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-indigo-600 hover:text-indigo-900 text-sm"
+                              className="text-orange-600 hover:text-orange-800 text-sm"
                               onClick={(e) => e.stopPropagation()}
                             >
                               {truncateText(
@@ -627,7 +536,7 @@ export default function OrganizationsListPage() {
                           <div className="flex space-x-2">
                             {org.isBigSix && (
                               <span
-                                className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-100"
+                                className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-orange-50 text-orange-700 border border-orange-100"
                                 title="Big Six Agency Group"
                               >
                                 Big Six
@@ -635,7 +544,7 @@ export default function OrganizationsListPage() {
                             )}
                             {org.isHolding && (
                               <span
-                                className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-50 text-purple-700 border border-purple-100"
+                                className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-50 text-amber-700 border border-amber-100"
                                 title="Holding Company"
                               >
                                 Holding
@@ -688,7 +597,7 @@ export default function OrganizationsListPage() {
                         <span className="sr-only">Previous</span>
                         &laquo;
                       </button>
-                      <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-indigo-600 hover:bg-indigo-50">
+                      <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-orange-600 hover:bg-orange-50">
                         1
                       </button>
                       <button className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">

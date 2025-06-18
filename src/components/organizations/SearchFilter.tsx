@@ -22,23 +22,16 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   countries,
 }) => {
   const [countrySearchTerm, setCountrySearchTerm] = useState<string>("");
-  const [showCountryDropdown, setShowCountryDropdown] = useState<boolean>(
-    false
-  );
+  const [showCountryDropdown, setShowCountryDropdown] =
+    useState<boolean>(false);
   const [filteredCountries, setFilteredCountries] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState<boolean>(false);
   const countryDropdownRef = useRef<HTMLDivElement>(null);
 
-  const [typeSearchTerm, setTypeSearchTerm] = useState<string>("");
-  const [showTypeDropdown, setShowTypeDropdown] = useState<boolean>(false);
-  const [filteredTypes, setFilteredTypes] = useState<string[]>([]);
-  const typeDropdownRef = useRef<HTMLDivElement>(null);
-
   // Initialize filtered values
   useEffect(() => {
     setFilteredCountries(countries);
-    setFilteredTypes(organizationTypes);
-  }, [countries, organizationTypes]);
+  }, [countries]);
 
   // Filter countries when typing in search field
   useEffect(() => {
@@ -52,18 +45,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     }
   }, [countrySearchTerm, countries]);
 
-  // Filter types when typing in search field
-  useEffect(() => {
-    if (typeSearchTerm) {
-      const filtered = organizationTypes.filter((type) =>
-        type.toLowerCase().includes(typeSearchTerm.toLowerCase())
-      );
-      setFilteredTypes(filtered);
-    } else {
-      setFilteredTypes(organizationTypes);
-    }
-  }, [typeSearchTerm, organizationTypes]);
-
   // Close dropdowns when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -72,13 +53,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
         !countryDropdownRef.current.contains(event.target as Node)
       ) {
         setShowCountryDropdown(false);
-      }
-
-      if (
-        typeDropdownRef.current &&
-        !typeDropdownRef.current.contains(event.target as Node)
-      ) {
-        setShowTypeDropdown(false);
       }
     }
 
@@ -94,7 +68,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     setSelectedTypes([]);
     setSelectedCountries([]);
     setCountrySearchTerm("");
-    setTypeSearchTerm("");
   };
 
   // Check if there are any active filters
@@ -129,7 +102,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
       case "Publisher":
         return "bg-amber-50 text-amber-700 border-amber-100";
       case "Holding Agency":
-        return "bg-indigo-50 text-indigo-700 border-indigo-100";
+        return "bg-teal-50 text-teal-700 border-teal-100";
       case "Holding Advertiser":
         return "bg-rose-50 text-rose-700 border-rose-100";
       default:
@@ -161,7 +134,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 placeholder-gray-500 bg-gray-50"
+              className="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm text-gray-900 placeholder-gray-500 bg-gray-50"
               placeholder="Search organizations by name, legal name, or tax ID..."
             />
           </div>
@@ -170,8 +143,8 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
             onClick={() => setShowFilters(!showFilters)}
             className={`flex items-center px-3 py-2.5 rounded-lg shadow-sm border ${
               showFilters
-                ? "bg-indigo-50 text-indigo-700 border-indigo-200"
-                : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
+                ? "bg-orange-50 text-orange-700 border-orange-200"
+                : "bg-white text-orange-600 border-gray-200 hover:bg-gray-50"
             }`}
           >
             <svg
@@ -188,7 +161,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
             </svg>
             Filters
             {hasActiveFilters && (
-              <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-100 text-xs font-medium text-indigo-800">
+              <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-orange-100 text-xs font-medium text-orange-800">
                 {(searchTerm ? 1 : 0) +
                   (selectedTypes.length > 0 ? 1 : 0) +
                   (selectedCountries.length > 0 ? 1 : 0)}
@@ -221,102 +194,30 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
 
         {/* Expanded filter options */}
         {showFilters && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-100 mt-2">
+          <div className="grid grid-cols-1 gap-4 pt-4 border-t border-gray-100 mt-2">
             {/* Organization Type Filter */}
-            <div className="relative" ref={typeDropdownRef}>
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Organization Type
               </label>
-              <div
-                className="flex flex-wrap gap-2 min-h-10 p-2 border border-gray-200 rounded-lg shadow-sm cursor-pointer bg-gray-50"
-                onClick={() => setShowTypeDropdown(!showTypeDropdown)}
-              >
-                {selectedTypes.length === 0 ? (
-                  <div className="text-gray-500 text-sm my-auto">All Types</div>
-                ) : (
-                  selectedTypes.map((type) => (
-                    <span
-                      key={type}
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border ${getTypeStyles(
-                        type
-                      )}`}
-                    >
-                      {type}
-                      <button
-                        type="button"
-                        className="ml-1.5 inline-flex items-center justify-center h-4 w-4 rounded-full text-indigo-400 hover:bg-indigo-200 hover:text-indigo-500 focus:outline-none"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleTypeSelection(type);
-                        }}
-                      >
-                        <span className="sr-only">Remove {type}</span>
-                        <svg
-                          className="h-2.5 w-2.5"
-                          stroke="currentColor"
-                          fill="none"
-                          viewBox="0 0 8 8"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeWidth="1.5"
-                            d="M1 1l6 6m0-6L1 7"
-                          />
-                        </svg>
-                      </button>
-                    </span>
-                  ))
-                )}
-              </div>
-              {showTypeDropdown && (
-                <div className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-lg border border-gray-200 max-h-60 overflow-auto">
-                  <div className="p-2 border-b border-gray-100">
-                    <input
-                      type="text"
-                      className="w-full text-sm border border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                      placeholder="Search types..."
-                      value={typeSearchTerm}
-                      onChange={(e) => setTypeSearchTerm(e.target.value)}
-                      onClick={(e) => e.stopPropagation()}
-                    />
-                  </div>
-                  <div className="py-1">
-                    {filteredTypes.map((type) => (
-                      <div
-                        key={type}
-                        className={`flex items-center px-4 py-2 text-sm cursor-pointer ${
-                          selectedTypes.includes(type)
-                            ? "bg-indigo-50"
-                            : "hover:bg-gray-50"
-                        }`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleTypeSelection(type);
-                        }}
-                      >
-                        <input
-                          type="checkbox"
-                          className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mr-2"
-                          checked={selectedTypes.includes(type)}
-                          onChange={() => {}}
-                        />
-                        <span
-                          className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border ${getTypeStyles(
-                            type
-                          )}`}
-                        >
-                          {type}
-                        </span>
-                      </div>
-                    ))}
-                    {filteredTypes.length === 0 && (
-                      <div className="px-4 py-2 text-sm text-gray-500">
-                        No matching types
-                      </div>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+                {organizationTypes.map((type) => (
+                  <div
+                    key={type}
+                    className={`cursor-pointer rounded-md px-3 py-1.5 text-sm border ${
+                      selectedTypes.includes(type)
+                        ? getTypeStyles(type)
+                        : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
+                    }`}
+                    onClick={() => toggleTypeSelection(type)}
+                  >
+                    {type}
+                    {selectedTypes.includes(type) && (
+                      <span className="ml-1.5 inline-block">✓</span>
                     )}
                   </div>
-                </div>
-              )}
+                ))}
+              </div>
             </div>
 
             {/* Country Filter */}
@@ -370,7 +271,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
                   <div className="p-2 border-b border-gray-100">
                     <input
                       type="text"
-                      className="w-full text-sm border border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-full text-sm border border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                       placeholder="Search countries..."
                       value={countrySearchTerm}
                       onChange={(e) => setCountrySearchTerm(e.target.value)}
@@ -383,7 +284,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
                         key={country}
                         className={`flex items-center px-4 py-2 text-sm cursor-pointer ${
                           selectedCountries.includes(country)
-                            ? "bg-indigo-50"
+                            ? "bg-orange-50"
                             : "hover:bg-gray-50"
                         }`}
                         onClick={(e) => {
@@ -393,7 +294,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
                       >
                         <input
                           type="checkbox"
-                          className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mr-2"
+                          className="h-4 w-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 mr-2"
                           checked={selectedCountries.includes(country)}
                           onChange={() => {}}
                         />

@@ -283,7 +283,7 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 placeholder-gray-500 bg-gray-50"
+                className="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm text-gray-900 placeholder-gray-500 bg-gray-50"
                 placeholder="Search by name or ID..."
               />
             </div>
@@ -292,14 +292,14 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
               onClick={() => setShowFilters(!showFilters)}
               className={`flex items-center px-3 py-2.5 rounded-lg shadow-sm border ${
                 showFilters
-                  ? "bg-indigo-50 text-indigo-700 border-indigo-200"
+                  ? "bg-orange-50 text-orange-700 border-orange-200"
                   : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
               }`}
             >
               <FaFilter className="h-5 w-5 mr-1" />
               Filters
               {hasActiveFilters && (
-                <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-100 text-xs font-medium text-indigo-800">
+                <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-orange-100 text-xs font-medium text-orange-800">
                   {(searchTerm ? 1 : 0) +
                     (selectedStatus.length > 0 ? 1 : 0) +
                     (startDateFilter ? 1 : 0) +
@@ -341,7 +341,7 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
                       id="start-date"
                       value={startDateFilter}
                       onChange={(e) => setStartDateFilter(e.target.value)}
-                      className="block w-full pl-10 px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 bg-gray-50"
+                      className="block w-full pl-10 px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm text-gray-900 bg-gray-50"
                       placeholder="Start date"
                     />
                   </div>
@@ -354,7 +354,7 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
                       id="end-date"
                       value={endDateFilter}
                       onChange={(e) => setEndDateFilter(e.target.value)}
-                      className="block w-full pl-10 px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 bg-gray-50"
+                      className="block w-full pl-10 px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm text-gray-900 bg-gray-50"
                       placeholder="End date"
                     />
                   </div>
@@ -408,7 +408,7 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
             <tr>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-20"
+                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors w-20"
                 onClick={() => handleSort("id")}
               >
                 <div className="whitespace-nowrap flex items-center">
@@ -417,7 +417,7 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-48"
+                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors w-48"
                 onClick={() => handleSort("name")}
               >
                 <div className="whitespace-nowrap flex items-center">
@@ -426,7 +426,7 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-28"
+                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors w-28"
                 onClick={() => handleSort("startDate")}
               >
                 <div className="whitespace-nowrap flex items-center">
@@ -435,7 +435,7 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-24"
+                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors w-24"
                 onClick={() => handleSort("endDate")}
               >
                 <div className="whitespace-nowrap flex items-center">
@@ -444,7 +444,7 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-24"
+                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors w-24"
                 onClick={() => handleSort("units")}
               >
                 <div className="whitespace-nowrap flex items-center">
@@ -453,7 +453,7 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-24"
+                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors w-24"
                 onClick={() => handleSort("budget")}
               >
                 <div className="whitespace-nowrap flex items-center">
@@ -462,7 +462,7 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-20"
+                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors w-20"
                 onClick={() => handleSort("grossMargin")}
               >
                 <div className="whitespace-nowrap flex items-center">
@@ -471,7 +471,7 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-indigo-700 transition-colors w-28"
+                className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-orange-700 transition-colors w-28"
                 onClick={() => handleSort("status")}
               >
                 <div className="whitespace-nowrap flex items-center">
@@ -501,7 +501,7 @@ const OrganizationCampaigns: React.FC<OrganizationCampaignsProps> = ({
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
                     {campaign.id}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-800">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-orange-600 hover:text-orange-800">
                     {campaign.name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">

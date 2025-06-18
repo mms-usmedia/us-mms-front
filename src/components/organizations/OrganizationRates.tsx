@@ -266,7 +266,7 @@ const OrganizationRates: React.FC<OrganizationRatesProps> = ({
           <button
             id="organization-add-rate-button"
             onClick={handleAddRate}
-            className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-indigo-700 hover:from-indigo-600 hover:to-indigo-800 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
+            className="px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-700 hover:from-orange-600 hover:to-orange-800 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
             aria-label={`Add rate for ${organization.name}`}
           >
             <FaPlus className="h-4 w-4" />
@@ -288,15 +288,15 @@ const OrganizationRates: React.FC<OrganizationRatesProps> = ({
 
       {/* Form to add legacy rate */}
       {isAdding && (
-        <div className="p-6 border-b border-gray-200 bg-gradient-to-b from-indigo-50 to-white">
+        <div className="p-6 border-b border-gray-200 bg-gradient-to-b from-orange-50 to-white">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-medium text-indigo-800">
+            <h3 className="text-lg font-medium text-orange-800">
               Add New Rate
             </h3>
             <div className="flex gap-2">
               <button
                 onClick={handleSaveNewRate}
-                className="px-3 py-1.5 bg-gradient-to-r from-indigo-500 to-indigo-700 hover:from-indigo-600 hover:to-indigo-800 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
+                className="px-3 py-1.5 bg-gradient-to-r from-orange-500 to-orange-700 hover:from-orange-600 hover:to-orange-800 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
               >
                 <FaSave className="h-4 w-4" />
                 Save
@@ -321,7 +321,7 @@ const OrganizationRates: React.FC<OrganizationRatesProps> = ({
                 type="text"
                 value={newRate.name}
                 onChange={(e) => handleNewRateChange("name", e.target.value)}
-                className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                className="w-full px-3 py-2 border-2 border-orange-100 focus:border-orange-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                 required
               />
             </div>
@@ -334,7 +334,7 @@ const OrganizationRates: React.FC<OrganizationRatesProps> = ({
               <select
                 value={newRate.format}
                 onChange={(e) => handleNewRateChange("format", e.target.value)}
-                className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                className="w-full px-3 py-2 border-2 border-orange-100 focus:border-orange-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
               >
                 {formats.map((format) => (
                   <option key={format} value={format} className="text-gray-900">
@@ -361,7 +361,7 @@ const OrganizationRates: React.FC<OrganizationRatesProps> = ({
                       parseFloat(e.target.value) || 0
                     )
                   }
-                  className="w-2/3 px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-l-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                  className="w-2/3 px-3 py-2 border-2 border-orange-100 focus:border-orange-300 rounded-l-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                   required
                 />
                 <select
@@ -369,7 +369,7 @@ const OrganizationRates: React.FC<OrganizationRatesProps> = ({
                   onChange={(e) =>
                     handleNewRateChange("currency", e.target.value)
                   }
-                  className="w-1/3 px-3 py-2 border-2 border-l-0 border-indigo-100 focus:border-indigo-300 rounded-r-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                  className="w-1/3 px-3 py-2 border-2 border-l-0 border-orange-100 focus:border-orange-300 rounded-r-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
                 >
                   {currencies.map((currency) => (
                     <option
@@ -393,7 +393,7 @@ const OrganizationRates: React.FC<OrganizationRatesProps> = ({
                 value={newRate.notes || ""}
                 onChange={(e) => handleNewRateChange("notes", e.target.value)}
                 rows={2}
-                className="w-full px-3 py-2 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
+                className="w-full px-3 py-2 border-2 border-orange-100 focus:border-orange-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white"
               />
             </div>
           </div>
@@ -411,7 +411,7 @@ const OrganizationRates: React.FC<OrganizationRatesProps> = ({
             </p>
             <button
               onClick={handleAddRate}
-              className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-indigo-700 hover:from-indigo-600 hover:to-indigo-800 text-white rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-2 shadow-sm mx-auto"
+              className="px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-700 hover:from-orange-600 hover:to-orange-800 text-white rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-2 shadow-sm mx-auto"
             >
               <FaPlus className="h-4 w-4" />
               Add Your First Rate
@@ -459,8 +459,8 @@ const OrganizationRates: React.FC<OrganizationRatesProps> = ({
                   key={rate.id}
                   className={
                     isEditing === rate.id
-                      ? "bg-indigo-50"
-                      : "hover:bg-indigo-50 transition-colors"
+                      ? "bg-orange-50"
+                      : "hover:bg-orange-50 transition-colors"
                   }
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -471,7 +471,7 @@ const OrganizationRates: React.FC<OrganizationRatesProps> = ({
                         onChange={(e) =>
                           handleEditRateChange(rate.id, "name", e.target.value)
                         }
-                        className="w-full px-2 py-1 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white text-sm"
+                        className="w-full px-2 py-1 border-2 border-orange-100 focus:border-orange-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white text-sm"
                       />
                     ) : (
                       <div className="text-sm font-medium text-gray-900">
@@ -490,7 +490,7 @@ const OrganizationRates: React.FC<OrganizationRatesProps> = ({
                             e.target.value
                           )
                         }
-                        className="w-full px-2 py-1 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white text-sm"
+                        className="w-full px-2 py-1 border-2 border-orange-100 focus:border-orange-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white text-sm"
                       >
                         {formats.map((format) => (
                           <option
@@ -525,7 +525,7 @@ const OrganizationRates: React.FC<OrganizationRatesProps> = ({
                               parseFloat(e.target.value)
                             )
                           }
-                          className="w-24 px-2 py-1 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white text-sm"
+                          className="w-24 px-2 py-1 border-2 border-orange-100 focus:border-orange-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white text-sm"
                         />
                         <select
                           value={rate.currency}
@@ -536,7 +536,7 @@ const OrganizationRates: React.FC<OrganizationRatesProps> = ({
                               e.target.value
                             )
                           }
-                          className="ml-2 px-2 py-1 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white text-sm"
+                          className="ml-2 px-2 py-1 border-2 border-orange-100 focus:border-orange-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white text-sm"
                         >
                           {currencies.map((currency) => (
                             <option
@@ -566,7 +566,7 @@ const OrganizationRates: React.FC<OrganizationRatesProps> = ({
                             e.target.value === "true"
                           )
                         }
-                        className="w-full px-2 py-1 border-2 border-indigo-100 focus:border-indigo-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white text-sm"
+                        className="w-full px-2 py-1 border-2 border-orange-100 focus:border-orange-300 rounded-md focus:outline-none focus:ring-0 text-gray-900 bg-white text-sm"
                       >
                         <option value="true" className="text-gray-900">
                           Active
@@ -600,7 +600,7 @@ const OrganizationRates: React.FC<OrganizationRatesProps> = ({
                       <div className="flex space-x-2">
                         <button
                           onClick={handleSaveEdit}
-                          className="text-indigo-600 hover:text-indigo-900 transition-colors bg-indigo-50 hover:bg-indigo-100 rounded-full p-1"
+                          className="text-orange-600 hover:text-orange-900 transition-colors bg-orange-50 hover:bg-orange-100 rounded-full p-1"
                         >
                           <FaSave className="h-4 w-4" />
                         </button>
@@ -615,7 +615,7 @@ const OrganizationRates: React.FC<OrganizationRatesProps> = ({
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleEditRate(rate.id)}
-                          className="text-indigo-600 hover:text-indigo-900 transition-colors bg-indigo-50 hover:bg-indigo-100 rounded-full p-1"
+                          className="text-orange-600 hover:text-orange-900 transition-colors bg-orange-50 hover:bg-orange-100 rounded-full p-1"
                         >
                           <FaPencilAlt className="h-4 w-4" />
                         </button>
@@ -708,17 +708,17 @@ const OrganizationRates: React.FC<OrganizationRatesProps> = ({
 const getFormatBadgeClass = (format: string) => {
   switch (format) {
     case "Banner":
-      return "bg-blue-100 text-blue-800 border border-blue-200";
+      return "bg-orange-50 text-orange-800 border border-orange-100";
     case "Video":
-      return "bg-indigo-100 text-indigo-800 border border-indigo-200";
+      return "bg-orange-100 text-orange-700 border border-orange-200";
     case "Native":
-      return "bg-green-100 text-green-800 border border-green-200";
+      return "bg-orange-200 text-orange-800 border border-orange-300";
     case "Audio":
       return "bg-amber-100 text-amber-800 border border-amber-200";
     case "Social":
-      return "bg-pink-100 text-pink-800 border border-pink-200";
+      return "bg-orange-100 text-orange-700 border border-orange-200";
     case "Email":
-      return "bg-violet-100 text-violet-800 border border-violet-200";
+      return "bg-orange-50 text-orange-800 border border-orange-100";
     default:
       return "bg-gray-100 text-gray-800 border border-gray-200";
   }
