@@ -776,7 +776,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                     <label className="block text-sm font-medium text-gray-600 mb-1">
                       Line
                     </label>
-                    <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-700">
+                    <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-100 text-gray-700">
                       {formData.line}{" "}
                     </div>
                   </div>
@@ -821,7 +821,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                         onFocus={() => setShowPublisherDropdown(true)}
                       />
                       {selectedPublisher && (
-                        <div className="mt-2 p-2 border border-gray-200 rounded-md bg-gray-50 flex items-center">
+                        <div className="mt-2 p-2 border border-gray-200 rounded-md bg-gray-100 flex items-center">
                           <div className="flex-1">
                             <p className="font-medium text-gray-800">
                               {selectedPublisher.name}
@@ -1132,7 +1132,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                         <span className="text-gray-500 font-medium mr-2">
                           $
                         </span>
-                        <div className="flex-1 block border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
+                        <div className="flex-1 block border-2 border-gray-200 rounded-md p-2 bg-gray-100 text-gray-700 font-medium">
                           {formData.publisherOpenRate
                             ? formatNumber(formData.publisherOpenRate, 2)
                             : "0.00"}
@@ -1324,7 +1324,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                           {formData.agencyCommission}%
                         </span>
                       </label>
-                      <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
+                      <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-100 text-gray-700 font-medium">
                         {formatCurrency(
                           (formData.customerInvestment *
                             (formData.agencyCommission || 0)) /
@@ -1737,7 +1737,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                       <label className="block text-sm font-medium text-gray-600 mb-1">
                         Publisher Final Rate
                       </label>
-                      <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
+                      <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-100 text-gray-700 font-medium">
                         {formData.unitCost
                           ? `$${formatNumber(formData.unitCost, 2)}`
                           : "$0.00"}
@@ -1751,7 +1751,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                       <label className="block text-sm font-medium text-gray-600 mb-1">
                         Customer Final Negotiated Rate
                       </label>
-                      <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
+                      <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-100 text-gray-700 font-medium">
                         {formData.customerNetRate
                           ? `$${formatNumber(
                               formData.customerNetRate * 0.85,
@@ -1768,7 +1768,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                       <label className="block text-sm font-medium text-gray-600 mb-1">
                         Customer Net Rate
                       </label>
-                      <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
+                      <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-100 text-gray-700 font-medium">
                         {formData.customerNetRate
                           ? `$${formatNumber(formData.customerNetRate, 2)}`
                           : "$0.00"}
@@ -1847,7 +1847,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                       <label className="block text-sm font-medium text-gray-600 mb-1">
                         Gross Margin ($)
                       </label>
-                      <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-50 text-gray-900 font-medium">
+                      <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-100 text-gray-700 font-medium">
                         {formData.grossMargin &&
                         formData.unitCost &&
                         formData.units &&
