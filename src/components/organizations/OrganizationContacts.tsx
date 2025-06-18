@@ -47,7 +47,7 @@ interface Organization {
   legalName: string;
   contactName?: string;
   contactEmail?: string;
-  status: "Active" | "Inactive";
+  status: "Active" | "Inactive" | "In Review";
   address?: string;
   city?: string;
   state?: string;

@@ -1,7 +1,7 @@
 // /src/components/ui/StatusBadge.tsx
 import React from "react";
 
-// Tipo para los posibles estados de campaña
+// Tipo para los posibles estados de campaña y organización
 type StatusType =
   | "Pending"
   | "Negotiating"
@@ -12,7 +12,10 @@ type StatusType =
   | "Live"
   | "Closed"
   | "HUR"
-  | "Invoiced";
+  | "Invoiced"
+  | "Active"
+  | "Inactive"
+  | "In Review";
 
 interface StatusBadgeProps {
   status: StatusType;
@@ -42,6 +45,12 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
         return "bg-rose-50 text-rose-700 border-rose-100 shadow-rose-100";
       case "Invoiced":
         return "bg-emerald-50 text-emerald-700 border-emerald-100 shadow-emerald-100";
+      case "Active":
+        return "bg-green-50 text-green-700 border-green-100 shadow-green-100";
+      case "Inactive":
+        return "bg-gray-50 text-gray-700 border-gray-100 shadow-gray-100";
+      case "In Review":
+        return "bg-amber-50 text-amber-700 border-amber-100 shadow-amber-100";
       default:
         return "bg-gray-50 text-gray-700 border-gray-100 shadow-gray-100";
     }
@@ -197,6 +206,51 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
             />
           </svg>
         );
+      case "Active":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-3.5 w-3.5 mr-1"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+              clipRule="evenodd"
+            />
+          </svg>
+        );
+      case "Inactive":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-3.5 w-3.5 mr-1"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+              clipRule="evenodd"
+            />
+          </svg>
+        );
+      case "In Review":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-3.5 w-3.5 mr-1"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+              clipRule="evenodd"
+            />
+          </svg>
+        );
       default:
         return null;
     }
@@ -210,6 +264,8 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
     switch (status) {
       case "Materials & Creatives OK":
         return "Materials OK";
+      case "In Review":
+        return "Review";
       default:
         return status;
     }
@@ -217,7 +273,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
 
   return (
     <span
-      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border shadow-sm ${styleClasses}`}
+      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border shadow-sm ${styleClasses} flex-shrink-0`}
     >
       {icon}
       {getDisplayName(status)}

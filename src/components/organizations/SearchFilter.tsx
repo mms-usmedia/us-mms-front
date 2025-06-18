@@ -7,6 +7,12 @@ interface SearchFilterProps {
   setSelectedTypes: (value: string[]) => void;
   selectedCountries: string[];
   setSelectedCountries: (value: string[]) => void;
+  selectedStatus: string[];
+  setSelectedStatus: (value: string[]) => void;
+  isHoldingFilter: boolean | null;
+  setIsHoldingFilter: (value: boolean | null) => void;
+  isBigSixFilter: boolean | null;
+  setIsBigSixFilter: (value: boolean | null) => void;
   organizationTypes: string[];
   countries: string[];
 }
@@ -18,6 +24,12 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   setSelectedTypes,
   selectedCountries,
   setSelectedCountries,
+  selectedStatus,
+  setSelectedStatus,
+  isHoldingFilter,
+  setIsHoldingFilter,
+  isBigSixFilter,
+  setIsBigSixFilter,
   organizationTypes,
   countries,
 }) => {
@@ -27,6 +39,9 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   const [filteredCountries, setFilteredCountries] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState<boolean>(false);
   const countryDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Status options
+  const statusOptions = ["Active", "Inactive", "In Review"];
 
   // Initialize filtered values
   useEffect(() => {
@@ -67,12 +82,20 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     setSearchTerm("");
     setSelectedTypes([]);
     setSelectedCountries([]);
+    setSelectedStatus([]);
+    setIsHoldingFilter(null);
+    setIsBigSixFilter(null);
     setCountrySearchTerm("");
   };
 
   // Check if there are any active filters
   const hasActiveFilters =
-    searchTerm || selectedTypes.length > 0 || selectedCountries.length > 0;
+    searchTerm ||
+    selectedTypes.length > 0 ||
+    selectedCountries.length > 0 ||
+    selectedStatus.length > 0 ||
+    isHoldingFilter !== null ||
+    isBigSixFilter !== null;
 
   // Function to toggle type selection
   const toggleTypeSelection = (type: string) => {
@@ -92,6 +115,15 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     }
   };
 
+  // Function to toggle status selection
+  const toggleStatusSelection = (status: string) => {
+    if (selectedStatus.includes(status)) {
+      setSelectedStatus(selectedStatus.filter((s) => s !== status));
+    } else {
+      setSelectedStatus([...selectedStatus, status]);
+    }
+  };
+
   // Get background styles for type badges
   const getTypeStyles = (type: string) => {
     switch (type) {
@@ -105,6 +137,20 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
         return "bg-teal-50 text-teal-700 border-teal-100";
       case "Holding Advertiser":
         return "bg-rose-50 text-rose-700 border-rose-100";
+      default:
+        return "bg-gray-50 text-gray-700 border-gray-100";
+    }
+  };
+
+  // Get background styles for status badges
+  const getStatusStyles = (status: string) => {
+    switch (status) {
+      case "Active":
+        return "bg-green-50 text-green-700 border-green-100";
+      case "Inactive":
+        return "bg-gray-50 text-gray-700 border-gray-100";
+      case "In Review":
+        return "bg-amber-50 text-amber-700 border-amber-100";
       default:
         return "bg-gray-50 text-gray-700 border-gray-100";
     }
@@ -164,7 +210,10 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
               <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-orange-100 text-xs font-medium text-orange-800">
                 {(searchTerm ? 1 : 0) +
                   (selectedTypes.length > 0 ? 1 : 0) +
-                  (selectedCountries.length > 0 ? 1 : 0)}
+                  (selectedCountries.length > 0 ? 1 : 0) +
+                  (selectedStatus.length > 0 ? 1 : 0) +
+                  (isHoldingFilter !== null ? 1 : 0) +
+                  (isBigSixFilter !== null ? 1 : 0)}
               </span>
             )}
           </button>
@@ -220,6 +269,97 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
               </div>
             </div>
 
+            {/* Status Filter */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Status
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                {statusOptions.map((status) => (
+                  <div
+                    key={status}
+                    className={`cursor-pointer rounded-md px-3 py-1.5 text-sm border ${
+                      selectedStatus.includes(status)
+                        ? getStatusStyles(status)
+                        : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
+                    }`}
+                    onClick={() => toggleStatusSelection(status)}
+                  >
+                    {status}
+                    {selectedStatus.includes(status) && (
+                      <span className="ml-1.5 inline-block">✓</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Features Filter */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Features
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                {/* Holding Filter */}
+                <div
+                  className={`cursor-pointer rounded-md px-3 py-1.5 text-sm border ${
+                    isHoldingFilter === true
+                      ? "bg-indigo-50 text-indigo-700 border-indigo-100"
+                      : isHoldingFilter === false
+                      ? "bg-red-50 text-red-700 border-red-100"
+                      : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
+                  }`}
+                  onClick={() => {
+                    if (isHoldingFilter === null) {
+                      setIsHoldingFilter(true);
+                    } else if (isHoldingFilter === true) {
+                      setIsHoldingFilter(false);
+                    } else {
+                      setIsHoldingFilter(null);
+                    }
+                  }}
+                >
+                  {isHoldingFilter === null
+                    ? "Holding"
+                    : isHoldingFilter === true
+                    ? "Holding: Yes"
+                    : "Holding: No"}
+                  {isHoldingFilter !== null && (
+                    <span className="ml-1.5 inline-block">✓</span>
+                  )}
+                </div>
+
+                {/* Big Six Filter */}
+                <div
+                  className={`cursor-pointer rounded-md px-3 py-1.5 text-sm border ${
+                    isBigSixFilter === true
+                      ? "bg-indigo-50 text-indigo-700 border-indigo-100"
+                      : isBigSixFilter === false
+                      ? "bg-red-50 text-red-700 border-red-100"
+                      : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
+                  }`}
+                  onClick={() => {
+                    if (isBigSixFilter === null) {
+                      setIsBigSixFilter(true);
+                    } else if (isBigSixFilter === true) {
+                      setIsBigSixFilter(false);
+                    } else {
+                      setIsBigSixFilter(null);
+                    }
+                  }}
+                >
+                  {isBigSixFilter === null
+                    ? "Big 6"
+                    : isBigSixFilter === true
+                    ? "Big 6: Yes"
+                    : "Big 6: No"}
+                  {isBigSixFilter !== null && (
+                    <span className="ml-1.5 inline-block">✓</span>
+                  )}
+                </div>
+              </div>
+            </div>
+
             {/* Country Filter */}
             <div className="relative" ref={countryDropdownRef}>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -248,7 +388,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
                           toggleCountrySelection(country);
                         }}
                       >
-                        <span className="sr-only">Remove {country}</span>
                         <svg
                           className="h-2.5 w-2.5"
                           stroke="currentColor"
@@ -266,44 +405,57 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
                   ))
                 )}
               </div>
+
+              {/* Country dropdown */}
               {showCountryDropdown && (
-                <div className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-lg border border-gray-200 max-h-60 overflow-auto">
+                <div className="absolute z-10 mt-1 w-full bg-white rounded-md shadow-lg max-h-60 overflow-auto border border-gray-200">
                   <div className="p-2 border-b border-gray-100">
                     <input
                       type="text"
-                      className="w-full text-sm border border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-                      placeholder="Search countries..."
                       value={countrySearchTerm}
                       onChange={(e) => setCountrySearchTerm(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 text-sm"
+                      placeholder="Search countries..."
                       onClick={(e) => e.stopPropagation()}
                     />
                   </div>
-                  <div className="py-1">
-                    {filteredCountries.map((country) => (
-                      <div
-                        key={country}
-                        className={`flex items-center px-4 py-2 text-sm cursor-pointer ${
-                          selectedCountries.includes(country)
-                            ? "bg-orange-50"
-                            : "hover:bg-gray-50"
-                        }`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleCountrySelection(country);
-                        }}
-                      >
-                        <input
-                          type="checkbox"
-                          className="h-4 w-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 mr-2"
-                          checked={selectedCountries.includes(country)}
-                          onChange={() => {}}
-                        />
-                        <span className="text-gray-900">{country}</span>
-                      </div>
-                    ))}
-                    {filteredCountries.length === 0 && (
-                      <div className="px-4 py-2 text-sm text-gray-500">
-                        No matching countries
+                  <div className="p-2">
+                    {filteredCountries.length > 0 ? (
+                      filteredCountries.map((country) => (
+                        <div
+                          key={country}
+                          className={`px-3 py-2 text-sm cursor-pointer rounded-md ${
+                            selectedCountries.includes(country)
+                              ? "bg-orange-50 text-orange-700"
+                              : "hover:bg-gray-50 text-gray-700"
+                          }`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleCountrySelection(country);
+                          }}
+                        >
+                          <div className="flex items-center justify-between">
+                            {country}
+                            {selectedCountries.includes(country) && (
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-4 w-4 text-orange-600"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            )}
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="px-3 py-2 text-sm text-gray-500">
+                        No countries found
                       </div>
                     )}
                   </div>

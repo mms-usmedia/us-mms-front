@@ -35,7 +35,7 @@ interface Organization {
   website?: string;
   contactName?: string;
   contactEmail?: string;
-  status: "Active" | "Inactive";
+  status: "Active" | "Inactive" | "In Review";
   // Additional fields for detailed view
   address?: string;
   city?: string;
@@ -94,7 +94,7 @@ const getMockOrganizationById = (id: string): Organization | null => {
       website: "https://www.livenation.com.br",
       contactName: "João Silva",
       contactEmail: "joao.silva@livenation.com",
-      status: "Active",
+      status: "Inactive",
       address: "Av. Brigadeiro Faria Lima 3900",
       city: "São Paulo",
       state: "SP",
@@ -201,7 +201,7 @@ const getMockOrganizationById = (id: string): Organization | null => {
       website: "https://www.havasmedia.com/colombia",
       contactName: "Carlos Jiménez",
       contactEmail: "carlos.jimenez@havas.com",
-      status: "Active",
+      status: "In Review",
       address: "Calle 72 No. 5-83",
       city: "Bogotá",
       state: "D.C.",
@@ -279,7 +279,7 @@ const getMockOrganizationById = (id: string): Organization | null => {
       website: "https://www.fandom.com",
       contactName: "Lisa Brown",
       contactEmail: "lisa.brown@fandom.com",
-      status: "Active",
+      status: "Inactive",
       address: "149 New Montgomery Street",
       city: "San Francisco",
       state: "CA",
@@ -305,7 +305,7 @@ const getMockOrganizationById = (id: string): Organization | null => {
       website: "https://www.caliay2.com.br",
       contactName: "Ana Oliveira",
       contactEmail: "ana.oliveira@caliay2.com.br",
-      status: "Active",
+      status: "In Review",
       address: "Rua Funchal, 375",
       city: "São Paulo",
       state: "SP",
@@ -359,7 +359,7 @@ const getMockOrganizationById = (id: string): Organization | null => {
       website: "https://www.omnet.cl",
       contactName: "Patricia Gómez",
       contactEmail: "patricia.gomez@omnet.cl",
-      status: "Active",
+      status: "Inactive",
       address: "Av. Apoquindo 4700",
       city: "Santiago",
       state: "RM",
@@ -408,6 +408,12 @@ const StatusBadgeLarge = ({ status }: { status: string }) => {
         return "bg-rose-50 text-rose-700 border-rose-200 shadow-rose-100";
       case "Invoiced":
         return "bg-emerald-50 text-emerald-700 border-emerald-200 shadow-emerald-100";
+      case "Active":
+        return "bg-green-50 text-green-700 border-green-200 shadow-green-100";
+      case "Inactive":
+        return "bg-gray-50 text-gray-700 border-gray-200 shadow-gray-100";
+      case "In Review":
+        return "bg-amber-50 text-amber-700 border-amber-200 shadow-amber-100";
       default:
         return "bg-gray-50 text-gray-700 border-gray-200 shadow-gray-100";
     }
@@ -417,6 +423,7 @@ const StatusBadgeLarge = ({ status }: { status: string }) => {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "Pending":
+      case "In Review":
         return (
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -432,6 +439,7 @@ const StatusBadgeLarge = ({ status }: { status: string }) => {
           </svg>
         );
       case "Live":
+      case "Active":
         return (
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -441,12 +449,13 @@ const StatusBadgeLarge = ({ status }: { status: string }) => {
           >
             <path
               fillRule="evenodd"
-              d="M5.05 3.636a1 1 0 010 1.414 7 7 0 000 9.9 1 1 0 11-1.414 1.414 9 9 0 010-12.728 1 1 0 011.414 0zm9.9 0a1 1 0 011.414 0 9 9 0 010 12.728 1 1 0 11-1.414-1.414 7 7 0 000-9.9 1 1 0 010-1.414zM7.879 6.464a1 1 0 010 1.414 3 3 0 000 4.243 1 1 0 11-1.415 1.414 5 5 0 010-7.07 1 1 0 011.415 0zm4.242 0a1 1 0 011.415 0 5 5 0 010 7.072 1 1 0 01-1.415-1.415 3 3 0 000-4.242 1 1 0 010-1.415zM10 9a1 1 0 011 1v.01a1 1 0 11-2 0V10a1 1 0 011-1z"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
               clipRule="evenodd"
             />
           </svg>
         );
       case "Closed":
+      case "Inactive":
         return (
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -646,11 +655,7 @@ export default function OrganizationDetailPage() {
                   </div>
                   <div className="flex items-center space-x-3 mt-4 md:mt-0">
                     <div className="flex items-center">
-                      <StatusBadgeLarge
-                        status={
-                          organization.status === "Active" ? "Live" : "Closed"
-                        }
-                      />
+                      <StatusBadgeLarge status={organization.status} />
                     </div>
                   </div>
                 </div>
