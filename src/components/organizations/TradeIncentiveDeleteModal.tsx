@@ -43,7 +43,7 @@ const TradeIncentiveDeleteModal: React.FC<TradeIncentiveDeleteModalProps> = ({
           </h3>
           <p className="mb-5 text-sm text-gray-500">
             This action cannot be undone. This will permanently delete the
-            incentive from the organization's trade agreements.
+            incentive from the organization&apos;s trade agreements.
           </p>
           <div className="flex justify-center space-x-4">
             <button

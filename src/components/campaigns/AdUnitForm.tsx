@@ -150,6 +150,100 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
     { id: "2", name: "Local taxes", value: formData.localTaxes || 0 },
   ]);
 
+  // Función principal para calcular todos los valores financieros
+  const calculateFinancials = (data: AdUnit): AdUnit => {
+    const updated = { ...data };
+
+    // Calcular descuentos del Publisher
+    let publisherDiscountTotal = 0;
+    publisherDiscounts.forEach((discount) => {
+      publisherDiscountTotal += discount.value / 100;
+    });
+
+    // Calcular costos ocultos del Publisher
+    let publisherHiddenCostTotal = 0;
+    publisherHiddenCosts.forEach((cost) => {
+      publisherHiddenCostTotal += cost.value / 100;
+    });
+
+    // Calcular descuentos del Customer
+    let customerDiscountTotal = 0;
+    customerDiscounts.forEach((discount) => {
+      customerDiscountTotal += discount.value / 100;
+    });
+
+    // Calcular costos ocultos del Customer
+    let customerHiddenCostTotal = 0;
+    customerHiddenCosts.forEach((cost) => {
+      customerHiddenCostTotal += cost.value / 100;
+    });
+
+    // Calcular Publisher Final Rate (Publisher open rate - disccounts y hidden costs)
+    if (updated.publisherOpenRate) {
+      const discountAmount = updated.publisherOpenRate * publisherDiscountTotal;
+      const hiddenCostAmount =
+        updated.publisherOpenRate * publisherHiddenCostTotal;
+      updated.unitCost =
+        updated.publisherOpenRate - discountAmount + hiddenCostAmount;
+    }
+
+    // Calcular Customer Final Negotiated Rate (Customer net rate - customer discounts)
+    let finalNegotiatedRate = 0;
+    if (updated.customerNetRate) {
+      const customerDiscountAmount =
+        updated.customerNetRate * customerDiscountTotal;
+      const customerHiddenCostAmount =
+        updated.customerNetRate * customerHiddenCostTotal;
+      finalNegotiatedRate =
+        updated.customerNetRate -
+        customerDiscountAmount +
+        customerHiddenCostAmount;
+    }
+
+    // Calcular Customer Investment (Units * Customer Final Negotiated Price)
+    if (updated.units && finalNegotiatedRate) {
+      updated.customerInvestment = parseFloat(
+        ((updated.units * finalNegotiatedRate) / 1000).toFixed(2)
+      );
+    }
+
+    // Si tenemos unidades y una tarifa del publisher, calculamos el costo
+    if (updated.units && updated.unitCost) {
+      // Calcular el costo neto del publisher (lo que le pagamos al medio)
+      updated.publisherNetCost = parseFloat(
+        ((updated.unitCost * updated.units) / 1000).toFixed(2)
+      );
+    }
+
+    // Si tenemos tarifa de publisher pero no tarifa de customer o margen bruto, establecemos valores predeterminados
+    if (updated.unitCost && !updated.customerNetRate && !updated.grossMargin) {
+      // Establecer un margen bruto predeterminado del 30%
+      updated.grossMargin = 30;
+
+      // Calcular la tarifa del customer basada en el margen deseado
+      const marginPercentage = updated.grossMargin / 100;
+      updated.customerNetRate = parseFloat(
+        (updated.unitCost / (1 - marginPercentage)).toFixed(2)
+      );
+    }
+
+    // Si tenemos tarifa del customer y tarifa del publisher, calculamos el margen bruto
+    if (updated.customerNetRate && updated.unitCost && !updated.grossMargin) {
+      const marginValue = 1 - updated.unitCost / updated.customerNetRate;
+      updated.grossMargin = parseFloat((marginValue * 100).toFixed(2));
+    }
+
+    // Si tenemos margen bruto y tarifa del publisher, calculamos la tarifa del customer
+    if (updated.grossMargin && updated.unitCost && !updated.customerNetRate) {
+      const marginPercentage = updated.grossMargin / 100;
+      updated.customerNetRate = parseFloat(
+        (updated.unitCost / (1 - marginPercentage)).toFixed(2)
+      );
+    }
+
+    return updated;
+  };
+
   // Buscar el publisher si estamos editando
   useEffect(() => {
     if (isEditing && adUnit && adUnit.publisher) {
@@ -248,6 +342,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
     formData.format,
     formData.model,
     formData.size,
+    calculateFinancials,
   ]);
 
   // Efecto para actualizar los impuestos según el mercado seleccionado
@@ -276,106 +371,12 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
         return calculateFinancials(updated);
       });
     }
-  }, [formData.market]);
+  }, [formData.market, calculateFinancials]);
 
   // Filtrar publishers basado en el término de búsqueda
   const filteredPublishers = samplePublishers.filter((publisher) =>
     publisher.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  // Función principal para calcular todos los valores financieros
-  const calculateFinancials = (data: AdUnit): AdUnit => {
-    const updated = { ...data };
-
-    // Calcular descuentos del Publisher
-    let publisherDiscountTotal = 0;
-    publisherDiscounts.forEach((discount) => {
-      publisherDiscountTotal += discount.value / 100;
-    });
-
-    // Calcular costos ocultos del Publisher
-    let publisherHiddenCostTotal = 0;
-    publisherHiddenCosts.forEach((cost) => {
-      publisherHiddenCostTotal += cost.value / 100;
-    });
-
-    // Calcular descuentos del Customer
-    let customerDiscountTotal = 0;
-    customerDiscounts.forEach((discount) => {
-      customerDiscountTotal += discount.value / 100;
-    });
-
-    // Calcular costos ocultos del Customer
-    let customerHiddenCostTotal = 0;
-    customerHiddenCosts.forEach((cost) => {
-      customerHiddenCostTotal += cost.value / 100;
-    });
-
-    // Calcular Publisher Final Rate (Publisher open rate - disccounts y hidden costs)
-    if (updated.publisherOpenRate) {
-      const discountAmount = updated.publisherOpenRate * publisherDiscountTotal;
-      const hiddenCostAmount =
-        updated.publisherOpenRate * publisherHiddenCostTotal;
-      updated.unitCost =
-        updated.publisherOpenRate - discountAmount + hiddenCostAmount;
-    }
-
-    // Calcular Customer Final Negotiated Rate (Customer net rate - customer discounts)
-    let finalNegotiatedRate = 0;
-    if (updated.customerNetRate) {
-      const customerDiscountAmount =
-        updated.customerNetRate * customerDiscountTotal;
-      const customerHiddenCostAmount =
-        updated.customerNetRate * customerHiddenCostTotal;
-      finalNegotiatedRate =
-        updated.customerNetRate -
-        customerDiscountAmount +
-        customerHiddenCostAmount;
-    }
-
-    // Calcular Customer Investment (Units * Customer Final Negotiated Price)
-    if (updated.units && finalNegotiatedRate) {
-      updated.customerInvestment = parseFloat(
-        ((updated.units * finalNegotiatedRate) / 1000).toFixed(2)
-      );
-    }
-
-    // Si tenemos unidades y una tarifa del publisher, calculamos el costo
-    if (updated.units && updated.unitCost) {
-      // Calcular el costo neto del publisher (lo que le pagamos al medio)
-      updated.publisherNetCost = parseFloat(
-        ((updated.unitCost * updated.units) / 1000).toFixed(2)
-      );
-    }
-
-    // Si tenemos tarifa de publisher pero no tarifa de customer o margen bruto, establecemos valores predeterminados
-    if (updated.unitCost && !updated.customerNetRate && !updated.grossMargin) {
-      // Establecer un margen bruto predeterminado del 30%
-      updated.grossMargin = 30;
-
-      // Calcular la tarifa del customer basada en el margen deseado
-      const marginPercentage = updated.grossMargin / 100;
-      updated.customerNetRate = parseFloat(
-        (updated.unitCost / (1 - marginPercentage)).toFixed(2)
-      );
-    }
-
-    // Si tenemos tarifa del customer y tarifa del publisher, calculamos el margen bruto
-    if (updated.customerNetRate && updated.unitCost && !updated.grossMargin) {
-      const marginValue = 1 - updated.unitCost / updated.customerNetRate;
-      updated.grossMargin = parseFloat((marginValue * 100).toFixed(2));
-    }
-
-    // Si tenemos margen bruto y tarifa del publisher, calculamos la tarifa del customer
-    if (updated.grossMargin && updated.unitCost && !updated.customerNetRate) {
-      const marginPercentage = updated.grossMargin / 100;
-      updated.customerNetRate = parseFloat(
-        (updated.unitCost / (1 - marginPercentage)).toFixed(2)
-      );
-    }
-
-    return updated;
-  };
 
   // Seleccionar un publisher
   const selectPublisher = (publisher: Publisher) => {
@@ -634,6 +635,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
     publisherHiddenCosts,
     customerDiscounts,
     customerHiddenCosts,
+    calculateFinancials,
   ]);
 
   return (
