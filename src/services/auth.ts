@@ -80,7 +80,7 @@ const AuthService = {
           user: {
             id: "1",
             email: "usuario@usmedia.com",
-            name: "Usuario US Media",
+            name: "User Name",
             role: "user",
           },
         });

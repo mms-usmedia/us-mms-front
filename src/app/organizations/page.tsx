@@ -617,21 +617,21 @@ export default function OrganizationsPage() {
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6">
           <div className="container mx-auto">
             {/* Page header */}
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
               <div>
                 <h1 className="text-3xl font-bold text-gray-900">
                   Organizations
                 </h1>
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-base text-gray-500">
                   Manage all your organizations in one place
                 </p>
               </div>
               <div className="mt-4 md:mt-0 flex items-center gap-3">
                 {/* View toggle buttons */}
-                <div className="flex border border-gray-200 rounded-md shadow-sm overflow-hidden">
+                <div className="flex border border-gray-200 rounded-lg shadow-sm overflow-hidden">
                   <button
                     onClick={() => setViewMode("grid")}
-                    className={`px-3 py-2 text-sm font-medium flex items-center ${
+                    className={`px-4 py-2.5 text-sm font-medium flex items-center ${
                       viewMode === "grid"
                         ? "bg-orange-50 text-orange-600 border-r border-gray-200"
                         : "bg-white text-gray-600 hover:bg-gray-50 border-r border-gray-200"
@@ -640,7 +640,7 @@ export default function OrganizationsPage() {
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
+                      className="h-5 w-5 mr-2"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -652,10 +652,11 @@ export default function OrganizationsPage() {
                         d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
                       />
                     </svg>
+                    Grid View
                   </button>
                   <button
                     onClick={() => setViewMode("table")}
-                    className={`px-3 py-2 text-sm font-medium flex items-center ${
+                    className={`px-4 py-2.5 text-sm font-medium flex items-center ${
                       viewMode === "table"
                         ? "bg-orange-50 text-orange-600"
                         : "bg-white text-gray-600 hover:bg-gray-50"
@@ -664,7 +665,7 @@ export default function OrganizationsPage() {
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
+                      className="h-5 w-5 mr-2"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -676,6 +677,7 @@ export default function OrganizationsPage() {
                         d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
                       />
                     </svg>
+                    Table View
                   </button>
                 </div>
               </div>
@@ -699,24 +701,6 @@ export default function OrganizationsPage() {
                 organizationTypes={organizationTypes}
                 countries={countries}
               />
-            </div>
-
-            {/* Results count */}
-            <div className="flex justify-between items-center mb-4">
-              <p className="text-sm text-gray-600">
-                Showing{" "}
-                <span className="font-semibold">
-                  {filteredOrganizations.length > 0
-                    ? `${(currentPage - 1) * itemsPerPage + 1}-${Math.min(
-                        currentPage * itemsPerPage,
-                        filteredOrganizations.length
-                      )} of ${filteredOrganizations.length}`
-                    : "0"}
-                </span>{" "}
-                {filteredOrganizations.length === 1
-                  ? "organization"
-                  : "organizations"}
-              </p>
             </div>
 
             {/* Grid View */}
