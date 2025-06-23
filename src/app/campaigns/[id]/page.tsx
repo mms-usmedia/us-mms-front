@@ -15,6 +15,7 @@ import { Campaign, AdUnit, Document } from "@/components/campaigns/types";
 
 // Importar componentes
 import CampaignDetails from "@/components/campaigns/CampaignDetails";
+import ProgrammaticCampaignDetails from "@/components/campaigns/ProgrammaticCampaignDetails";
 import CampaignAdUnits from "@/components/campaigns/CampaignAdUnits";
 import CampaignDocuments from "@/components/campaigns/CampaignDocuments";
 import CampaignActivity from "@/components/campaigns/CampaignActivity";
@@ -284,8 +285,7 @@ export default function CampaignDetailPage() {
           {
             id: "doc2",
             name: "Media_Plan_Q2_2025.xlsx",
-            type:
-              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             size: 1024 * 1024 * 1.5, // 1.5 MB
             uploadDate: "2025-01-20T14:45:00Z",
             uploadedBy: "Ana Sobreyra",
@@ -340,9 +340,7 @@ export default function CampaignDetailPage() {
 
       // Crear los nuevos documentos sin demora
       const newDocuments = Array.from(files).map((file) => ({
-        id: Math.random()
-          .toString(36)
-          .substring(2, 9),
+        id: Math.random().toString(36).substring(2, 9),
         name: file.name,
         type: file.type,
         size: file.size,
@@ -525,16 +523,29 @@ export default function CampaignDetailPage() {
             {/* Contenido principal */}
             <div className="mt-6">
               {/* Pestaña de Detalles */}
-              {activeTab === "details" && (
-                <CampaignDetails
-                  campaign={campaign}
-                  onSave={(updatedCampaign) => {
-                    setCampaign(updatedCampaign);
-                    // Aquí iría la lógica para guardar en una API real
-                    console.log("Saving campaign:", updatedCampaign);
-                  }}
-                />
-              )}
+              {activeTab === "details" &&
+                (campaign.campaignType === "Programmatic" ? (
+                  <ProgrammaticCampaignDetails
+                    campaign={campaign}
+                    onSave={(updatedCampaign) => {
+                      setCampaign(updatedCampaign);
+                      // Aquí iría la lógica para guardar en una API real
+                      console.log(
+                        "Saving programmatic campaign:",
+                        updatedCampaign
+                      );
+                    }}
+                  />
+                ) : (
+                  <CampaignDetails
+                    campaign={campaign}
+                    onSave={(updatedCampaign) => {
+                      setCampaign(updatedCampaign);
+                      // Aquí iría la lógica para guardar en una API real
+                      console.log("Saving IO-based campaign:", updatedCampaign);
+                    }}
+                  />
+                ))}
 
               {/* Pestaña de Unidades Publicitarias */}
               {activeTab === "adUnits" && (
