@@ -646,17 +646,15 @@ export default function OrganizationDetailPage() {
                 </svg>
                 Back to Organizations
               </Link>
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-                  <div>
-                    <h1 className="text-3xl font-bold text-gray-800">
-                      {organization.name}
-                    </h1>
-                  </div>
-                  <div className="flex items-center space-x-3 mt-4 md:mt-0">
-                    <div className="flex items-center">
-                      <StatusBadgeLarge status={organization.status} />
-                    </div>
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-800">
+                    {organization.name}
+                  </h1>
+                </div>
+                <div className="flex items-center space-x-3 mt-4 md:mt-0">
+                  <div className="flex items-center">
+                    <StatusBadgeLarge status={organization.status} />
                   </div>
                 </div>
               </div>
