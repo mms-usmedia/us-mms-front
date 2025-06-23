@@ -15,6 +15,7 @@ import OrganizationContacts from "@/components/organizations/OrganizationContact
 import OrganizationRates from "@/components/organizations/OrganizationRates";
 import OrganizationCampaigns from "@/components/organizations/OrganizationCampaigns";
 import OrganizationTrade from "@/components/organizations/OrganizationTrade";
+import OrganizationSubOrgs from "@/components/organizations/OrganizationSubOrgs";
 
 // Organization interface
 interface Organization {
@@ -496,7 +497,7 @@ export default function OrganizationDetailPage() {
   const [organization, setOrganization] = useState<Organization | null>(null);
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<
-    "details" | "contacts" | "rates" | "campaigns" | "trade"
+    "details" | "contacts" | "rates" | "campaigns" | "trade" | "suborgs"
   >("details");
   const [isEditingDetails, setIsEditingDetails] = useState(false);
   const [showAddContactForm, setShowAddContactForm] = useState(false);
@@ -674,6 +675,9 @@ export default function OrganizationDetailPage() {
                     organization.type === "Holding Agency"
                       ? [{ id: "trade", name: "Trade" }]
                       : []),
+                    ...(organization.isHolding
+                      ? [{ id: "suborgs", name: "Sub-Organizations" }]
+                      : []),
                     { id: "campaigns", name: "Campaigns" },
                   ].map((tab) => (
                     <button
@@ -686,6 +690,7 @@ export default function OrganizationDetailPage() {
                             | "rates"
                             | "campaigns"
                             | "trade"
+                            | "suborgs"
                         )
                       }
                       className={`
@@ -905,6 +910,14 @@ export default function OrganizationDetailPage() {
                     />
                   </div>
                 )}
+              {activeTab === "suborgs" && organization.isHolding && (
+                <div id="organization-suborgs">
+                  <OrganizationSubOrgs
+                    organization={organization}
+                    hideActionButtons={true}
+                  />
+                </div>
+              )}
               {activeTab === "campaigns" && (
                 <OrganizationCampaigns organizationId={organization.id} />
               )}
