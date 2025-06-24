@@ -111,7 +111,7 @@ const Sidebar: React.FC = () => {
     { name: "Campaigns", href: "/campaigns", icon: CampaignIcon },
     { name: "AdOps", href: "/adops", icon: AdOpsIcon },
     { name: "Reports", href: "/reports", icon: ReportIcon },
-    { name: "Billing", href: "/accounting", icon: AccountingIcon },
+    { name: "Finance", href: "/finance", icon: AccountingIcon },
     { name: "Settings", href: "/settings", icon: SettingsIcon },
   ];
 

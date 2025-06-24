@@ -1,0 +1,421 @@
+import React, { useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Filter, Download, ChevronDown } from "lucide-react";
+
+// Types for the revenue data
+export interface RevenueData {
+  id: number;
+  division: string;
+  campaignId: string;
+  month: string;
+  year: string;
+  account: string;
+  partOfHolding: string;
+  holdingName: string;
+  advertiser: string;
+  product: string;
+  publisher: string;
+  publisherProduct: string;
+  serviceType: string;
+  purchaseType: string;
+  salesPerson: string;
+  billingOffice: string;
+  billingCountry: string;
+  currency: string;
+  exchangeRate: string;
+  grossRevenue: string;
+  publisherCost: string;
+  hiddenCosts: string;
+  netRevenue: string;
+  margin: string;
+}
+
+interface RevenueTableProps {
+  data: RevenueData[];
+}
+
+export const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredData, setFilteredData] = useState<RevenueData[]>(data);
+  const [visibleColumns, setVisibleColumns] = useState<Record<string, boolean>>(
+    {
+      division: true,
+      campaignId: true,
+      month: true,
+      year: true,
+      account: true,
+      partOfHolding: true,
+      holdingName: true,
+      advertiser: true,
+      product: true,
+      publisher: true,
+      publisherProduct: true,
+      serviceType: true,
+      purchaseType: true,
+      salesPerson: true,
+      billingOffice: true,
+      billingCountry: true,
+      currency: true,
+      exchangeRate: true,
+      grossRevenue: true,
+      publisherCost: true,
+      hiddenCosts: true,
+      netRevenue: true,
+      margin: true,
+    }
+  );
+
+  // Filter data based on search term
+  React.useEffect(() => {
+    const filtered = data.filter((item) => {
+      return (
+        item.account.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.advertiser.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.publisher.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.campaignId.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
+    setFilteredData(filtered);
+  }, [searchTerm, data]);
+
+  // Toggle column visibility
+  const toggleColumn = (columnName: string) => {
+    setVisibleColumns((prev) => ({
+      ...prev,
+      [columnName]: !prev[columnName],
+    }));
+  };
+
+  // Helper function to get division color
+  const getDivisionColor = (division: string) => {
+    switch (division) {
+      case "Online":
+        return "bg-blue-100 text-blue-800";
+      case "OOH":
+        return "bg-yellow-100 text-yellow-800";
+      case "Broadcast":
+        return "bg-green-100 text-green-800";
+      case "Print":
+        return "bg-purple-100 text-purple-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  // Helper function to get service type color
+  const getServiceTypeColor = (serviceType: string) => {
+    switch (serviceType) {
+      case "Representación Comercial":
+        return "bg-blue-100 text-blue-800";
+      case "Servicio de Medios (IMB)":
+        return "bg-indigo-100 text-indigo-800";
+      case "Prefered Ad Services (PAS)":
+        return "bg-purple-100 text-purple-800";
+      case "Clearing House":
+        return "bg-green-100 text-green-800";
+      case "Mobile Performance":
+        return "bg-yellow-100 text-yellow-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  // Helper function to get purchase type color
+  const getPurchaseTypeColor = (purchaseType: string) => {
+    switch (purchaseType) {
+      case "IO-Based":
+        return "bg-blue-100 text-blue-800";
+      case "Programmatic":
+        return "bg-orange-100 text-orange-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  return (
+    <table className="min-w-full divide-y divide-gray-200 table-fixed">
+      <thead className="bg-gray-50">
+        <tr>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Division
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Campaign ID
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Month
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Year
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Account
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Part of Holding
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Holding Name
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Advertiser
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Product
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Publisher
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Publisher Product
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Service Type
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Purchase Type
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Sales Person
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Billing Office
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Billing Country
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Currency
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Exchange Rate
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Gross Revenue
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Publisher Cost
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            AVBs/Hidden Costs
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Net Revenue
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Margin %
+          </th>
+        </tr>
+      </thead>
+      <tbody className="bg-white divide-y divide-gray-100">
+        {filteredData.length === 0 ? (
+          <tr>
+            <td colSpan={23} className="px-6 py-16 text-center">
+              <div className="flex flex-col items-center justify-center">
+                <svg
+                  className="w-16 h-16 text-orange-200 mb-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <h3 className="text-lg font-medium text-gray-900 mb-1">
+                  No results found
+                </h3>
+                <p className="text-gray-500 max-w-sm text-center mb-6">
+                  No revenue data matches your search criteria. Try adjusting
+                  your filters.
+                </p>
+              </div>
+            </td>
+          </tr>
+        ) : (
+          filteredData.map((row) => (
+            <tr key={row.id} className="hover:bg-gray-50 transition-colors">
+              <td className="px-6 py-4 whitespace-nowrap">
+                <span
+                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getDivisionColor(
+                    row.division
+                  )}`}
+                >
+                  {row.division}
+                </span>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
+                {row.campaignId}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                {row.month}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                {row.year}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {row.account}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                {row.partOfHolding}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                {row.holdingName}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {row.advertiser}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {row.product}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {row.publisher}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                {row.publisherProduct}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <span
+                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getServiceTypeColor(
+                    row.serviceType
+                  )}`}
+                >
+                  {row.serviceType}
+                </span>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <span
+                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getPurchaseTypeColor(
+                    row.purchaseType
+                  )}`}
+                >
+                  {row.purchaseType}
+                </span>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                {row.salesPerson}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                {row.billingOffice}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                {row.billingCountry}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                {row.currency}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                {row.exchangeRate}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
+                {row.grossRevenue}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
+                {row.publisherCost}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
+                {row.hiddenCosts}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
+                {row.netRevenue}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
+                {row.margin}
+              </td>
+            </tr>
+          ))
+        )}
+      </tbody>
+    </table>
+  );
+};
+
+export default RevenueTable;
