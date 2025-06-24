@@ -45,6 +45,7 @@ const TradeIncentiveFilters: React.FC<TradeIncentiveFiltersProps> = ({
     { value: "All", label: "All products" },
     { value: "EAP", label: "EAP (Exclusive Ad Partner)" },
     { value: "PAS", label: "PAS (Premium Ad Solutions)" },
+    { value: "Specific", label: "Specific Product" },
   ];
 
   // Incentive type options

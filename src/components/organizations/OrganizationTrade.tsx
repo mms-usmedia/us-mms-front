@@ -4,6 +4,7 @@ import {
   TradeIncentive,
   getTradeIncentivesByOrganizationId,
   getAllCountries,
+  getAllProducts,
 } from "@/data/mockTradeData";
 import TradeIncentiveFilters from "./TradeIncentiveFilters";
 import TradeIncentiveFormModal from "./TradeIncentiveFormModal";
@@ -58,6 +59,9 @@ const OrganizationTrade: React.FC<OrganizationTradeProps> = ({
 
   // Get the available countries from mock data
   const countries = getAllCountries();
+
+  // Get the available products from mock data
+  const products = getAllProducts();
 
   // Incentive type colors for badges
   const incentiveTypeColors = {
@@ -192,6 +196,11 @@ const OrganizationTrade: React.FC<OrganizationTradeProps> = ({
         isActive: true,
       };
 
+      // Si es un producto específico, agregar la información del producto
+      if (formData.productType === "Specific" && formData.specificProduct) {
+        newIncentive.specificProduct = formData.specificProduct;
+      }
+
       // Agregar campos específicos según el tipo de incentivo
       if (formData.incentiveType === "Volume") {
         newIncentive.minVolume = formData.minVolume;
@@ -260,11 +269,14 @@ const OrganizationTrade: React.FC<OrganizationTradeProps> = ({
                     <h3 className="text-lg font-medium text-gray-900 flex items-center">
                       <span className="mr-2">{country}</span>
                       <span className="text-gray-400 mx-1">•</span>
-                      <span className="text-indigo-700">
+                      <span className="text-orange-600">
                         {productType === "EAP"
                           ? "Exclusive Ad Partner"
                           : productType === "PAS"
                           ? "Premium Ad Solutions"
+                          : productType === "Specific" &&
+                            groupIncentives[0]?.specificProduct
+                          ? groupIncentives[0].specificProduct.name
                           : "All products"}
                       </span>
                     </h3>

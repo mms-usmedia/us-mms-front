@@ -9,7 +9,11 @@ export interface TradeIncentive {
   id: string;
   organizationId: string;
   country: string;
-  productType: "EAP" | "PAS" | "All";
+  productType: "EAP" | "PAS" | "All" | "Specific";
+  specificProduct?: {
+    id: string;
+    name: string;
+  };
   incentiveType: "Fixed" | "Volume" | "Scale" | "OnTop";
   // Para incentivos Fixed
   percentage: number;
@@ -466,4 +470,22 @@ export const getAllCountries = (): string[] => {
     countries.add(incentive.country);
   });
   return ["All", ...Array.from(countries)].sort();
+};
+
+// Lista de productos disponibles para incentivos específicos
+const mockProducts = [
+  { id: "prod001", name: "Tinder" },
+  { id: "prod002", name: "Hulu" },
+  { id: "prod003", name: "LinkedIn" },
+  { id: "prod004", name: "Twitter" },
+  { id: "prod005", name: "Facebook" },
+  { id: "prod006", name: "Instagram" },
+  { id: "prod007", name: "Snapchat" },
+  { id: "prod008", name: "TikTok" },
+  { id: "prod009", name: "YouTube" },
+  { id: "prod010", name: "Spotify" },
+];
+
+export const getAllProducts = () => {
+  return mockProducts;
 };
