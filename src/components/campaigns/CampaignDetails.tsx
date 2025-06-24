@@ -163,8 +163,8 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
     ];
   };
 
-  // Colores para el gráfico circular - gama de naranjas oscuros
-  const COLORS = ["#EA580C", "#F97316", "#FB923C"];
+  // Colores para el gráfico circular - paleta de colores pasteles
+  const COLORS = ["#4BC0C0", "#9966FF", "#FF9F40"];
 
   return (
     <div className="bg-white shadow-sm border border-gray-100 rounded-b-xl p-6">
