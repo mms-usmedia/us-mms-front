@@ -11,6 +11,9 @@ import RevenueTable from "@/components/finance/RevenueTable";
 import ExportButton from "@/components/finance/ExportButton";
 import SearchFilter from "@/components/finance/SearchFilter";
 import { mockRevenueData, revenueMetrics } from "@/components/finance/mockData";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { CheckCircle } from "lucide-react";
 
 export default function FinancePage() {
   const router = useRouter();
@@ -114,6 +117,15 @@ export default function FinancePage() {
                 </p>
               </div>
               <div className="flex items-center gap-2">
+                <Link href="/finance/approvals">
+                  <Button variant="outline" className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4" />
+                    <span>Organization Approvals</span>
+                    <span className="inline-flex items-center justify-center w-5 h-5 ml-1 text-xs font-semibold text-white bg-orange-500 rounded-full">
+                      3
+                    </span>
+                  </Button>
+                </Link>
                 <ExportButton
                   data={filteredData}
                   filename={`revenue-report-${currentPeriod
