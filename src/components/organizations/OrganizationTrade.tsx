@@ -76,7 +76,9 @@ const OrganizationTrade: React.FC<OrganizationTradeProps> = ({
 
   // Update form state when prop changes
   useEffect(() => {
-    setIsAddingIncentive(showAddIncentiveForm);
+    if (showAddIncentiveForm) {
+      setIsAddingIncentive(true);
+    }
   }, [showAddIncentiveForm]);
 
   // Notify parent component when form is closed
@@ -185,12 +187,22 @@ const OrganizationTrade: React.FC<OrganizationTradeProps> = ({
         description: formData.description || "",
         startDate: formData.startDate || new Date().toISOString().split("T")[0],
         endDate: formData.endDate,
-        minVolume: formData.minVolume,
-        maxVolume: formData.maxVolume,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         isActive: true,
       };
+
+      // Agregar campos específicos según el tipo de incentivo
+      if (formData.incentiveType === "Volume") {
+        newIncentive.minVolume = formData.minVolume;
+        newIncentive.maxVolume = formData.maxVolume;
+      } else if (formData.incentiveType === "Scale") {
+        newIncentive.tiers = formData.tiers;
+      } else if (formData.incentiveType === "OnTop") {
+        newIncentive.additionalPercentage = formData.additionalPercentage;
+        newIncentive.thresholdVolume = formData.thresholdVolume;
+      }
+
       setIncentives([...incentives, newIncentive]);
     }
 
@@ -268,7 +280,34 @@ const OrganizationTrade: React.FC<OrganizationTradeProps> = ({
                           <div className="flex-1">
                             <div className="flex flex-wrap items-center gap-2 mb-2">
                               <span className="text-2xl font-semibold text-gray-900">
-                                {incentive.percentage}%
+                                {incentive.incentiveType === "Scale" &&
+                                incentive.tiers &&
+                                incentive.tiers.length > 0 ? (
+                                  <span className="flex items-center">
+                                    <span>
+                                      {incentive.tiers[0].percentage}%
+                                    </span>
+                                    <span className="text-lg font-normal text-gray-600 ml-1">
+                                      →{" "}
+                                      {
+                                        incentive.tiers[
+                                          incentive.tiers.length - 1
+                                        ].percentage
+                                      }
+                                      %
+                                    </span>
+                                  </span>
+                                ) : (
+                                  <>
+                                    {incentive.percentage}%
+                                    {incentive.incentiveType === "OnTop" &&
+                                      incentive.additionalPercentage && (
+                                        <span className="text-lg font-normal text-gray-600 ml-1">
+                                          +{incentive.additionalPercentage}%
+                                        </span>
+                                      )}
+                                  </>
+                                )}
                               </span>
                               <span
                                 className={`px-2.5 py-1 text-xs font-medium rounded-full ${
@@ -324,32 +363,74 @@ const OrganizationTrade: React.FC<OrganizationTradeProps> = ({
                                     ).toLocaleDateString()}`
                                   : " - No end date"}
                               </p>
-                              {(incentive.minVolume !== undefined ||
-                                incentive.maxVolume !== undefined) && (
-                                <p className="flex items-center">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-3.5 w-3.5 mr-1.5 text-gray-400"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                    />
-                                  </svg>
-                                  Volume:
-                                  {incentive.minVolume !== undefined
-                                    ? ` Min $${incentive.minVolume.toLocaleString()}`
-                                    : ""}
-                                  {incentive.maxVolume !== undefined
-                                    ? ` Max $${incentive.maxVolume.toLocaleString()}`
-                                    : ""}
-                                </p>
-                              )}
+                              {incentive.incentiveType === "Scale" &&
+                                incentive.tiers && (
+                                  <p className="flex items-center">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-3.5 w-3.5 mr-1.5 text-gray-400"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                      />
+                                    </svg>
+                                    Tiers: {incentive.tiers.length} levels
+                                  </p>
+                                )}
+                              {incentive.incentiveType === "OnTop" &&
+                                incentive.thresholdVolume && (
+                                  <p className="flex items-center">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-3.5 w-3.5 mr-1.5 text-gray-400"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                      />
+                                    </svg>
+                                    Threshold: $
+                                    {incentive.thresholdVolume.toLocaleString()}
+                                  </p>
+                                )}
+                              {incentive.incentiveType === "Volume" &&
+                                (incentive.minVolume !== undefined ||
+                                  incentive.maxVolume !== undefined) && (
+                                  <p className="flex items-center">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-3.5 w-3.5 mr-1.5 text-gray-400"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                      />
+                                    </svg>
+                                    Volume:
+                                    {incentive.minVolume !== undefined
+                                      ? ` Min $${incentive.minVolume.toLocaleString()}`
+                                      : ""}
+                                    {incentive.maxVolume !== undefined
+                                      ? ` Max $${incentive.maxVolume.toLocaleString()}`
+                                      : ""}
+                                  </p>
+                                )}
                             </div>
                           </div>
                           <div

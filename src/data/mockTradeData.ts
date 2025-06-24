@@ -1,11 +1,23 @@
 // Interfaces
+export interface VolumeTier {
+  minVolume: number;
+  maxVolume?: number;
+  percentage: number;
+}
+
 export interface TradeIncentive {
   id: string;
   organizationId: string;
   country: string;
   productType: "EAP" | "PAS" | "All";
   incentiveType: "Fixed" | "Volume" | "Scale" | "OnTop";
+  // Para incentivos Fixed
   percentage: number;
+  // Para incentivos OnTop
+  additionalPercentage?: number; // Porcentaje adicional para incentivos OnTop
+  thresholdVolume?: number; // Volumen a partir del cual se aplica el porcentaje adicional
+  // Para incentivos Scale
+  tiers?: VolumeTier[]; // Escalas múltiples para incentivos Scale
   description: string;
   startDate: string;
   endDate?: string;
@@ -53,25 +65,24 @@ export const mockTradeIncentives: TradeIncentive[] = [
     productType: "All",
     incentiveType: "Scale",
     percentage: 15,
-    description: "Comisión base para Colombia (inversión hasta $10M)",
+    description: "Comisión escalonada para Colombia",
     startDate: "2023-01-01",
-    minVolume: 0,
-    maxVolume: 10000000,
-    createdAt: "2022-12-15T00:00:00Z",
-    updatedAt: "2022-12-15T00:00:00Z",
-    isActive: true,
-  },
-  {
-    id: "inc004",
-    organizationId: "org001",
-    country: "Colombia",
-    productType: "All",
-    incentiveType: "Scale",
-    percentage: 18,
-    description: "Comisión nivel 2 para Colombia (inversión $10M-$20M)",
-    startDate: "2023-01-01",
-    minVolume: 10000001,
-    maxVolume: 20000000,
+    tiers: [
+      {
+        minVolume: 0,
+        maxVolume: 10000000,
+        percentage: 15,
+      },
+      {
+        minVolume: 10000001,
+        maxVolume: 20000000,
+        percentage: 18,
+      },
+      {
+        minVolume: 20000001,
+        percentage: 20,
+      },
+    ],
     createdAt: "2022-12-15T00:00:00Z",
     updatedAt: "2022-12-15T00:00:00Z",
     isActive: true,
@@ -83,10 +94,11 @@ export const mockTradeIncentives: TradeIncentive[] = [
     productType: "All",
     incentiveType: "OnTop",
     percentage: 5,
+    additionalPercentage: 3,
+    thresholdVolume: 25000000,
     description: "Incentivo adicional por volumen anual (Brasil)",
     startDate: "2023-01-01",
     endDate: "2023-12-31",
-    minVolume: 25000000,
     createdAt: "2022-12-15T00:00:00Z",
     updatedAt: "2022-12-15T00:00:00Z",
     isActive: true,
@@ -212,6 +224,7 @@ export const mockTradeIncentives: TradeIncentive[] = [
     productType: "All",
     incentiveType: "OnTop",
     percentage: 3,
+    additionalPercentage: 2,
     description:
       "Incentivo adicional global por cumplimiento de objetivos anuales",
     startDate: "2023-01-01",

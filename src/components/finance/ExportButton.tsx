@@ -110,7 +110,7 @@ const ExportButton: React.FC<ExportButtonProps> = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="flex items-center gap-2">
+        <Button className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white">
           <Download className="h-4 w-4" />
           <span>Export</span>
         </Button>
