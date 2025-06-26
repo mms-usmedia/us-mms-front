@@ -13,6 +13,8 @@ interface SearchFilterProps {
   setIsHoldingFilter: (value: boolean | null) => void;
   isBigSixFilter: boolean | null;
   setIsBigSixFilter: (value: boolean | null) => void;
+  isPartOfHoldingFilter: boolean | null;
+  setIsPartOfHoldingFilter: (value: boolean | null) => void;
   organizationTypes: string[];
   countries: string[];
 }
@@ -30,6 +32,8 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   setIsHoldingFilter,
   isBigSixFilter,
   setIsBigSixFilter,
+  isPartOfHoldingFilter,
+  setIsPartOfHoldingFilter,
   organizationTypes,
   countries,
 }) => {
@@ -39,6 +43,9 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   const [filteredCountries, setFilteredCountries] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState<boolean>(false);
   const countryDropdownRef = useRef<HTMLDivElement>(null);
+  const [showPartOfHoldingDropdown, setShowPartOfHoldingDropdown] =
+    useState<boolean>(false);
+  const partOfHoldingDropdownRef = useRef<HTMLDivElement>(null);
 
   // Status options
   const statusOptions = ["Active", "Inactive", "In Review"];
@@ -69,13 +76,24 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
       ) {
         setShowCountryDropdown(false);
       }
+
+      if (
+        partOfHoldingDropdownRef.current &&
+        !partOfHoldingDropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowPartOfHoldingDropdown(false);
+      }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    // Add event listener only if any dropdown is open
+    if (showCountryDropdown || showPartOfHoldingDropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [showCountryDropdown, showPartOfHoldingDropdown]);
 
   // Function to clear all filters
   const handleClearFilters = () => {
@@ -85,6 +103,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     setSelectedStatus([]);
     setIsHoldingFilter(null);
     setIsBigSixFilter(null);
+    setIsPartOfHoldingFilter(null);
     setCountrySearchTerm("");
   };
 
@@ -95,7 +114,8 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     selectedCountries.length > 0 ||
     selectedStatus.length > 0 ||
     isHoldingFilter !== null ||
-    isBigSixFilter !== null;
+    isBigSixFilter !== null ||
+    isPartOfHoldingFilter !== null;
 
   // Function to toggle type selection
   const toggleTypeSelection = (type: string) => {
@@ -213,7 +233,8 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
                   (selectedCountries.length > 0 ? 1 : 0) +
                   (selectedStatus.length > 0 ? 1 : 0) +
                   (isHoldingFilter !== null ? 1 : 0) +
-                  (isBigSixFilter !== null ? 1 : 0)}
+                  (isBigSixFilter !== null ? 1 : 0) +
+                  (isPartOfHoldingFilter !== null ? 1 : 0)}
               </span>
             )}
           </button>
@@ -243,64 +264,67 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
 
         {/* Expanded filter options */}
         {showFilters && (
-          <div className="grid grid-cols-1 gap-4 pt-4 border-t border-gray-100 mt-2">
-            {/* Organization Type Filter */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-gray-100 mt-2">
+            {/* Column 1: Organization Type and Status */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Organization Type
-              </label>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
-                {organizationTypes.map((type) => (
-                  <div
-                    key={type}
-                    className={`cursor-pointer rounded-md px-3 py-1.5 text-sm border ${
-                      selectedTypes.includes(type)
-                        ? getTypeStyles(type)
-                        : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
-                    }`}
-                    onClick={() => toggleTypeSelection(type)}
-                  >
-                    {type}
-                    {selectedTypes.includes(type) && (
-                      <span className="ml-1.5 inline-block">✓</span>
-                    )}
-                  </div>
-                ))}
+              {/* Organization Type Filter */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Organization Type
+                </label>
+                <div className="space-y-2">
+                  {organizationTypes.map((type) => (
+                    <div
+                      key={type}
+                      className={`cursor-pointer rounded-md px-3 py-1.5 text-sm border ${
+                        selectedTypes.includes(type)
+                          ? getTypeStyles(type)
+                          : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
+                      }`}
+                      onClick={() => toggleTypeSelection(type)}
+                    >
+                      {type}
+                      {selectedTypes.includes(type) && (
+                        <span className="ml-1.5 inline-block">✓</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Status Filter */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Status
+                </label>
+                <div className="space-y-2">
+                  {statusOptions.map((status) => (
+                    <div
+                      key={status}
+                      className={`cursor-pointer rounded-md px-3 py-1.5 text-sm border ${
+                        selectedStatus.includes(status)
+                          ? getStatusStyles(status)
+                          : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
+                      }`}
+                      onClick={() => toggleStatusSelection(status)}
+                    >
+                      {status}
+                      {selectedStatus.includes(status) && (
+                        <span className="ml-1.5 inline-block">✓</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Status Filter */}
+            {/* Column 2: Tags */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Status
-              </label>
-              <div className="grid grid-cols-3 gap-2">
-                {statusOptions.map((status) => (
-                  <div
-                    key={status}
-                    className={`cursor-pointer rounded-md px-3 py-1.5 text-sm border ${
-                      selectedStatus.includes(status)
-                        ? getStatusStyles(status)
-                        : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
-                    }`}
-                    onClick={() => toggleStatusSelection(status)}
-                  >
-                    {status}
-                    {selectedStatus.includes(status) && (
-                      <span className="ml-1.5 inline-block">✓</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Features Filter */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Features
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                {/* Holding Filter */}
+              {/* Holding Filter */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Holding
+                </label>
                 <div
                   className={`cursor-pointer rounded-md px-3 py-1.5 text-sm border ${
                     isHoldingFilter === true
@@ -320,16 +344,21 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
                   }}
                 >
                   {isHoldingFilter === null
-                    ? "Holding"
+                    ? "Is Holding"
                     : isHoldingFilter === true
-                    ? "Holding: Yes"
-                    : "Holding: No"}
+                    ? "Is Holding: Yes"
+                    : "Is Holding: No"}
                   {isHoldingFilter !== null && (
                     <span className="ml-1.5 inline-block">✓</span>
                   )}
                 </div>
+              </div>
 
-                {/* Big Six Filter */}
+              {/* Big Six Filter */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Big 6
+                </label>
                 <div
                   className={`cursor-pointer rounded-md px-3 py-1.5 text-sm border ${
                     isBigSixFilter === true
@@ -349,118 +378,228 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
                   }}
                 >
                   {isBigSixFilter === null
-                    ? "Big 6"
+                    ? "Is Big 6"
                     : isBigSixFilter === true
-                    ? "Big 6: Yes"
-                    : "Big 6: No"}
+                    ? "Is Big 6: Yes"
+                    : "Is Big 6: No"}
                   {isBigSixFilter !== null && (
                     <span className="ml-1.5 inline-block">✓</span>
                   )}
                 </div>
               </div>
-            </div>
 
-            {/* Country Filter */}
-            <div className="relative" ref={countryDropdownRef}>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Country
-              </label>
-              <div
-                className="flex flex-wrap gap-2 min-h-10 p-2 border border-gray-200 rounded-lg shadow-sm cursor-pointer bg-gray-50"
-                onClick={() => setShowCountryDropdown(!showCountryDropdown)}
-              >
-                {selectedCountries.length === 0 ? (
-                  <div className="text-gray-500 text-sm my-auto">
-                    All Countries
-                  </div>
-                ) : (
-                  selectedCountries.map((country) => (
-                    <span
-                      key={country}
-                      className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border bg-gray-50 text-gray-700 border-gray-100"
+              {/* Part of Holding Filter */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Part of Holding
+                </label>
+                <div className="relative" ref={partOfHoldingDropdownRef}>
+                  <div
+                    className="flex items-center justify-between cursor-pointer rounded-md px-3 py-2 text-sm border border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
+                    onClick={() =>
+                      setShowPartOfHoldingDropdown(!showPartOfHoldingDropdown)
+                    }
+                  >
+                    <span>
+                      {isPartOfHoldingFilter === null
+                        ? "Select option"
+                        : isPartOfHoldingFilter === true
+                        ? "Yes"
+                        : "No"}
+                    </span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className={`h-4 w-4 text-gray-500 transition-transform ${
+                        showPartOfHoldingDropdown ? "transform rotate-180" : ""
+                      }`}
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
                     >
-                      {country}
-                      <button
-                        type="button"
-                        className="ml-1.5 inline-flex items-center justify-center h-4 w-4 rounded-full text-gray-400 hover:bg-gray-200 hover:text-gray-500 focus:outline-none"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleCountrySelection(country);
+                      <path
+                        fillRule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+
+                  {showPartOfHoldingDropdown && (
+                    <div className="absolute z-10 mt-1 w-full bg-white rounded-md shadow-lg overflow-hidden border border-gray-200">
+                      <div
+                        className={`px-3 py-2 text-sm cursor-pointer hover:bg-gray-50 ${
+                          isPartOfHoldingFilter === true
+                            ? "bg-orange-50 text-orange-700"
+                            : "text-gray-700"
+                        }`}
+                        onClick={() => {
+                          if (isPartOfHoldingFilter === true) {
+                            setIsPartOfHoldingFilter(null);
+                          } else {
+                            setIsPartOfHoldingFilter(true);
+                          }
+                          setShowPartOfHoldingDropdown(false);
                         }}
                       >
-                        <svg
-                          className="h-2.5 w-2.5"
-                          stroke="currentColor"
-                          fill="none"
-                          viewBox="0 0 8 8"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeWidth="1.5"
-                            d="M1 1l6 6m0-6L1 7"
-                          />
-                        </svg>
-                      </button>
-                    </span>
-                  ))
-                )}
+                        <div className="flex items-center justify-between">
+                          Yes
+                          {isPartOfHoldingFilter === true && (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4 text-orange-600"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          )}
+                        </div>
+                      </div>
+                      <div
+                        className={`px-3 py-2 text-sm cursor-pointer hover:bg-gray-50 ${
+                          isPartOfHoldingFilter === false
+                            ? "bg-orange-50 text-orange-700"
+                            : "text-gray-700"
+                        }`}
+                        onClick={() => {
+                          if (isPartOfHoldingFilter === false) {
+                            setIsPartOfHoldingFilter(null);
+                          } else {
+                            setIsPartOfHoldingFilter(false);
+                          }
+                          setShowPartOfHoldingDropdown(false);
+                        }}
+                      >
+                        <div className="flex items-center justify-between">
+                          No
+                          {isPartOfHoldingFilter === false && (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4 text-orange-600"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
+            </div>
 
-              {/* Country dropdown */}
-              {showCountryDropdown && (
-                <div className="absolute z-10 mt-1 w-full bg-white rounded-md shadow-lg max-h-60 overflow-auto border border-gray-200">
-                  <div className="p-2 border-b border-gray-100">
-                    <input
-                      type="text"
-                      value={countrySearchTerm}
-                      onChange={(e) => setCountrySearchTerm(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 text-sm"
-                      placeholder="Search countries..."
-                      onClick={(e) => e.stopPropagation()}
-                    />
-                  </div>
-                  <div className="p-2">
-                    {filteredCountries.length > 0 ? (
-                      filteredCountries.map((country) => (
-                        <div
-                          key={country}
-                          className={`px-3 py-2 text-sm cursor-pointer rounded-md ${
-                            selectedCountries.includes(country)
-                              ? "bg-orange-50 text-orange-700"
-                              : "hover:bg-gray-50 text-gray-700"
-                          }`}
+            {/* Column 3: Country Filter */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Country
+              </label>
+              <div className="relative" ref={countryDropdownRef}>
+                <div
+                  className="flex flex-wrap gap-2 min-h-10 p-2 border border-gray-200 rounded-lg shadow-sm cursor-pointer bg-gray-50"
+                  onClick={() => setShowCountryDropdown(!showCountryDropdown)}
+                >
+                  {selectedCountries.length === 0 ? (
+                    <div className="text-gray-500 text-sm my-auto">
+                      All Countries
+                    </div>
+                  ) : (
+                    selectedCountries.map((country) => (
+                      <span
+                        key={country}
+                        className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border bg-gray-50 text-gray-700 border-gray-100"
+                      >
+                        {country}
+                        <button
+                          type="button"
+                          className="ml-1.5 inline-flex items-center justify-center h-4 w-4 rounded-full text-gray-400 hover:bg-gray-200 hover:text-gray-500 focus:outline-none"
                           onClick={(e) => {
                             e.stopPropagation();
                             toggleCountrySelection(country);
                           }}
                         >
-                          <div className="flex items-center justify-between">
-                            {country}
-                            {selectedCountries.includes(country) && (
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-4 w-4 text-orange-600"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                            )}
-                          </div>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="px-3 py-2 text-sm text-gray-500">
-                        No countries found
-                      </div>
-                    )}
-                  </div>
+                          <svg
+                            className="h-2.5 w-2.5"
+                            stroke="currentColor"
+                            fill="none"
+                            viewBox="0 0 8 8"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeWidth="1.5"
+                              d="M1 1l6 6m0-6L1 7"
+                            />
+                          </svg>
+                        </button>
+                      </span>
+                    ))
+                  )}
                 </div>
-              )}
+
+                {/* Country dropdown */}
+                {showCountryDropdown && (
+                  <div className="absolute z-10 mt-1 w-full bg-white rounded-md shadow-lg max-h-60 overflow-auto border border-gray-200">
+                    <div className="p-2 border-b border-gray-100">
+                      <input
+                        type="text"
+                        value={countrySearchTerm}
+                        onChange={(e) => setCountrySearchTerm(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 text-sm"
+                        placeholder="Search countries..."
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    </div>
+                    <div className="p-2">
+                      {filteredCountries.length > 0 ? (
+                        filteredCountries.map((country) => (
+                          <div
+                            key={country}
+                            className={`px-3 py-2 text-sm cursor-pointer rounded-md ${
+                              selectedCountries.includes(country)
+                                ? "bg-orange-50 text-orange-700"
+                                : "hover:bg-gray-50 text-gray-700"
+                            }`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleCountrySelection(country);
+                            }}
+                          >
+                            <div className="flex items-center justify-between">
+                              {country}
+                              {selectedCountries.includes(country) && (
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-4 w-4 text-orange-600"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              )}
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="px-3 py-2 text-sm text-gray-500">
+                          No countries found
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}

@@ -32,61 +32,7 @@ interface Organization {
 }
 
 // Mock data for pending organizations
-const mockPendingOrganizations: Organization[] = [
-  {
-    id: "org101",
-    name: "MediaCom Argentina",
-    type: "Agency",
-    country: "Argentina",
-    submittedDate: "2025-04-15",
-    status: "Pending",
-    contactName: "Carlos Mendez",
-    contactEmail: "carlos.mendez@mediacom.com",
-    missingInfo: ["Tax ID", "Billing Address"],
-  },
-  {
-    id: "org102",
-    name: "Spotify LATAM",
-    type: "Publisher",
-    country: "Mexico",
-    submittedDate: "2025-04-14",
-    status: "Pending",
-    contactName: "Ana Torres",
-    contactEmail: "ana.torres@spotify.com",
-  },
-  {
-    id: "org103",
-    name: "Coca-Cola Brazil",
-    type: "Advertiser",
-    country: "Brazil",
-    submittedDate: "2025-04-12",
-    status: "Pending",
-    contactName: "Pedro Santos",
-    contactEmail: "pedro.santos@cocacola.com",
-    missingInfo: ["Payment Terms"],
-  },
-  {
-    id: "org104",
-    name: "Publicis Group LATAM",
-    type: "Holding Agency",
-    country: "Colombia",
-    submittedDate: "2025-04-10",
-    status: "Rejected",
-    contactName: "Laura Gomez",
-    contactEmail: "laura.gomez@publicis.com",
-    missingInfo: ["Legal Documentation", "Tax ID"],
-  },
-  {
-    id: "org105",
-    name: "Netflix Chile",
-    type: "Advertiser",
-    country: "Chile",
-    submittedDate: "2025-04-08",
-    status: "Approved",
-    contactName: "Diego Fuentes",
-    contactEmail: "diego.fuentes@netflix.com",
-  },
-];
+const mockPendingOrganizations: Organization[] = [];
 
 export default function FinanceApprovalsPage() {
   const router = useRouter();

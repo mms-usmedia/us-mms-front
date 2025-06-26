@@ -18,11 +18,13 @@ interface Organization {
     | "Advertiser"
     | "Publisher"
     | "Holding Agency"
-    | "Holding Advertiser";
+    | "Holding Advertiser"
+    | "Direct";
   country: string;
   isHolding: boolean;
   holdingName?: string;
   isBigSix: boolean;
+  isPartOfHolding: boolean;
   legalName: string;
   taxId: string;
   website?: string;
@@ -35,179 +37,259 @@ interface Organization {
 const mockOrganizations: Organization[] = [
   {
     id: "org001",
-    name: "OMD Mexico",
+    name: "Havas Media-Mexico- Havas",
     type: "Agency",
     country: "Mexico",
     isHolding: false,
-    holdingName: "Omnicom Media Group",
+    holdingName: "Havas",
     isBigSix: true,
-    legalName: "OMD Mexico S.A. de C.V.",
-    taxId: "OMD981231ABC",
-    website: "https://www.omd.com/mexico",
-    contactName: "Maria González",
-    contactEmail: "maria.gonzalez@omd.com",
+    isPartOfHolding: true,
+    legalName: "XXXX SA",
+    taxId: "HMM123456MX",
+    website: "www.xyz.com",
+    contactName: "Miguel Hernández",
+    contactEmail: "miguel.hernandez@havas.com",
     status: "Active",
   },
   {
     id: "org002",
-    name: "Live Nation Brasil Entretenimento LTDA",
-    type: "Advertiser",
-    country: "Brazil",
+    name: "Yakult",
+    type: "Direct",
+    country: "Mexico",
     isHolding: false,
     holdingName: "",
     isBigSix: false,
-    legalName: "Live Nation Brasil Entretenimento LTDA",
-    taxId: "LN123456BR",
-    website: "https://www.livenation.com.br",
-    contactName: "João Silva",
-    contactEmail: "joao.silva@livenation.com",
-    status: "Inactive",
+    isPartOfHolding: false,
+    legalName: "XXXX SA",
+    taxId: "YKT123456MX",
+    website: "www.xyz.com",
+    contactName: "Carlos Ramírez",
+    contactEmail: "carlos.ramirez@yakult.com",
+    status: "Active",
   },
   {
     id: "org003",
-    name: "Vevo LLC",
-    type: "Publisher",
-    country: "United States",
-    isHolding: false,
+    name: "Havas",
+    type: "Holding Agency",
+    country: "Global",
+    isHolding: true,
     holdingName: "",
-    isBigSix: false,
-    legalName: "Vevo LLC",
-    taxId: "V789012US",
-    website: "https://www.vevo.com",
-    contactName: "John Smith",
-    contactEmail: "john.smith@vevo.com",
+    isBigSix: true,
+    isPartOfHolding: false,
+    legalName: "XXXX SA",
+    taxId: "HAV123456GL",
+    website: "www.xyz.com",
+    contactName: "Sophie Dupont",
+    contactEmail: "sophie.dupont@havas.com",
     status: "Active",
   },
   {
     id: "org004",
-    name: "Omnicom Media Group",
+    name: "Interpublic",
     type: "Holding Agency",
-    country: "United States",
+    country: "Global",
     isHolding: true,
+    holdingName: "",
     isBigSix: true,
-    legalName: "Omnicom Media Group, Inc.",
-    taxId: "OMG345678US",
-    website: "https://www.omnicommediagroup.com",
-    contactName: "Sarah Johnson",
-    contactEmail: "sarah.johnson@omnicomgroup.com",
+    isPartOfHolding: false,
+    legalName: "XXXX SA",
+    taxId: "IPG123456GL",
+    website: "www.xyz.com",
+    contactName: "John Smith",
+    contactEmail: "john.smith@interpublic.com",
     status: "Active",
   },
   {
     id: "org005",
     name: "WPP",
     type: "Holding Agency",
-    country: "United Kingdom",
+    country: "Global",
     isHolding: true,
+    holdingName: "",
     isBigSix: true,
-    legalName: "WPP plc",
-    taxId: "WPP123456UK",
-    website: "https://www.wpp.com",
-    contactName: "David Williams",
-    contactEmail: "david.williams@wpp.com",
+    isPartOfHolding: false,
+    legalName: "XXXX SA",
+    taxId: "WPP123456GL",
+    website: "www.xyz.com",
+    contactName: "Mark Read",
+    contactEmail: "mark.read@wpp.com",
     status: "Active",
   },
   {
     id: "org006",
-    name: "Havas Media Colombia",
-    type: "Agency",
-    country: "Colombia",
-    isHolding: false,
-    holdingName: "Havas Group",
+    name: "OMG",
+    type: "Holding Agency",
+    country: "Global",
+    isHolding: true,
+    holdingName: "",
     isBigSix: true,
-    legalName: "Havas Media Colombia S.A.S.",
-    taxId: "HMC567890CO",
-    website: "https://www.havasmedia.com/colombia",
-    contactName: "Carlos Jiménez",
-    contactEmail: "carlos.jimenez@havas.com",
-    status: "In Review",
+    isPartOfHolding: false,
+    legalName: "XXXX SA",
+    taxId: "OMG123456GL",
+    website: "www.xyz.com",
+    contactName: "John Wren",
+    contactEmail: "john.wren@omg.com",
+    status: "Active",
   },
   {
     id: "org007",
-    name: "Havas Group",
+    name: "Dentsu",
     type: "Holding Agency",
-    country: "France",
+    country: "Japón",
     isHolding: true,
+    holdingName: "",
     isBigSix: true,
-    legalName: "Havas S.A.",
-    taxId: "HAV456789FR",
-    website: "https://www.havasgroup.com",
-    contactName: "Sophie Dupont",
-    contactEmail: "sophie.dupont@havas.com",
+    isPartOfHolding: false,
+    legalName: "XXXX SA",
+    taxId: "DNT123456JP",
+    website: "www.xyz.com",
+    contactName: "Hiroshi Igarashi",
+    contactEmail: "hiroshi.igarashi@dentsu.com",
     status: "Active",
   },
   {
     id: "org008",
-    name: "Coca-Cola Latin America",
-    type: "Holding Advertiser",
-    country: "United States",
-    isHolding: true,
-    isBigSix: false,
-    legalName: "The Coca-Cola Company",
-    taxId: "CC123987US",
-    website: "https://www.coca-colalatinamerica.com",
-    contactName: "Miguel Rodríguez",
-    contactEmail: "miguel.rodriguez@coca-cola.com",
+    name: "UM - Mexico - IPG",
+    type: "Agency",
+    country: "Mexico",
+    isHolding: false,
+    holdingName: "Interpublic",
+    isBigSix: true,
+    isPartOfHolding: true,
+    legalName: "XXXX SA",
+    taxId: "UMM123456MX",
+    website: "www.xyz.com",
+    contactName: "Roberto Sánchez",
+    contactEmail: "roberto.sanchez@umww.com",
     status: "Active",
   },
   {
     id: "org009",
-    name: "Fandom",
-    type: "Publisher",
-    country: "United States",
+    name: "MUV-Brasil-WPP",
+    type: "Agency",
+    country: "Brasil",
     isHolding: false,
-    holdingName: "",
-    isBigSix: false,
-    legalName: "Fandom, Inc.",
-    taxId: "FAN234567US",
-    website: "https://www.fandom.com",
-    contactName: "Lisa Brown",
-    contactEmail: "lisa.brown@fandom.com",
-    status: "Inactive",
+    holdingName: "WPP",
+    isBigSix: true,
+    isPartOfHolding: true,
+    legalName: "XXXX SA",
+    taxId: "MUV123456BR",
+    website: "www.xyz.com",
+    contactName: "Paulo Oliveira",
+    contactEmail: "paulo.oliveira@muv.com",
+    status: "Active",
   },
   {
     id: "org010",
-    name: "CALIA Y2 PROPAGANDA E MARKETING LTDA",
+    name: "Omnet-United States-OMG",
     type: "Agency",
-    country: "Brazil",
+    country: "United States",
     isHolding: false,
-    holdingName: "",
-    isBigSix: false,
-    legalName: "CALIA Y2 PROPAGANDA E MARKETING LTDA",
-    taxId: "CAL876543BR",
-    website: "https://www.caliay2.com.br",
-    contactName: "Ana Oliveira",
-    contactEmail: "ana.oliveira@caliay2.com.br",
-    status: "In Review",
+    holdingName: "OMG",
+    isBigSix: true,
+    isPartOfHolding: true,
+    legalName: "XXXX SA",
+    taxId: "OMN123456US",
+    website: "www.xyz.com",
+    contactName: "Sarah Johnson",
+    contactEmail: "sarah.johnson@omnet.com",
+    status: "Active",
   },
   {
     id: "org011",
-    name: "EJE PUBLICITARIA SOCIEDAD ANONIMA",
-    type: "Advertiser",
-    country: "Argentina",
-    isHolding: false,
+    name: "Publicis",
+    type: "Holding Agency",
+    country: "Global",
+    isHolding: true,
     holdingName: "",
-    isBigSix: false,
-    legalName: "EJE PUBLICITARIA S.A.",
-    taxId: "EJE345678AR",
-    website: "https://www.ejepublicitaria.com.ar",
-    contactName: "Roberto Fernández",
-    contactEmail: "roberto.fernandez@ejepublicitaria.com.ar",
+    isBigSix: true,
+    isPartOfHolding: false,
+    legalName: "XXXX SA",
+    taxId: "PUB123456GL",
+    website: "www.xyz.com",
+    contactName: "Arthur Sadoun",
+    contactEmail: "arthur.sadoun@publicis.com",
     status: "Active",
   },
   {
     id: "org012",
-    name: "Omnet Chile",
-    type: "Agency",
-    country: "Chile",
+    name: "Paramount",
+    type: "Direct",
+    country: "United States",
     isHolding: false,
-    holdingName: "Omnet Latin America LLC",
+    holdingName: "",
     isBigSix: false,
-    legalName: "Omnet Chile Ltda.",
-    taxId: "OMC123456CL",
-    website: "https://www.omnet.cl",
-    contactName: "Patricia Gómez",
-    contactEmail: "patricia.gomez@omnet.cl",
-    status: "Inactive",
+    isPartOfHolding: false,
+    legalName: "XXXX SA",
+    taxId: "PAR123456US",
+    website: "www.xyz.com",
+    contactName: "Robert Bakish",
+    contactEmail: "robert.bakish@paramount.com",
+    status: "Active",
+  },
+  {
+    id: "org013",
+    name: "Carat-Argentina-Dentsu",
+    type: "Agency",
+    country: "Argentina",
+    isHolding: false,
+    holdingName: "Dentsu",
+    isBigSix: true,
+    isPartOfHolding: true,
+    legalName: "XXXX SA",
+    taxId: "CAR123456AR",
+    website: "www.xyz.com",
+    contactName: "Luciana Rodríguez",
+    contactEmail: "luciana.rodriguez@carat.com",
+    status: "Active",
+  },
+  {
+    id: "org014",
+    name: "Starcom-Mexico-Publicis",
+    type: "Agency",
+    country: "México",
+    isHolding: false,
+    holdingName: "Publicis",
+    isBigSix: true,
+    isPartOfHolding: true,
+    legalName: "XXXX SA",
+    taxId: "STC123456MX",
+    website: "www.xyz.com",
+    contactName: "Alejandro Torres",
+    contactEmail: "alejandro.torres@starcom.com",
+    status: "Active",
+  },
+  {
+    id: "org015",
+    name: "OMD-Argentina-OMG",
+    type: "Agency",
+    country: "Argentina",
+    isHolding: false,
+    holdingName: "OMG",
+    isBigSix: true,
+    isPartOfHolding: true,
+    legalName: "XXXX SA",
+    taxId: "OMA123456AR",
+    website: "www.xyz.com",
+    contactName: "Martín González",
+    contactEmail: "martin.gonzalez@omd.com",
+    status: "Active",
+  },
+  {
+    id: "org016",
+    name: "Soko",
+    type: "Agency",
+    country: "Mexico",
+    isHolding: false,
+    holdingName: "",
+    isBigSix: false,
+    isPartOfHolding: false,
+    legalName: "XXXX SA",
+    taxId: "SOK123456MX",
+    website: "www.xyz.com",
+    contactName: "Ana López",
+    contactEmail: "ana.lopez@soko.com",
+    status: "Active",
   },
 ];
 
@@ -382,6 +464,11 @@ const OrganizationCard: React.FC<{ organization: Organization }> = ({
               Holding
             </span>
           )}
+          {organization.isPartOfHolding && (
+            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-cyan-50 text-cyan-700 border border-cyan-100">
+              Part of Holding
+            </span>
+          )}
         </div>
       </div>
     </div>
@@ -399,6 +486,9 @@ export default function OrganizationsPage() {
   const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
   const [isHoldingFilter, setIsHoldingFilter] = useState<boolean | null>(null);
   const [isBigSixFilter, setIsBigSixFilter] = useState<boolean | null>(null);
+  const [isPartOfHoldingFilter, setIsPartOfHoldingFilter] = useState<
+    boolean | null
+  >(null);
   const [isDataLoading, setIsDataLoading] = useState<boolean>(true);
   const [viewMode, setViewMode] = useState<"grid" | "table">("table");
   const [sortField, setSortField] = useState<string>("name");
@@ -451,13 +541,19 @@ export default function OrganizationsPage() {
       const matchesBigSix =
         isBigSixFilter === null || org.isBigSix === isBigSixFilter;
 
+      // Part of Holding filter
+      const matchesPartOfHolding =
+        isPartOfHoldingFilter === null ||
+        org.isPartOfHolding === isPartOfHoldingFilter;
+
       return (
         matchesSearchTerm &&
         matchesType &&
         matchesCountry &&
         matchesStatus &&
         matchesHolding &&
-        matchesBigSix
+        matchesBigSix &&
+        matchesPartOfHolding
       );
     })
     .sort((a, b) => {
@@ -497,6 +593,7 @@ export default function OrganizationsPage() {
     selectedStatus,
     isHoldingFilter,
     isBigSixFilter,
+    isPartOfHoldingFilter,
   ]);
 
   // Get unique organization types and countries for filters
@@ -698,6 +795,8 @@ export default function OrganizationsPage() {
                 setIsHoldingFilter={setIsHoldingFilter}
                 isBigSixFilter={isBigSixFilter}
                 setIsBigSixFilter={setIsBigSixFilter}
+                isPartOfHoldingFilter={isPartOfHoldingFilter}
+                setIsPartOfHoldingFilter={setIsPartOfHoldingFilter}
                 organizationTypes={organizationTypes}
                 countries={countries}
               />
@@ -791,7 +890,7 @@ export default function OrganizationsPage() {
                           </div>
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                          Features
+                          Tags
                         </th>
                       </tr>
                     </thead>
@@ -910,6 +1009,11 @@ export default function OrganizationsPage() {
                               {org.isHolding && (
                                 <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-100">
                                   Holding
+                                </span>
+                              )}
+                              {org.isPartOfHolding && (
+                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-cyan-50 text-cyan-700 border border-cyan-100">
+                                  Part of Holding
                                 </span>
                               )}
                             </div>
