@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import Link from "next/link";
 import { FaBuilding } from "react-icons/fa";
 import StatusBadge from "@/components/ui/StatusBadge";
 
@@ -54,13 +53,13 @@ const OrganizationSubOrgs: React.FC<OrganizationSubOrgsProps> = ({
   // Mock data for sub-organizations
   const mockSubOrganizations: SubOrganization[] = [
     {
-      id: "sub001",
+      id: "org001",
       name: "Havas Media-Mexico- Havas",
       type: "Agency",
       country: "Mexico",
       isHolding: false,
       holdingName: "Havas",
-      holdingId: "org003", // ID de la organización holding (Havas)
+      holdingId: "org003",
       isBigSix: true,
       isPartOfHolding: true,
       legalName: "XXXX SA",
@@ -71,13 +70,13 @@ const OrganizationSubOrgs: React.FC<OrganizationSubOrgsProps> = ({
       status: "Active",
     },
     {
-      id: "sub002",
+      id: "org008",
       name: "UM - Mexico - IPG",
       type: "Agency",
       country: "Mexico",
       isHolding: false,
       holdingName: "Interpublic",
-      holdingId: "org004", // ID de la organización holding (Interpublic)
+      holdingId: "org004",
       isBigSix: true,
       isPartOfHolding: true,
       legalName: "XXXX SA",
@@ -88,13 +87,13 @@ const OrganizationSubOrgs: React.FC<OrganizationSubOrgsProps> = ({
       status: "Active",
     },
     {
-      id: "sub003",
+      id: "org009",
       name: "MUV-Brasil-WPP",
       type: "Agency",
       country: "Brasil",
       isHolding: false,
       holdingName: "WPP",
-      holdingId: "org005", // ID de la organización holding (WPP)
+      holdingId: "org005",
       isBigSix: true,
       isPartOfHolding: true,
       legalName: "XXXX SA",
@@ -105,13 +104,13 @@ const OrganizationSubOrgs: React.FC<OrganizationSubOrgsProps> = ({
       status: "Active",
     },
     {
-      id: "sub004",
+      id: "org010",
       name: "Omnet-United States-OMG",
       type: "Agency",
       country: "United States",
       isHolding: false,
       holdingName: "OMG",
-      holdingId: "org006", // ID de la organización holding (OMG)
+      holdingId: "org006",
       isBigSix: true,
       isPartOfHolding: true,
       legalName: "XXXX SA",
@@ -122,13 +121,13 @@ const OrganizationSubOrgs: React.FC<OrganizationSubOrgsProps> = ({
       status: "Active",
     },
     {
-      id: "sub005",
+      id: "org013",
       name: "Carat-Argentina-Dentsu",
       type: "Agency",
       country: "Argentina",
       isHolding: false,
       holdingName: "Dentsu",
-      holdingId: "org007", // ID de la organización holding (Dentsu)
+      holdingId: "org007",
       isBigSix: true,
       isPartOfHolding: true,
       legalName: "XXXX SA",
@@ -139,13 +138,13 @@ const OrganizationSubOrgs: React.FC<OrganizationSubOrgsProps> = ({
       status: "Active",
     },
     {
-      id: "sub006",
+      id: "org014",
       name: "Starcom-Mexico-Publicis",
       type: "Agency",
       country: "México",
       isHolding: false,
       holdingName: "Publicis",
-      holdingId: "org011", // ID de la organización holding (Publicis)
+      holdingId: "org011",
       isBigSix: true,
       isPartOfHolding: true,
       legalName: "XXXX SA",
@@ -156,13 +155,13 @@ const OrganizationSubOrgs: React.FC<OrganizationSubOrgsProps> = ({
       status: "Active",
     },
     {
-      id: "sub007",
+      id: "org015",
       name: "OMD-Argentina-OMG",
       type: "Agency",
       country: "Argentina",
       isHolding: false,
       holdingName: "OMG",
-      holdingId: "org006", // ID de la organización holding (OMG)
+      holdingId: "org006",
       isBigSix: true,
       isPartOfHolding: true,
       legalName: "XXXX SA",
@@ -560,7 +559,10 @@ const OrganizationSubOrgs: React.FC<OrganizationSubOrgsProps> = ({
                 {displayedSubOrgs.map((subOrg) => (
                   <tr
                     key={subOrg.id}
-                    className="hover:bg-gray-50 transition-colors"
+                    className="hover:bg-gray-50 transition-colors cursor-pointer"
+                    onClick={() => {
+                      window.location.href = `/organizations/${subOrg.id}`;
+                    }}
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
@@ -597,12 +599,15 @@ const OrganizationSubOrgs: React.FC<OrganizationSubOrgsProps> = ({
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <Link
-                        href={`/organizations/${subOrg.id}`}
-                        className="text-orange-600 hover:text-orange-900"
+                      <button
+                        className="text-orange-600 hover:text-orange-900 bg-transparent border-none cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.location.href = `/organizations/${subOrg.id}`;
+                        }}
                       >
                         View
-                      </Link>
+                      </button>
                     </td>
                   </tr>
                 ))}

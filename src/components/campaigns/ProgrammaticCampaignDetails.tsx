@@ -244,6 +244,33 @@ const ProgrammaticCampaignDetails: React.FC<
                 )}
               </div>
 
+              {/* Mostrar el campo de agencia solo cuando el tipo de organización es Agency */}
+              {(isEditing ||
+                campaign.organizationType === "Agency" ||
+                editedCampaign.organizationType === "Agency") && (
+                <div>
+                  <p className="text-sm font-medium text-gray-700">
+                    Agency Name
+                  </p>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                      value={editedCampaign.agencyName || ""}
+                      onChange={(e) =>
+                        handleChange("agencyName", e.target.value)
+                      }
+                      placeholder="Agency Name"
+                      disabled={editedCampaign.organizationType !== "Agency"}
+                    />
+                  ) : (
+                    <p className="mt-1 text-sm text-gray-900 font-medium">
+                      {campaign.agencyName || "-"}
+                    </p>
+                  )}
+                </div>
+              )}
+
               <div>
                 <p className="text-sm font-medium text-gray-700">DSP Used</p>
                 {isEditing ? (
@@ -281,27 +308,6 @@ const ProgrammaticCampaignDetails: React.FC<
               </div>
 
               <div>
-                <p className="text-sm font-medium text-gray-700">
-                  Publisher (Who pays us)
-                </p>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
-                    value={editedCampaign.organizationPublisher || ""}
-                    onChange={(e) =>
-                      handleChange("organizationPublisher", e.target.value)
-                    }
-                    placeholder="Publisher name"
-                  />
-                ) : (
-                  <p className="mt-1 text-sm text-gray-900 font-medium">
-                    {campaign.organizationPublisher || "-"}
-                  </p>
-                )}
-              </div>
-
-              <div>
                 <p className="text-sm font-medium text-gray-700">Start Date</p>
                 {isEditing ? (
                   <input
@@ -329,6 +335,27 @@ const ProgrammaticCampaignDetails: React.FC<
                 ) : (
                   <p className="mt-1 text-sm text-gray-900 bg-orange-50 border border-orange-100 rounded-md px-2 py-1 inline-block">
                     {formatDate(campaign.endDate)}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <p className="text-sm font-medium text-gray-700">
+                  Publisher (Who pays us)
+                </p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                    value={editedCampaign.organizationPublisher || ""}
+                    onChange={(e) =>
+                      handleChange("organizationPublisher", e.target.value)
+                    }
+                    placeholder="Publisher name"
+                  />
+                ) : (
+                  <p className="mt-1 text-sm text-gray-900 font-medium">
+                    {campaign.organizationPublisher || "-"}
                   </p>
                 )}
               </div>

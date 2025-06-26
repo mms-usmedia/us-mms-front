@@ -34,6 +34,7 @@ export interface Campaign {
   trafficker?: string;
   customer?: string;
   advertiser?: string;
+  agencyName?: string; // Nombre de la agencia cuando organizationType es "Agency"
   notes?: string;
   internalNotes?: string;
   billingParty: string;

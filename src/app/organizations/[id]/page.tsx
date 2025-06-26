@@ -17,6 +17,45 @@ import OrganizationCampaigns from "@/components/organizations/OrganizationCampai
 import OrganizationTrade from "@/components/organizations/OrganizationTrade";
 import OrganizationSubOrgs from "@/components/organizations/OrganizationSubOrgs";
 
+// Componente separado para el botón de regreso
+const BackToOrganizationsButton = () => {
+  const router = useRouter();
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("BackToOrganizationsButton clicked");
+
+    // Usar setTimeout para asegurar que la navegación ocurra después de que se complete el ciclo de eventos actual
+    setTimeout(() => {
+      window.location.href = "/organizations";
+    }, 0);
+  };
+
+  return (
+    <button
+      onClick={handleClick}
+      className="text-orange-600 hover:text-orange-800 text-sm flex items-center mb-2 bg-transparent border-none cursor-pointer relative z-50"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-4 w-4 mr-1"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M10 19l-7-7m0 0l7-7m-7 7h18"
+        />
+      </svg>
+      Back to Organizations
+    </button>
+  );
+};
+
 // Organization interface
 interface Organization {
   id: string;
@@ -627,7 +666,6 @@ export default function OrganizationDetailPage() {
   const [showAddContactForm, setShowAddContactForm] = useState(false);
   const [showAddRateForm, setShowAddRateForm] = useState(false);
   const [showAddIncentiveForm, setShowAddIncentiveForm] = useState(false);
-  const [holdingOrgId, setHoldingOrgId] = useState<string | null>(null);
 
   // Función global para agregar contacto, disponible para todos los componentes
   useEffect(() => {
@@ -670,40 +708,6 @@ export default function OrganizationDetailPage() {
       const organizationData = getMockOrganizationById(organizationId);
       setOrganization(organizationData || null);
       setIsDataLoading(false);
-
-      // Buscar el ID de la organización holding si esta organización es parte de un holding
-      if (organizationData?.isPartOfHolding && organizationData?.holdingName) {
-        // Buscar todas las organizaciones
-        const mockOrganizations = [
-          "org001",
-          "org002",
-          "org003",
-          "org004",
-          "org005",
-          "org006",
-          "org007",
-          "org008",
-          "org009",
-          "org010",
-          "org011",
-          "org012",
-          "org013",
-          "org014",
-          "org015",
-          "org016",
-        ]
-          .map((id) => getMockOrganizationById(id))
-          .filter(Boolean) as Organization[];
-
-        // Encontrar la organización holding
-        const holdingOrg = mockOrganizations.find(
-          (org) => org.isHolding && org.name === organizationData.holdingName
-        );
-
-        if (holdingOrg) {
-          setHoldingOrgId(holdingOrg.id);
-        }
-      }
 
       // Cambiar automáticamente de pestaña si rates está seleccionado pero no es Publisher
       if (
@@ -760,12 +764,9 @@ export default function OrganizationDetailPage() {
             The organization you are looking for does not exist or has been
             deleted.
           </p>
-          <Link
-            href="/organizations"
-            className="mt-4 inline-block px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
-          >
-            Back to Organizations
-          </Link>
+          <div className="mt-4">
+            <BackToOrganizationsButton />
+          </div>
         </div>
       </div>
     );
@@ -786,32 +787,7 @@ export default function OrganizationDetailPage() {
           <div className="container mx-auto transition-all duration-300 ease-in-out">
             {/* Organization header information */}
             <div className="mb-6">
-              <Link
-                href={
-                  organization?.isPartOfHolding && holdingOrgId
-                    ? `/organizations/${holdingOrgId}`
-                    : "/organizations"
-                }
-                className="text-orange-600 hover:text-orange-800 text-sm flex items-center mb-2"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 mr-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                  />
-                </svg>
-                {organization?.isPartOfHolding && organization?.holdingName
-                  ? `Back to ${organization.holdingName}`
-                  : "Back to Organizations"}
-              </Link>
+              <BackToOrganizationsButton />
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
                 <div>
                   <h1 className="text-3xl font-bold text-gray-800">

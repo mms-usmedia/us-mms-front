@@ -5,8 +5,7 @@ import { Campaign, AdUnit } from "./types";
 export const mockCampaigns: Campaign[] = [
   {
     id: "22043",
-    name:
-      "Banorte_Banorte_Hotsale _Credito Pyme _Linkedin_Mex_Junio25_Linkedin_Jun_Mexico",
+    name: "Banorte_Banorte_Hotsale _Credito Pyme _Linkedin_Mex_Junio25_Linkedin_Jun_Mexico",
     campaignType: "IO-based",
     organizationType: "Agency",
     startDate: "2025-06-01",
@@ -87,8 +86,7 @@ export const mockCampaigns: Campaign[] = [
   },
   {
     id: "22044",
-    name:
-      "Nintendo_Nintendo_Display Digital_Wetransfer_Static_Bra_Mex_Chi_Col_Per_May_Jun_25_Wetransfer_Jun_Brazil,Chile,Colombia,Mexico,Peru",
+    name: "Nintendo_Nintendo_Display Digital_Wetransfer_Static_Bra_Mex_Chi_Col_Per_May_Jun_25_Wetransfer_Jun_Brazil,Chile,Colombia,Mexico,Peru",
     campaignType: "IO-based",
     organizationType: "Agency",
     startDate: "2025-06-02",
@@ -366,6 +364,7 @@ export const mockCampaigns: Campaign[] = [
     trafficker: "Bruno Tellez",
     customer: "PUIG",
     advertiser: "PUIG",
+    agencyName: "Starcom",
     billingParty: "Méxicp",
     billingOffice: "Méxicp",
     accountManager: "Araceli Mendoza",
@@ -711,6 +710,7 @@ export const mockCampaigns: Campaign[] = [
     trafficker: "Ana Sobreyra",
     customer: "Mynt",
     advertiser: "Mynt",
+    agencyName: "MUV",
     billingParty: "Brazil",
     billingOffice: "Brazil",
     accountManager: "Araceli Mendoza",
