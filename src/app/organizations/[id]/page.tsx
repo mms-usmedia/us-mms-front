@@ -627,6 +627,7 @@ export default function OrganizationDetailPage() {
   const [showAddContactForm, setShowAddContactForm] = useState(false);
   const [showAddRateForm, setShowAddRateForm] = useState(false);
   const [showAddIncentiveForm, setShowAddIncentiveForm] = useState(false);
+  const [holdingOrgId, setHoldingOrgId] = useState<string | null>(null);
 
   // Función global para agregar contacto, disponible para todos los componentes
   useEffect(() => {
@@ -669,6 +670,40 @@ export default function OrganizationDetailPage() {
       const organizationData = getMockOrganizationById(organizationId);
       setOrganization(organizationData || null);
       setIsDataLoading(false);
+
+      // Buscar el ID de la organización holding si esta organización es parte de un holding
+      if (organizationData?.isPartOfHolding && organizationData?.holdingName) {
+        // Buscar todas las organizaciones
+        const mockOrganizations = [
+          "org001",
+          "org002",
+          "org003",
+          "org004",
+          "org005",
+          "org006",
+          "org007",
+          "org008",
+          "org009",
+          "org010",
+          "org011",
+          "org012",
+          "org013",
+          "org014",
+          "org015",
+          "org016",
+        ]
+          .map((id) => getMockOrganizationById(id))
+          .filter(Boolean) as Organization[];
+
+        // Encontrar la organización holding
+        const holdingOrg = mockOrganizations.find(
+          (org) => org.isHolding && org.name === organizationData.holdingName
+        );
+
+        if (holdingOrg) {
+          setHoldingOrgId(holdingOrg.id);
+        }
+      }
 
       // Cambiar automáticamente de pestaña si rates está seleccionado pero no es Publisher
       if (
@@ -752,7 +787,11 @@ export default function OrganizationDetailPage() {
             {/* Organization header information */}
             <div className="mb-6">
               <Link
-                href="/organizations"
+                href={
+                  organization?.isPartOfHolding && holdingOrgId
+                    ? `/organizations/${holdingOrgId}`
+                    : "/organizations"
+                }
                 className="text-orange-600 hover:text-orange-800 text-sm flex items-center mb-2"
               >
                 <svg
@@ -769,7 +808,9 @@ export default function OrganizationDetailPage() {
                     d="M10 19l-7-7m0 0l7-7m-7 7h18"
                   />
                 </svg>
-                Back to Organizations
+                {organization?.isPartOfHolding && organization?.holdingName
+                  ? `Back to ${organization.holdingName}`
+                  : "Back to Organizations"}
               </Link>
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
                 <div>
