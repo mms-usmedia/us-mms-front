@@ -24,6 +24,7 @@ interface Organization {
   isHolding: boolean;
   holdingName?: string;
   isBigSix: boolean;
+  isPartOfHolding: boolean;
   legalName: string;
   taxId: string;
   website?: string;

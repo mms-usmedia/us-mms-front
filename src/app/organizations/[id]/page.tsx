@@ -124,7 +124,7 @@ const getMockOrganizationById = (id: string): Organization | undefined => {
     {
       id: "org002",
       name: "Yakult",
-      type: "Direct",
+      type: "Advertiser",
       country: "Mexico",
       isHolding: false,
       holdingName: "",
@@ -401,7 +401,7 @@ const getMockOrganizationById = (id: string): Organization | undefined => {
     {
       id: "org012",
       name: "Paramount",
-      type: "Direct",
+      type: "Advertiser",
       country: "United States",
       isHolding: false,
       holdingName: "",
