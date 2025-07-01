@@ -16,7 +16,10 @@ export type StatusType =
   | "Active"
   | "Inactive"
   | "In Review"
-  | "Rejected";
+  | "Rejected"
+  | "Paused"
+  | "Completed"
+  | "Draft";
 
 interface StatusBadgeProps {
   status: StatusType;
@@ -54,6 +57,12 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
         return "bg-amber-50 text-amber-700 border-amber-100 shadow-amber-100";
       case "Rejected":
         return "bg-red-50 text-red-700 border-red-100 shadow-red-100";
+      case "Paused":
+        return "bg-purple-50 text-purple-700 border-purple-100 shadow-purple-100";
+      case "Completed":
+        return "bg-blue-50 text-blue-700 border-blue-100 shadow-blue-100";
+      case "Draft":
+        return "bg-gray-50 text-gray-700 border-gray-100 shadow-gray-100";
       default:
         return "bg-gray-50 text-gray-700 border-gray-100 shadow-gray-100";
     }
@@ -269,6 +278,52 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
             />
           </svg>
         );
+      case "Paused":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-3.5 w-3.5 mr-1"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z"
+              clipRule="evenodd"
+            />
+          </svg>
+        );
+      case "Completed":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-3.5 w-3.5 mr-1"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+              clipRule="evenodd"
+            />
+          </svg>
+        );
+      case "Draft":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-3.5 w-3.5 mr-1"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+            <path
+              fillRule="evenodd"
+              d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+              clipRule="evenodd"
+            />
+          </svg>
+        );
       default:
         return null;
     }
@@ -284,6 +339,12 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
         return "Materials OK";
       case "In Review":
         return "Review";
+      case "Completed":
+        return "Completed";
+      case "Paused":
+        return "Paused";
+      case "Draft":
+        return "Draft";
       default:
         return status;
     }

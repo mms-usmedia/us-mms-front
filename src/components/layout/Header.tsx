@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 interface HeaderProps {
   userName?: string;
+  title?: string;
 }
 
 const Header: React.FC<HeaderProps> = ({ userName = "User" }) => {
