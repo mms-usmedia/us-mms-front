@@ -245,9 +245,8 @@ const ProgrammaticCampaignDetails: React.FC<
               </div>
 
               {/* Mostrar el campo de agencia solo cuando el tipo de organización es Agency */}
-              {(isEditing ||
-                campaign.organizationType === "Agency" ||
-                editedCampaign.organizationType === "Agency") && (
+              {campaign.organizationType === "Agency" ||
+              (isEditing && editedCampaign.organizationType === "Agency") ? (
                 <div>
                   <p className="text-sm font-medium text-gray-700">
                     Agency Name
@@ -269,40 +268,108 @@ const ProgrammaticCampaignDetails: React.FC<
                     </p>
                   )}
                 </div>
+              ) : (
+                <div>
+                  <p className="text-sm font-medium text-gray-700">DSP Used</p>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                      value={editedCampaign.dspUsed || ""}
+                      onChange={(e) => handleChange("dspUsed", e.target.value)}
+                      placeholder="Name of DSP"
+                    />
+                  ) : (
+                    <p className="mt-1 text-sm text-gray-900 font-medium">
+                      {campaign.dspUsed || "-"}
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {campaign.organizationType === "Agency" ||
+              (isEditing && editedCampaign.organizationType === "Agency") ? (
+                <div>
+                  <p className="text-sm font-medium text-gray-700">DSP Used</p>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                      value={editedCampaign.dspUsed || ""}
+                      onChange={(e) => handleChange("dspUsed", e.target.value)}
+                      placeholder="Name of DSP"
+                    />
+                  ) : (
+                    <p className="mt-1 text-sm text-gray-900 font-medium">
+                      {campaign.dspUsed || "-"}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <div>
+                  <p className="text-sm font-medium text-gray-700">
+                    Brand/Product
+                  </p>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                      value={editedCampaign.brandProduct || ""}
+                      onChange={(e) =>
+                        handleChange("brandProduct", e.target.value)
+                      }
+                      placeholder="Brand/Product name"
+                    />
+                  ) : (
+                    <p className="mt-1 text-sm text-gray-900 font-medium">
+                      {campaign.brandProduct || "-"}
+                    </p>
+                  )}
+                </div>
               )}
 
               <div>
-                <p className="text-sm font-medium text-gray-700">DSP Used</p>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
-                    value={editedCampaign.dspUsed || ""}
-                    onChange={(e) => handleChange("dspUsed", e.target.value)}
-                    placeholder="Name of DSP"
-                  />
-                ) : (
-                  <p className="mt-1 text-sm text-gray-900 font-medium">
-                    {campaign.dspUsed || "-"}
-                  </p>
-                )}
-              </div>
-
-              <div>
                 <p className="text-sm font-medium text-gray-700">
-                  Advertiser
+                  {campaign.organizationType === "Agency" ||
+                  (isEditing && editedCampaign.organizationType === "Agency")
+                    ? "Brand/Product"
+                    : "Advertiser"}
                 </p>
                 {isEditing ? (
                   <input
                     type="text"
                     className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
-                    value={editedCampaign.advertiser || ""}
-                    onChange={(e) => handleChange("advertiser", e.target.value)}
-                    placeholder="Name of advertiser"
+                    value={
+                      campaign.organizationType === "Agency" ||
+                      (isEditing &&
+                        editedCampaign.organizationType === "Agency")
+                        ? editedCampaign.brandProduct || ""
+                        : editedCampaign.advertiser || ""
+                    }
+                    onChange={(e) =>
+                      handleChange(
+                        campaign.organizationType === "Agency" ||
+                          (isEditing &&
+                            editedCampaign.organizationType === "Agency")
+                          ? "brandProduct"
+                          : "advertiser",
+                        e.target.value
+                      )
+                    }
+                    placeholder={
+                      campaign.organizationType === "Agency" ||
+                      (isEditing &&
+                        editedCampaign.organizationType === "Agency")
+                        ? "Brand/Product name"
+                        : "Name of advertiser"
+                    }
                   />
                 ) : (
                   <p className="mt-1 text-sm text-gray-900 font-medium">
-                    {campaign.advertiser || "-"}
+                    {campaign.organizationType === "Agency" ||
+                    (isEditing && editedCampaign.organizationType === "Agency")
+                      ? campaign.brandProduct || "-"
+                      : campaign.advertiser || "-"}
                   </p>
                 )}
               </div>
@@ -340,9 +407,7 @@ const ProgrammaticCampaignDetails: React.FC<
               </div>
 
               <div>
-                <p className="text-sm font-medium text-gray-700">
-                  Publisher
-                </p>
+                <p className="text-sm font-medium text-gray-700">Publisher</p>
                 {isEditing ? (
                   <input
                     type="text"
@@ -362,45 +427,119 @@ const ProgrammaticCampaignDetails: React.FC<
 
               <div>
                 <p className="text-sm font-medium text-gray-700">
-                  Customer Main Contact
+                  {campaign.organizationType === "Agency" ||
+                  (isEditing && editedCampaign.organizationType === "Agency")
+                    ? "Advertiser"
+                    : "Customer Main Contact"}
                 </p>
                 {isEditing ? (
                   <input
                     type="text"
                     className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
-                    value={editedCampaign.agencyContact || ""}
-                    onChange={(e) =>
-                      handleChange("agencyContact", e.target.value)
+                    value={
+                      campaign.organizationType === "Agency" ||
+                      (isEditing &&
+                        editedCampaign.organizationType === "Agency")
+                        ? editedCampaign.advertiser || ""
+                        : editedCampaign.agencyContact || ""
                     }
-                    placeholder="Main contact"
+                    onChange={(e) =>
+                      handleChange(
+                        campaign.organizationType === "Agency" ||
+                          (isEditing &&
+                            editedCampaign.organizationType === "Agency")
+                          ? "advertiser"
+                          : "agencyContact",
+                        e.target.value
+                      )
+                    }
+                    placeholder={
+                      campaign.organizationType === "Agency" ||
+                      (isEditing &&
+                        editedCampaign.organizationType === "Agency")
+                        ? "Name of advertiser"
+                        : "Main contact"
+                    }
                   />
                 ) : (
                   <p className="mt-1 text-sm text-gray-900 font-medium">
-                    {campaign.agencyContact || "-"}
+                    {campaign.organizationType === "Agency" ||
+                    (isEditing && editedCampaign.organizationType === "Agency")
+                      ? campaign.advertiser || "-"
+                      : campaign.agencyContact || "-"}
                   </p>
                 )}
               </div>
 
-              <div>
-                <p className="text-sm font-medium text-gray-700">
-                  Customer Billing Contact
-                </p>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
-                    value={editedCampaign.billingContact || ""}
-                    onChange={(e) =>
-                      handleChange("billingContact", e.target.value)
-                    }
-                    placeholder="Billing contact"
-                  />
-                ) : (
-                  <p className="mt-1 text-sm text-gray-900 font-medium">
-                    {campaign.billingContact || "-"}
+              {campaign.organizationType === "Agency" ||
+              (isEditing && editedCampaign.organizationType === "Agency") ? (
+                <div>
+                  <p className="text-sm font-medium text-gray-700">
+                    Customer Main Contact
                   </p>
-                )}
-              </div>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                      value={editedCampaign.agencyContact || ""}
+                      onChange={(e) =>
+                        handleChange("agencyContact", e.target.value)
+                      }
+                      placeholder="Main contact"
+                    />
+                  ) : (
+                    <p className="mt-1 text-sm text-gray-900 font-medium">
+                      {campaign.agencyContact || "-"}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <div>
+                  <p className="text-sm font-medium text-gray-700">
+                    Customer Billing Contact
+                  </p>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                      value={editedCampaign.billingContact || ""}
+                      onChange={(e) =>
+                        handleChange("billingContact", e.target.value)
+                      }
+                      placeholder="Billing contact"
+                    />
+                  ) : (
+                    <p className="mt-1 text-sm text-gray-900 font-medium">
+                      {campaign.billingContact || "-"}
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {(campaign.organizationType === "Agency" ||
+                (isEditing &&
+                  editedCampaign.organizationType === "Agency")) && (
+                <div>
+                  <p className="text-sm font-medium text-gray-700">
+                    Customer Billing Contact
+                  </p>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                      value={editedCampaign.billingContact || ""}
+                      onChange={(e) =>
+                        handleChange("billingContact", e.target.value)
+                      }
+                      placeholder="Billing contact"
+                    />
+                  ) : (
+                    <p className="mt-1 text-sm text-gray-900 font-medium">
+                      {campaign.billingContact || "-"}
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
@@ -754,12 +893,6 @@ const ProgrammaticCampaignDetails: React.FC<
                 <p className="text-2xl font-bold text-gray-800 mt-1">
                   {formatCurrency(campaign.budget)}
                 </p>
-                <div className="flex items-center mt-2">
-                  <span className="text-green-500 text-xs font-medium">
-                    ↑ 12%{" "}
-                  </span>
-                  <span className="text-xs text-gray-500 ml-1">vs. target</span>
-                </div>
               </div>
 
               <div className="bg-orange-50 rounded-lg p-4 border border-orange-100">
@@ -769,12 +902,6 @@ const ProgrammaticCampaignDetails: React.FC<
                 <p className="text-2xl font-bold text-gray-800 mt-1">
                   {formatNumber(campaign.units)}
                 </p>
-                <div className="flex items-center mt-2">
-                  <span className="text-green-500 text-xs font-medium">
-                    ↑ 8%{" "}
-                  </span>
-                  <span className="text-xs text-gray-500 ml-1">vs. target</span>
-                </div>
               </div>
 
               <div className="bg-orange-50 rounded-lg p-4 border border-orange-100">

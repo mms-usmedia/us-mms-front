@@ -54,6 +54,7 @@ export interface Campaign {
   commissionRate?: number;
   dspUsed?: string;
   programmaticType?: "Standard" | "PMP" | "PG";
+  brandProduct?: string; // Nuevo campo Brand/Product para campañas programáticas
 
   // Campos específicos para campañas IO-based
   mediaOwner?: string;
