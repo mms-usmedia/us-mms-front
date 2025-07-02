@@ -10,7 +10,7 @@ interface HeaderProps {
   title?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ userName = "User" }) => {
+const Header: React.FC<HeaderProps> = ({ userName = "User Name" }) => {
   const { logout } = useAuth();
   const [openProfile, setOpenProfile] = useState(false);
   const [openNotifications, setOpenNotifications] = useState(false);
@@ -209,7 +209,7 @@ const Header: React.FC<HeaderProps> = ({ userName = "User" }) => {
               </div>
               <div className="ml-2 hidden md:block">
                 <div className="text-sm font-medium text-gray-800">
-                  {userName || "User"}
+                  {userName || "User Name"}
                 </div>
                 <div className="text-xs text-gray-500">Administrator</div>
               </div>

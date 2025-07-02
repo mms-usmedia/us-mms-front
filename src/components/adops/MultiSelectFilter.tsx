@@ -70,7 +70,7 @@ const MultiSelectFilter: React.FC<MultiSelectFilterProps> = ({
         {label}
       </label>
       <div
-        className="flex justify-between items-center px-3 py-2 border border-gray-200 rounded-lg shadow-sm cursor-pointer bg-white"
+        className="flex justify-between items-center px-3 py-2 border border-gray-200 rounded-lg shadow-sm cursor-pointer bg-gray-50"
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="flex-1 text-sm text-gray-700 truncate">

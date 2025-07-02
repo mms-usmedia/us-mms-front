@@ -290,7 +290,7 @@ const ProgrammaticCampaignDetails: React.FC<
 
               <div>
                 <p className="text-sm font-medium text-gray-700">
-                  Brand Advertiser
+                  Advertiser
                 </p>
                 {isEditing ? (
                   <input
@@ -341,7 +341,7 @@ const ProgrammaticCampaignDetails: React.FC<
 
               <div>
                 <p className="text-sm font-medium text-gray-700">
-                  Publisher (Who pays us)
+                  Publisher
                 </p>
                 {isEditing ? (
                   <input

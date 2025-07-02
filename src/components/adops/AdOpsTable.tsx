@@ -181,388 +181,393 @@ const AdOpsTable = ({ data }: AdOpsTableProps) => {
   };
 
   return (
-    <div className="w-full">
-      <table className="min-w-full divide-y divide-gray-200 transition-all duration-300 ease-in-out">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Product Type
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Month
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Sales Person
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Drive Link
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Status
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Final Report
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Notes
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Trafficker
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Advertiser
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              MMS ID
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              MMS Line
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Boostr/GAM ID
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Start Date
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              End Date
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Market
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Publisher/Platform
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Campaign Type
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Purchase Type
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Platform Currency
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Exchange Rate
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Campaign
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Format
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Campaign Name
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              USMC Rate
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Publisher Unit Cost
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Total Investment USD
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Total Investment Publisher Currency
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Contracted Units
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Delivered Units
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Clicks
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Remaining Units
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Estimated Daily Delivery
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Effective Delivery Cost
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Daily Spend
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Delivery %
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Pacing
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Actual Platform Spend Local Currency
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Remaining Investment
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Actual Platform Spend USD
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Remaining Investment %
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Consumed Investment %
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Final Unit Cost Publisher Currency
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Final Unit Cost USD
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              CTR
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              VTR/VCR
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Viewability %
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Boostr Closure
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Total Campaign Days
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Total Elapsed Days
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Remaining Days
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-              Elapsed %
-            </th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {data.length > 0 ? (
-            data.map((item) => (
-              <tr key={item.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-6 py-4 text-sm whitespace-nowrap">
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium ${getProductTypeStyles(
-                      item.productType
-                    )}`}
-                  >
-                    {item.productType}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.month}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.salesPerson}
-                </td>
-                <td className="px-6 py-4 text-sm whitespace-nowrap">
-                  <a
-                    href={item.driveLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-orange-600 hover:underline"
-                  >
-                    Link
-                  </a>
-                </td>
-                <td className="px-6 py-4 text-sm whitespace-nowrap">
-                  <StatusBadge status={item.status} />
-                </td>
-                <td className="px-6 py-4 text-sm whitespace-nowrap">
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium ${getFinalReportStyles(
-                      item.finalReport
-                    )}`}
-                  >
-                    {item.finalReport ? "Yes" : "No"}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.notes}
-                </td>
-                <td className="px-6 py-4 text-sm whitespace-nowrap">
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium ${getTraffickerStyles(
-                      item.trafficker
-                    )}`}
-                  >
-                    {item.trafficker}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-sm whitespace-nowrap">
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium ${getAdvertiserStyles(
-                      item.advertiser
-                    )}`}
-                  >
-                    {item.advertiser}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.mmsId}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.mmsLine}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.boostrGamId}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {new Date(item.startDate).toLocaleDateString()}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {new Date(item.endDate).toLocaleDateString()}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.market}
-                </td>
-                <td className="px-6 py-4 text-sm whitespace-nowrap">
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium ${getPublisherStyles(
-                      item.publisher
-                    )}`}
-                  >
-                    {item.publisher}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-sm whitespace-nowrap">
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium ${getCampaignTypeStyles(
-                      item.campaignType
-                    )}`}
-                  >
-                    {item.campaignType}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-sm whitespace-nowrap">
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium ${getPurchaseTypeStyles(
-                      item.purchaseType
-                    )}`}
-                  >
-                    {item.purchaseType}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-sm whitespace-nowrap">
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-green-50 text-green-800">
-                    {getCurrencySymbol(item.platformCurrency)}{" "}
-                    {item.platformCurrency}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.exchangeRate}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.campaign}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.format}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.campaignName}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.usmcRate}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.publisherUnitCost}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {formatCurrency(item.totalInvestmentUsd)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {formatCurrency(item.totalInvestmentPublisherCurrency)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {formatNumber(item.contractedUnits)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {formatNumber(item.deliveredUnits)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {formatNumber(item.clicks)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {formatNumber(item.remainingUnits)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {formatNumber(item.estimatedDailyDelivery)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.effectiveDeliveryCost}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {formatCurrency(item.dailySpend)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {formatPercentage(item.deliveryPercentage)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.pacing}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {formatCurrency(item.actualPlatformSpendLocalCurrency)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {formatCurrency(item.remainingInvestment)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {formatCurrency(item.actualPlatformSpendUsd)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {formatPercentage(item.remainingInvestmentPercentage)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {formatPercentage(item.consumedInvestmentPercentage)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.finalUnitCostPublisherCurrency}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.finalUnitCostUsd}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {formatPercentage(item.ctr)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {formatPercentage(item.vtr)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {formatPercentage(item.viewabilityPercentage)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.boostrClosure}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.totalCampaignDays}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.totalElapsedDays}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {item.remainingDays}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                  {formatPercentage(item.elapsedPercentage)}
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 ease-in-out">
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200 transition-all duration-300 ease-in-out">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Product Type
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Month
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Sales Person
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Drive Link
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Status
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Final Report
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Notes
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Trafficker
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Advertiser
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                MMS ID
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                MMS Line
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Boostr/GAM ID
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Start Date
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                End Date
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Market
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Publisher/Platform
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Campaign Type
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Purchase Type
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Platform Currency
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Exchange Rate
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Campaign
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Format
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Campaign Name
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                USMC Rate
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Publisher Unit Cost
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Total Investment USD
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Total Investment Publisher Currency
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Contracted Units
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Delivered Units
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Clicks
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Remaining Units
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Estimated Daily Delivery
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Effective Delivery Cost
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Daily Spend
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Delivery %
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Pacing
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Actual Platform Spend Local Currency
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Remaining Investment
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Actual Platform Spend USD
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Remaining Investment %
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Consumed Investment %
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Final Unit Cost Publisher Currency
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Final Unit Cost USD
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                CTR
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                VTR/VCR
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Viewability %
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Boostr Closure
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Total Campaign Days
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Total Elapsed Days
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Remaining Days
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap hover:text-orange-700 transition-colors">
+                Elapsed %
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {data.length > 0 ? (
+              data.map((item) => (
+                <tr
+                  key={item.id}
+                  className="hover:bg-gray-50 transition-colors"
+                >
+                  <td className="px-6 py-4 text-sm whitespace-nowrap">
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium ${getProductTypeStyles(
+                        item.productType
+                      )}`}
+                    >
+                      {item.productType}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.month}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.salesPerson}
+                  </td>
+                  <td className="px-6 py-4 text-sm whitespace-nowrap">
+                    <a
+                      href={item.driveLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-orange-600 hover:underline"
+                    >
+                      Link
+                    </a>
+                  </td>
+                  <td className="px-6 py-4 text-sm whitespace-nowrap">
+                    <StatusBadge status={item.status} />
+                  </td>
+                  <td className="px-6 py-4 text-sm whitespace-nowrap">
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium ${getFinalReportStyles(
+                        item.finalReport
+                      )}`}
+                    >
+                      {item.finalReport ? "Yes" : "No"}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.notes}
+                  </td>
+                  <td className="px-6 py-4 text-sm whitespace-nowrap">
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium ${getTraffickerStyles(
+                        item.trafficker
+                      )}`}
+                    >
+                      {item.trafficker}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-sm whitespace-nowrap">
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium ${getAdvertiserStyles(
+                        item.advertiser
+                      )}`}
+                    >
+                      {item.advertiser}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.mmsId}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.mmsLine}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.boostrGamId}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {new Date(item.startDate).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {new Date(item.endDate).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.market}
+                  </td>
+                  <td className="px-6 py-4 text-sm whitespace-nowrap">
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium ${getPublisherStyles(
+                        item.publisher
+                      )}`}
+                    >
+                      {item.publisher}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-sm whitespace-nowrap">
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium ${getCampaignTypeStyles(
+                        item.campaignType
+                      )}`}
+                    >
+                      {item.campaignType}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-sm whitespace-nowrap">
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium ${getPurchaseTypeStyles(
+                        item.purchaseType
+                      )}`}
+                    >
+                      {item.purchaseType}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-sm whitespace-nowrap">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-green-50 text-green-800">
+                      {getCurrencySymbol(item.platformCurrency)}{" "}
+                      {item.platformCurrency}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.exchangeRate}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.campaign}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.format}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.campaignName}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.usmcRate}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.publisherUnitCost}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {formatCurrency(item.totalInvestmentUsd)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {formatCurrency(item.totalInvestmentPublisherCurrency)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {formatNumber(item.contractedUnits)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {formatNumber(item.deliveredUnits)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {formatNumber(item.clicks)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {formatNumber(item.remainingUnits)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {formatNumber(item.estimatedDailyDelivery)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.effectiveDeliveryCost}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {formatCurrency(item.dailySpend)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {formatPercentage(item.deliveryPercentage)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.pacing}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {formatCurrency(item.actualPlatformSpendLocalCurrency)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {formatCurrency(item.remainingInvestment)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {formatCurrency(item.actualPlatformSpendUsd)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {formatPercentage(item.remainingInvestmentPercentage)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {formatPercentage(item.consumedInvestmentPercentage)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.finalUnitCostPublisherCurrency}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.finalUnitCostUsd}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {formatPercentage(item.ctr)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {formatPercentage(item.vtr)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {formatPercentage(item.viewabilityPercentage)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.boostrClosure}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.totalCampaignDays}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.totalElapsedDays}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {item.remainingDays}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                    {formatPercentage(item.elapsedPercentage)}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan={45}
+                  className="px-6 py-10 text-center text-gray-500 text-sm"
+                >
+                  No data available
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td
-                colSpan={45}
-                className="px-6 py-10 text-center text-gray-500 text-sm"
-              >
-                No data available
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
