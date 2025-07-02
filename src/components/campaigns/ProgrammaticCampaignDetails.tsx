@@ -4,6 +4,7 @@ import { Campaign } from "./types";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 // Importaciones para iconos
 import { FaEdit, FaSave, FaTimes, FaChartPie, FaFilePdf } from "react-icons/fa";
+import { truncateText } from "./utils";
 
 // Utilidades para formateo
 const formatDate = (dateString: string) => {
@@ -540,6 +541,25 @@ const ProgrammaticCampaignDetails: React.FC<
                   )}
                 </div>
               )}
+              <div>
+                <p className="text-sm font-medium text-gray-700">Name</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                    value={editedCampaign.name || ""}
+                    onChange={(e) => handleChange("name", e.target.value)}
+                    placeholder="Campaign Name"
+                  />
+                ) : (
+                  <p
+                    className="mt-1 text-sm text-gray-900 font-medium"
+                    title={campaign.name || "-"}
+                  >
+                    {truncateText(campaign.name || "-", 25)}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
 
