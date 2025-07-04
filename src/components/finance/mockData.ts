@@ -26,6 +26,8 @@ export const mockRevenueData: RevenueData[] = [
     hiddenCosts: "$550.00",
     netRevenue: "$3,700.00",
     margin: "20.00%",
+    internalNotes:
+      "Cliente solicitó facturación en USD a pesar de ser campaña local. Requiere aprobación especial de finanzas para próximas campañas. Contacto principal: Maria Gómez (maria.gomez@coca-cola.com).",
   },
   {
     id: 2,
@@ -52,6 +54,8 @@ export const mockRevenueData: RevenueData[] = [
     hiddenCosts: "$450.00",
     netRevenue: "$9,750.00",
     margin: "15.00%",
+    internalNotes:
+      "Campaña con descuento especial negociado por volumen anual. No aplicar descuentos adicionales sin consultar con dirección comercial.",
   },
   {
     id: 3,
@@ -78,6 +82,8 @@ export const mockRevenueData: RevenueData[] = [
     hiddenCosts: "-",
     netRevenue: "$2,775.00",
     margin: "15.00%",
+    internalNotes:
+      "Cliente con historial de pagos tardíos. Verificar pago de campañas anteriores antes de aprobar nuevas inversiones. Último pago recibido con 45 días de retraso.",
   },
   {
     id: 4,
@@ -104,6 +110,8 @@ export const mockRevenueData: RevenueData[] = [
     hiddenCosts: "$750.00",
     netRevenue: "$2,250.00",
     margin: "15.00%",
+    internalNotes:
+      "Campaña prioritaria para Q2. Cliente estratégico con potencial de incremento de inversión para Q3 y Q4. Mantener margen mínimo de 15% en futuras negociaciones.",
   },
   {
     id: 5,
@@ -130,6 +138,8 @@ export const mockRevenueData: RevenueData[] = [
     hiddenCosts: "$250.00",
     netRevenue: "$8,517.80",
     margin: "20.00%",
+    internalNotes:
+      "Acuerdo especial de facturación: factura mensual única para todas las campañas activas. Contacto para facturación: finanzas@mercadolibre.com. Enviar reportes de performance semanalmente a equipo de marketing.",
   },
   {
     id: 6,
@@ -156,6 +166,8 @@ export const mockRevenueData: RevenueData[] = [
     hiddenCosts: "$50.00",
     netRevenue: "$1,875.00",
     margin: "15.00%",
+    internalNotes:
+      "Campaña parte de acuerdo anual con Grupo Publicis. Revisar cumplimiento de volumen comprometido para aplicar descuentos escalonados según contrato marco.",
   },
   {
     id: 7,
@@ -182,6 +194,8 @@ export const mockRevenueData: RevenueData[] = [
     hiddenCosts: "$1,750.00",
     netRevenue: "$4,500.00",
     margin: "20.00%",
+    internalNotes:
+      "Campaña sujeta a regulaciones especiales de Argentina. Documentación adicional requerida para facturación internacional. Coordinación necesaria con equipo legal para próximas campañas.",
   },
 ];
 

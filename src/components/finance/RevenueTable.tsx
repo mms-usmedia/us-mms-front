@@ -16,6 +16,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Filter, Download, ChevronDown } from "lucide-react";
+import { useSidebar } from "@/contexts/SidebarContext";
+import useTruncate from "@/hooks/useTruncate";
 
 // Types for the revenue data
 export interface RevenueData {
@@ -43,6 +45,7 @@ export interface RevenueData {
   hiddenCosts: string;
   netRevenue: string;
   margin: string;
+  internalNotes: string;
 }
 
 interface RevenueTableProps {
@@ -52,6 +55,9 @@ interface RevenueTableProps {
 export const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState<RevenueData[]>(data);
+  const { isCollapsed } = useSidebar();
+  const maxLength = useTruncate(50, isCollapsed);
+
   const [visibleColumns, setVisibleColumns] = useState<Record<string, boolean>>(
     {
       division: true,
@@ -77,6 +83,7 @@ export const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
       hiddenCosts: true,
       netRevenue: true,
       margin: true,
+      internalNotes: true,
     }
   );
 
@@ -145,6 +152,12 @@ export const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
       default:
         return "bg-gray-100 text-gray-800";
     }
+  };
+
+  // Helper function to truncate text
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length <= maxLength) return text;
+    return `${text.substring(0, maxLength)}...`;
   };
 
   return (
@@ -289,130 +302,112 @@ export const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
           >
             Margin %
           </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Internal Notes
+          </th>
         </tr>
       </thead>
-      <tbody className="bg-white divide-y divide-gray-100">
-        {filteredData.length === 0 ? (
-          <tr>
-            <td colSpan={23} className="px-6 py-16 text-center">
-              <div className="flex flex-col items-center justify-center">
-                <svg
-                  className="w-16 h-16 text-orange-200 mb-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <h3 className="text-lg font-medium text-gray-900 mb-1">
-                  No results found
-                </h3>
-                <p className="text-gray-500 max-w-sm text-center mb-6">
-                  No revenue data matches your search criteria. Try adjusting
-                  your filters.
-                </p>
-              </div>
+      <tbody className="bg-white divide-y divide-gray-200">
+        {filteredData.map((row) => (
+          <tr key={row.id} className="hover:bg-gray-50 transition-colors">
+            <td className="px-6 py-4 whitespace-nowrap">
+              <span
+                className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getDivisionColor(
+                  row.division
+                )}`}
+              >
+                {row.division}
+              </span>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
+              {row.campaignId}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              {row.month}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              {row.year}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {row.account}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              {row.partOfHolding}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              {row.holdingName}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {row.advertiser}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {row.product}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {row.publisher}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              {row.publisherProduct}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
+              <span
+                className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getServiceTypeColor(
+                  row.serviceType
+                )}`}
+              >
+                {row.serviceType}
+              </span>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
+              <span
+                className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getPurchaseTypeColor(
+                  row.purchaseType
+                )}`}
+              >
+                {row.purchaseType}
+              </span>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              {row.salesPerson}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              {row.billingOffice}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              {row.billingCountry}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              {row.currency}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              {row.exchangeRate}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
+              {row.grossRevenue}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
+              {row.publisherCost}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
+              {row.hiddenCosts}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
+              {row.netRevenue}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
+              {row.margin}
+            </td>
+            <td
+              className="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+              title={row.internalNotes}
+            >
+              {truncateText(row.internalNotes, maxLength)}
             </td>
           </tr>
-        ) : (
-          filteredData.map((row) => (
-            <tr key={row.id} className="hover:bg-gray-50 transition-colors">
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span
-                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getDivisionColor(
-                    row.division
-                  )}`}
-                >
-                  {row.division}
-                </span>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
-                {row.campaignId}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                {row.month}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                {row.year}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                {row.account}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                {row.partOfHolding}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                {row.holdingName}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                {row.advertiser}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                {row.product}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                {row.publisher}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                {row.publisherProduct}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span
-                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getServiceTypeColor(
-                    row.serviceType
-                  )}`}
-                >
-                  {row.serviceType}
-                </span>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span
-                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getPurchaseTypeColor(
-                    row.purchaseType
-                  )}`}
-                >
-                  {row.purchaseType}
-                </span>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                {row.salesPerson}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                {row.billingOffice}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                {row.billingCountry}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                {row.currency}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                {row.exchangeRate}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
-                {row.grossRevenue}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
-                {row.publisherCost}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
-                {row.hiddenCosts}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
-                {row.netRevenue}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
-                {row.margin}
-              </td>
-            </tr>
-          ))
-        )}
+        ))}
       </tbody>
     </table>
   );
