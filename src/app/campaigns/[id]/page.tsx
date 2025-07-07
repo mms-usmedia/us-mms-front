@@ -19,6 +19,7 @@ import ProgrammaticCampaignDetails from "@/components/campaigns/ProgrammaticCamp
 import CampaignAdUnits from "@/components/campaigns/CampaignAdUnits";
 import CampaignDocuments from "@/components/campaigns/CampaignDocuments";
 import CampaignActivity from "@/components/campaigns/CampaignActivity";
+import HURConfirmModal from "@/components/campaigns/HURConfirmModal";
 
 // Importar datos mock
 import { getMockCampaignById } from "@/components/campaigns/mockData";
@@ -248,6 +249,8 @@ export default function CampaignDetailPage() {
   const [documents, setDocuments] = useState<Document[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  // Estado para el modal de confirmación de HUR
+  const [showHURModal, setShowHURModal] = useState(false);
 
   // Usar el hook personalizado para determinar la longitud máxima del título
   const maxTitleLength = useTruncate(70, isCollapsed);
@@ -364,6 +367,20 @@ export default function CampaignDetailPage() {
     setDocuments(documents.filter((doc) => doc.id !== documentId));
   };
 
+  // Funciones para el modal de HUR
+  const openHURModal = () => {
+    setShowHURModal(true);
+  };
+
+  const closeHURModal = () => {
+    setShowHURModal(false);
+  };
+
+  const handleCreateHUR = () => {
+    closeHURModal();
+    router.push(`/hur/new?campaignId=${campaign?.id}`);
+  };
+
   // Render loading while data loads
   if (loading || isLoading) {
     return (
@@ -478,10 +495,37 @@ export default function CampaignDetailPage() {
                         />
                       </svg>
                     </a>
+                    {campaign.status === "Closed" && (
+                      <button
+                        onClick={openHURModal}
+                        className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded shadow text-sm font-medium flex items-center transition-colors"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4 mr-1"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        Create HUR
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
+
+            {/* Modal de confirmación para crear HUR */}
+            <HURConfirmModal
+              isOpen={showHURModal}
+              onConfirm={handleCreateHUR}
+              onCancel={closeHURModal}
+            />
 
             {/* Tabs de Navegación */}
             <div className="border-b border-gray-200 bg-white rounded-t-xl">
