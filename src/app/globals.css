@@ -18,10 +18,11 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Desactivamos el tema oscuro automático */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #171717;
   }
 }
 
@@ -47,7 +48,7 @@ body {
   color: white;
 }
 
-/* Estilos para asegurar compatibilidad en modo oscuro */
+/* Estilos para asegurar compatibilidad en modo claro */
 .bg-blue-600 {
   background-color: #2563eb !important;
 }
@@ -63,10 +64,6 @@ input {
 
 input::placeholder {
   color: #9ca3af;
-}
-
-.dark input {
-  color: #e5e7eb !important;
 }
 
 /* Estilos para el carrusel de login */
@@ -95,4 +92,32 @@ input::placeholder {
 
 .carousel-slide-3 {
   background: linear-gradient(135deg, #5b51d8, #833ab4);
+}
+
+/* Correcciones para tema claro en componentes UI */
+.dark\:ring-offset-slate-950,
+.dark\:focus-visible\:ring-orange-300,
+.dark\:data-\[state\=active\]\:bg-slate-950,
+.dark\:data-\[state\=active\]\:text-slate-50 {
+  /* Desactivamos estilos de modo oscuro */
+  --tw-ring-offset-color: transparent !important;
+  --tw-ring-color: transparent !important;
+}
+
+/* Aseguramos que las tarjetas tengan fondo blanco */
+.bg-white {
+  background-color: #ffffff !important;
+}
+
+/* Aseguramos que los textos sean visibles */
+.text-gray-900 {
+  color: #171717 !important;
+}
+
+.text-gray-700 {
+  color: #374151 !important;
+}
+
+.text-gray-500 {
+  color: #6b7280 !important;
 }
