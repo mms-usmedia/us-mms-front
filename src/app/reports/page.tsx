@@ -12,6 +12,22 @@ import {
   Download,
   Save,
   ChevronDown,
+  BarChart3,
+  PieChart,
+  LineChart,
+  Layers,
+  BarChart2,
+  Activity,
+  TrendingUp,
+  FileBarChart,
+  FileSpreadsheet,
+  Wallet,
+  Users,
+  Briefcase,
+  Building,
+  Landmark,
+  CircleDollarSign,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -74,6 +90,15 @@ export default function ReportsPage() {
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [filterDateRange, setFilterDateRange] = useState<string>("");
   const [activeTab, setActiveTab] = useState<string>("templates");
+
+  // Estados para el modal de Save as Template
+  const [showSaveTemplateModal, setShowSaveTemplateModal] =
+    useState<boolean>(false);
+  const [newTemplateName, setNewTemplateName] = useState<string>("");
+  const [newTemplateDescription, setNewTemplateDescription] =
+    useState<string>("");
+  const [newTemplateIcon, setNewTemplateIcon] = useState<string>("BarChart3");
+  const [newTemplateColor, setNewTemplateColor] = useState<string>("orange");
 
   // Estados para filtros específicos
   const [orgSearchTerm, setOrgSearchTerm] = useState<string>("");
@@ -778,7 +803,53 @@ export default function ReportsPage() {
 
   // Guardar como template
   const handleSaveAsTemplate = () => {
-    alert(`Saving current report as template`);
+    setShowSaveTemplateModal(true);
+  };
+
+  // Cerrar modal
+  const handleCloseTemplateModal = () => {
+    setShowSaveTemplateModal(false);
+    setNewTemplateName("");
+    setNewTemplateDescription("");
+    setNewTemplateIcon("BarChart3");
+    setNewTemplateColor("orange");
+  };
+
+  // Guardar nuevo template
+  const handleSaveNewTemplate = () => {
+    if (!newTemplateName.trim()) {
+      alert("Please enter a template name");
+      return;
+    }
+
+    const newTemplate: ReportTemplate = {
+      id: `template-${Date.now()}`,
+      name: newTemplateName,
+      description: newTemplateDescription,
+      module: selectedModule as
+        | "campaigns"
+        | "finance"
+        | "adops"
+        | "hur"
+        | "organizations",
+      isFavorite: false,
+      createdAt: new Date().toISOString(),
+      createdBy: user?.name || "User",
+      filters: {
+        statuses: selectedStatuses,
+        organizations: selectedOrganizations,
+        owners: selectedOwners,
+        startDate,
+        endDate,
+        // Add other filters based on the selected module
+      },
+      icon: newTemplateIcon,
+      color: newTemplateColor,
+    };
+
+    setTemplates([...templates, newTemplate]);
+    handleCloseTemplateModal();
+    alert("Template saved successfully!");
   };
 
   // Función para alternar la selección de un status
@@ -1346,6 +1417,44 @@ export default function ReportsPage() {
     setSelectedPublishers([]);
   };
 
+  // Obtener el componente de icono según el nombre
+  const getIconComponent = (iconName: string) => {
+    switch (iconName) {
+      case "BarChart3":
+        return <BarChart3 />;
+      case "PieChart":
+        return <PieChart />;
+      case "LineChart":
+        return <LineChart />;
+      case "Layers":
+        return <Layers />;
+      case "BarChart2":
+        return <BarChart2 />;
+      case "Activity":
+        return <Activity />;
+      case "TrendingUp":
+        return <TrendingUp />;
+      case "FileBarChart":
+        return <FileBarChart />;
+      case "FileSpreadsheet":
+        return <FileSpreadsheet />;
+      case "Wallet":
+        return <Wallet />;
+      case "Users":
+        return <Users />;
+      case "Briefcase":
+        return <Briefcase />;
+      case "Building":
+        return <Building />;
+      case "Landmark":
+        return <Landmark />;
+      case "CircleDollarSign":
+        return <CircleDollarSign />;
+      default:
+        return <BarChart3 />;
+    }
+  };
+
   // Mostrar carga mientras se verifica autenticación
   if (isLoading) {
     return (
@@ -1376,7 +1485,7 @@ export default function ReportsPage() {
         variant="outline"
         size="sm"
         onClick={handleSaveAsTemplate}
-        className="flex items-center gap-1 bg-white border-gray-200 hover:bg-gray-50"
+        className="flex items-center gap-1 bg-white border-orange-200 hover:bg-orange-50 text-orange-600 hover:text-orange-700"
       >
         <Save className="h-4 w-4 mr-1" />
         Save as Template
@@ -1406,6 +1515,192 @@ export default function ReportsPage() {
         {/* Main Container */}
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6">
           <div className="container mx-auto transition-all duration-300 ease-in-out">
+            {/* Modal para guardar template */}
+            {showSaveTemplateModal && (
+              <div
+                className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+                onClick={handleCloseTemplateModal}
+              >
+                <div
+                  className="bg-white rounded-xl shadow-lg w-full max-w-md overflow-hidden"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex items-center justify-between p-6 border-b border-gray-100">
+                    <h3 className="text-xl font-semibold text-gray-900">
+                      Save as Template
+                    </h3>
+                    <button
+                      onClick={handleCloseTemplateModal}
+                      className="text-gray-400 hover:text-gray-600"
+                    >
+                      <X className="h-5 w-5" />
+                    </button>
+                  </div>
+
+                  <div className="p-6">
+                    <div className="space-y-4">
+                      {/* Nombre del template */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Template Name
+                        </label>
+                        <Input
+                          type="text"
+                          placeholder="Enter template name"
+                          value={newTemplateName}
+                          onChange={(e) => setNewTemplateName(e.target.value)}
+                          className="w-full"
+                        />
+                      </div>
+
+                      {/* Descripción del template */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Description
+                        </label>
+                        <textarea
+                          placeholder="Enter template description"
+                          value={newTemplateDescription}
+                          onChange={(e) =>
+                            setNewTemplateDescription(e.target.value)
+                          }
+                          className="w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm text-gray-900 bg-white"
+                          rows={3}
+                        />
+                      </div>
+
+                      {/* Selección de icono */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Icon
+                        </label>
+                        <div className="grid grid-cols-5 gap-2">
+                          {[
+                            "BarChart3",
+                            "PieChart",
+                            "LineChart",
+                            "Layers",
+                            "BarChart2",
+                            "Activity",
+                            "TrendingUp",
+                            "FileBarChart",
+                            "FileSpreadsheet",
+                            "Wallet",
+                            "Users",
+                            "Briefcase",
+                            "Building",
+                            "Landmark",
+                            "CircleDollarSign",
+                          ].map((icon) => (
+                            <div
+                              key={icon}
+                              onClick={() => setNewTemplateIcon(icon)}
+                              className={`flex items-center justify-center p-2 rounded-md cursor-pointer ${
+                                newTemplateIcon === icon
+                                  ? "bg-orange-50 border-2 border-orange-500"
+                                  : "border border-gray-200 hover:bg-gray-50"
+                              }`}
+                            >
+                              <div className="text-gray-700">
+                                {getIconComponent(icon)}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Selección de color */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Color
+                        </label>
+                        <div className="grid grid-cols-5 gap-2">
+                          {[
+                            "orange",
+                            "blue",
+                            "green",
+                            "purple",
+                            "red",
+                            "amber",
+                            "indigo",
+                            "pink",
+                            "teal",
+                            "cyan",
+                          ].map((color) => (
+                            <div
+                              key={color}
+                              onClick={() => setNewTemplateColor(color)}
+                              className={`h-8 rounded-md cursor-pointer ${
+                                color === "orange"
+                                  ? "bg-orange-100"
+                                  : color === "blue"
+                                  ? "bg-blue-100"
+                                  : color === "green"
+                                  ? "bg-green-100"
+                                  : color === "purple"
+                                  ? "bg-purple-100"
+                                  : color === "red"
+                                  ? "bg-red-100"
+                                  : color === "amber"
+                                  ? "bg-amber-100"
+                                  : color === "indigo"
+                                  ? "bg-indigo-100"
+                                  : color === "pink"
+                                  ? "bg-pink-100"
+                                  : color === "teal"
+                                  ? "bg-teal-100"
+                                  : "bg-cyan-100"
+                              } border ${
+                                newTemplateColor === color
+                                  ? `border-2 ${
+                                      color === "orange"
+                                        ? "border-orange-500"
+                                        : color === "blue"
+                                        ? "border-blue-500"
+                                        : color === "green"
+                                        ? "border-green-500"
+                                        : color === "purple"
+                                        ? "border-purple-500"
+                                        : color === "red"
+                                        ? "border-red-500"
+                                        : color === "amber"
+                                        ? "border-amber-500"
+                                        : color === "indigo"
+                                        ? "border-indigo-500"
+                                        : color === "pink"
+                                        ? "border-pink-500"
+                                        : color === "teal"
+                                        ? "border-teal-500"
+                                        : "border-cyan-500"
+                                    }`
+                                  : "border-gray-200"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-6 flex justify-end gap-3">
+                      <Button
+                        variant="outline"
+                        onClick={handleCloseTemplateModal}
+                        className="border-gray-200"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={handleSaveNewTemplate}
+                        className="bg-orange-600 hover:bg-orange-700 text-white"
+                      >
+                        Save Template
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Vista principal - Solo mostrar si no hay módulo seleccionado y no estamos en preview */}
             {!selectedModule && !showPreview && (
               <>
@@ -1638,6 +1933,16 @@ export default function ReportsPage() {
                           Clear Filters
                         </Button>
                       )}
+
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleSaveAsTemplate}
+                        className="flex items-center gap-1 bg-white border-orange-200 hover:bg-orange-50 text-orange-600 hover:text-orange-700"
+                      >
+                        <Save className="h-4 w-4 mr-1" />
+                        Save as Template
+                      </Button>
 
                       <Button
                         size="sm"
