@@ -100,8 +100,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
       // No necesitamos establecer isLoggedIn ya que lo hace el servicio AuthService
 
-      // Redirigir a campañas en lugar de dashboard
-      router.push("/campaigns");
+      router.push("/dashboard");
     } catch (error) {
       console.error("Google login error:", error);
       throw error;
