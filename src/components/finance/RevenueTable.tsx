@@ -45,6 +45,7 @@ export interface RevenueData {
   hiddenCosts: string;
   netRevenue: string;
   margin: string;
+  campaignDescription: string;
   internalNotes: string;
 }
 
@@ -83,6 +84,7 @@ export const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
       hiddenCosts: true,
       netRevenue: true,
       margin: true,
+      campaignDescription: true,
       internalNotes: true,
     }
   );
@@ -306,6 +308,12 @@ export const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
             scope="col"
             className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
           >
+            Campaign Description
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
             Internal Notes
           </th>
         </tr>
@@ -399,6 +407,12 @@ export const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
               {row.margin}
+            </td>
+            <td
+              className="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+              title={row.campaignDescription}
+            >
+              {truncateText(row.campaignDescription, maxLength)}
             </td>
             <td
               className="px-6 py-4 whitespace-nowrap text-sm text-gray-700"

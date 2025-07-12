@@ -26,6 +26,8 @@ export const mockRevenueData: RevenueData[] = [
     hiddenCosts: "$550.00",
     netRevenue: "$3,700.00",
     margin: "20.00%",
+    campaignDescription:
+      "Campaña de verano para promocionar Coca-Cola Zero en el reality show La Casa de los Famosos. Incluye product placement y publicidad impresa en revista semanal.",
     internalNotes:
       "Cliente solicitó facturación en USD a pesar de ser campaña local. Requiere aprobación especial de finanzas para próximas campañas. Contacto principal: Maria Gómez (maria.gomez@coca-cola.com).",
   },
@@ -54,6 +56,8 @@ export const mockRevenueData: RevenueData[] = [
     hiddenCosts: "$450.00",
     netRevenue: "$9,750.00",
     margin: "15.00%",
+    campaignDescription:
+      "Campaña digital para la línea de cocina Acero Line de Tramontina en Amazon. Enfoque en productos premium de acero inoxidable para cocineros profesionales.",
     internalNotes:
       "Campaña con descuento especial negociado por volumen anual. No aplicar descuentos adicionales sin consultar con dirección comercial.",
   },
@@ -82,6 +86,8 @@ export const mockRevenueData: RevenueData[] = [
     hiddenCosts: "-",
     netRevenue: "$2,775.00",
     margin: "15.00%",
+    campaignDescription:
+      "Campaña programática para promocionar la promoción Thunderbolts de Carl's Jr en sitios de gaming y entretenimiento. Target: jóvenes gamers 18-35.",
     internalNotes:
       "Cliente con historial de pagos tardíos. Verificar pago de campañas anteriores antes de aprobar nuevas inversiones. Último pago recibido con 45 días de retraso.",
   },
@@ -110,6 +116,8 @@ export const mockRevenueData: RevenueData[] = [
     hiddenCosts: "$750.00",
     netRevenue: "$2,250.00",
     margin: "15.00%",
+    campaignDescription:
+      "Lanzamiento del Galaxy S30 en WeTransfer. Campaña de awareness con videos creativos y banners interactivos. Enfoque en innovación tecnológica.",
     internalNotes:
       "Campaña prioritaria para Q2. Cliente estratégico con potencial de incremento de inversión para Q3 y Q4. Mantener margen mínimo de 15% en futuras negociaciones.",
   },
@@ -138,6 +146,8 @@ export const mockRevenueData: RevenueData[] = [
     hiddenCosts: "$250.00",
     netRevenue: "$8,517.80",
     margin: "20.00%",
+    campaignDescription:
+      "Campaña para promocionar MeliPlay, el servicio de streaming de Mercado Libre. Enfoque en contenido exclusivo y series originales latinoamericanas.",
     internalNotes:
       "Acuerdo especial de facturación: factura mensual única para todas las campañas activas. Contacto para facturación: finanzas@mercadolibre.com. Enviar reportes de performance semanalmente a equipo de marketing.",
   },
@@ -166,6 +176,8 @@ export const mockRevenueData: RevenueData[] = [
     hiddenCosts: "$50.00",
     netRevenue: "$1,875.00",
     margin: "15.00%",
+    campaignDescription:
+      "Campaña de performance móvil para Penafiel Coco Flavor. Enfoque en conversiones y ventas directas. Target: consumidores de bebidas refrescantes 18-45.",
     internalNotes:
       "Campaña parte de acuerdo anual con Grupo Publicis. Revisar cumplimiento de volumen comprometido para aplicar descuentos escalonados según contrato marco.",
   },
@@ -194,6 +206,8 @@ export const mockRevenueData: RevenueData[] = [
     hiddenCosts: "$1,750.00",
     netRevenue: "$4,500.00",
     margin: "20.00%",
+    campaignDescription:
+      "Campaña para el estreno de The Last of Us 2 en MAX Argentina. Incluye contenido exclusivo, behind-the-scenes y promociones especiales para suscriptores.",
     internalNotes:
       "Campaña sujeta a regulaciones especiales de Argentina. Documentación adicional requerida para facturación internacional. Coordinación necesaria con equipo legal para próximas campañas.",
   },
