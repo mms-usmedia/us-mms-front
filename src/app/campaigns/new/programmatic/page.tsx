@@ -49,7 +49,7 @@ export default function NewProgrammaticCampaignPage() {
     industry: "",
     adUnits: [],
     commissionRate: 15, // Nueva propiedad para programática: tasa de comisión
-    dspUsed: "", // Nueva propiedad para programática: DSP utilizado
+    dspUsed: "DV 360", // Nueva propiedad para programática: DSP utilizado
     programmaticType: "Standard", // Nueva propiedad: Standard, PMP, o PG
   });
 
@@ -123,9 +123,7 @@ export default function NewProgrammaticCampaignPage() {
 
           // Crear nuevos documentos
           const newDocuments = Array.from(files).map((file) => ({
-            id: Math.random()
-              .toString(36)
-              .substring(2, 9),
+            id: Math.random().toString(36).substring(2, 9),
             name: file.name,
             type: file.type,
             size: file.size,

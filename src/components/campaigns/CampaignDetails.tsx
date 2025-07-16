@@ -693,14 +693,16 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                 )}
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-700">Name</p>
+                <p className="text-sm font-medium text-gray-700">
+                  Campaign Motto
+                </p>
                 {isEditing ? (
                   <input
                     type="text"
                     className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
                     value={editedCampaign.name || ""}
                     onChange={(e) => handleChange("name", e.target.value)}
-                    placeholder="Campaign Name"
+                    placeholder="Campaign Motto"
                   />
                 ) : (
                   <p

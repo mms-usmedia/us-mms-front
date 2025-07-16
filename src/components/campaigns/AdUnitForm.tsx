@@ -58,6 +58,7 @@ interface AdUnitFormProps {
   existingLines: number; // Número de líneas existentes para asignar automáticamente
   onSave: (adUnit: AdUnit) => void;
   onCancel: () => void;
+  campaignType?: "IO-based" | "Programmatic"; // Nuevo prop para identificar el tipo de campaña
 }
 
 const AdUnitForm: React.FC<AdUnitFormProps> = ({
@@ -66,6 +67,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
   existingLines,
   onSave,
   onCancel,
+  campaignType = "IO-based", // Valor por defecto
 }) => {
   const isEditing = !!adUnit;
   const [selectedPublisher, setSelectedPublisher] = useState<Publisher | null>(
@@ -155,6 +157,11 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
     (data: AdUnit): AdUnit => {
       const updated = { ...data };
 
+      // Si la campaña es programática, establecer customerNetRate en 0
+      if (campaignType === "Programmatic") {
+        updated.customerNetRate = 0;
+      }
+
       // Calcular descuentos del Publisher
       let publisherDiscountTotal = 0;
       publisherDiscounts.forEach((discount) => {
@@ -190,8 +197,9 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       }
 
       // Calcular Customer Final Negotiated Rate (Customer net rate - customer discounts)
+      // Solo si no es una campaña programática
       let finalNegotiatedRate = 0;
-      if (updated.customerNetRate) {
+      if (updated.customerNetRate && campaignType !== "Programmatic") {
         const customerDiscountAmount =
           updated.customerNetRate * customerDiscountTotal;
         const customerHiddenCostAmount =
@@ -254,6 +262,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
       publisherHiddenCosts,
       customerDiscounts,
       customerHiddenCosts,
+      campaignType, // Añadir campaignType a las dependencias
     ]
   );
 
@@ -338,11 +347,16 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
             grossMargin: 30,
           };
 
-          // Calculamos la tarifa del customer basada en el margen
-          const marginPercentage = updated.grossMargin / 100;
-          updated.customerNetRate = parseFloat(
-            (openRate / (1 - marginPercentage)).toFixed(2)
-          );
+          // Si es una campaña programática, establecer customerNetRate en 0
+          if (campaignType === "Programmatic") {
+            updated.customerNetRate = 0;
+          } else {
+            // Calculamos la tarifa del customer basada en el margen
+            const marginPercentage = updated.grossMargin / 100;
+            updated.customerNetRate = parseFloat(
+              (openRate / (1 - marginPercentage)).toFixed(2)
+            );
+          }
 
           return calculateFinancials(updated);
         });
@@ -356,6 +370,7 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
     formData.model,
     formData.size,
     calculateFinancials,
+    campaignType, // Añadir campaignType a las dependencias
   ]);
 
   // Efecto para actualizar los impuestos según el mercado seleccionado
@@ -422,6 +437,11 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
     field: keyof AdUnit,
     value: string | number | boolean
   ) => {
+    // Si es una campaña programática y se intenta cambiar customerNetRate, no hacer nada
+    if (campaignType === "Programmatic" && field === "customerNetRate") {
+      return;
+    }
+
     setFormData((prev) => {
       const updated = {
         ...prev,
@@ -477,29 +497,39 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
 
       // Cálculos relacionados con el margen bruto y tarifa del customer
       if (field === "grossMargin" && value !== undefined) {
-        const marginPercentage = Number(value) / 100;
+        // Si es una campaña programática, no calcular customerNetRate
+        if (campaignType === "Programmatic") {
+          updated.customerNetRate = 0;
+        } else {
+          const marginPercentage = Number(value) / 100;
 
-        // Solo calcular si tenemos una tarifa del publisher válida
-        if (updated.publisherOpenRate && updated.publisherOpenRate > 0) {
-          // Calcular la tarifa del customer basada en el margen deseado
-          // Fórmula: customerRate = publisherRate / (1 - margin)
-          const calculatedCustomerRate =
-            updated.publisherOpenRate / (1 - marginPercentage);
-          updated.customerNetRate = parseFloat(
-            calculatedCustomerRate.toFixed(2)
-          );
+          // Solo calcular si tenemos una tarifa del publisher válida
+          if (updated.publisherOpenRate && updated.publisherOpenRate > 0) {
+            // Calcular la tarifa del customer basada en el margen deseado
+            // Fórmula: customerRate = publisherRate / (1 - margin)
+            const calculatedCustomerRate =
+              updated.publisherOpenRate / (1 - marginPercentage);
+            updated.customerNetRate = parseFloat(
+              calculatedCustomerRate.toFixed(2)
+            );
+          }
         }
       } else if (field === "customerNetRate" && value !== undefined) {
-        // Solo calcular si tenemos una tarifa del publisher válida
-        if (
-          updated.publisherOpenRate &&
-          updated.publisherOpenRate > 0 &&
-          Number(value) > 0
-        ) {
-          // Calcular el margen basado en la tarifa del customer
-          // Fórmula: margin = 1 - (publisherRate / customerRate)
-          const marginValue = 1 - updated.publisherOpenRate / Number(value);
-          updated.grossMargin = parseFloat((marginValue * 100).toFixed(2));
+        // Si es una campaña programática, no permitir cambios en customerNetRate
+        if (campaignType === "Programmatic") {
+          updated.customerNetRate = 0;
+        } else {
+          // Solo calcular si tenemos una tarifa del publisher válida
+          if (
+            updated.publisherOpenRate &&
+            updated.publisherOpenRate > 0 &&
+            Number(value) > 0
+          ) {
+            // Calcular el margen basado en la tarifa del customer
+            // Fórmula: margin = 1 - (publisherRate / customerRate)
+            const marginValue = 1 - updated.publisherOpenRate / Number(value);
+            updated.grossMargin = parseFloat((marginValue * 100).toFixed(2));
+          }
         }
       }
 
@@ -1220,7 +1250,9 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                   <div className="space-y-4 border-r border-gray-200 pr-4">
                     <h5 className="font-medium text-orange-600 pb-2 border-b border-gray-200 flex items-center">
                       <span className="inline-block w-5 h-5 bg-gray-50 border-2 border-orange-500 rounded-full mr-2"></span>
-                      Calculator - Publisher
+                      {campaignType === "Programmatic"
+                        ? "Calculator - Publisher | PROGRAMMATIC"
+                        : "Calculator - Publisher"}
                     </h5>
 
                     {/* Descuentos Publisher - Botón para agregar */}
@@ -1490,7 +1522,9 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
 
                     <h5 className="font-medium text-orange-600 pb-2 border-b border-gray-200 flex items-center">
                       <span className="inline-block w-5 h-5 bg-gray-50 border-2 border-orange-500 rounded-full mr-2"></span>
-                      Calculator - Customer
+                      {campaignType === "Programmatic"
+                        ? "Calculator - Customer | PROGRAMMATIC"
+                        : "Calculator - Customer"}
                     </h5>
 
                     {/* Descuentos Customer - Botón para agregar */}
@@ -1750,7 +1784,9 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
 
                     <div>
                       <label className="block text-sm font-medium text-gray-600 mb-1">
-                        Publisher Final Rate
+                        {campaignType === "Programmatic"
+                          ? "Publisher Final Rate | PROGRAMMATIC"
+                          : "Publisher Final Rate"}
                       </label>
                       <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-100 text-gray-700 font-medium">
                         {formData.unitCost
@@ -1764,10 +1800,14 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
 
                     <div>
                       <label className="block text-sm font-medium text-gray-600 mb-1">
-                        Customer Final Negotiated Rate
+                        {campaignType === "Programmatic"
+                          ? "Customer Final Negotiated Rate | PROGRAMMATIC"
+                          : "Customer Final Negotiated Rate"}
                       </label>
                       <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-100 text-gray-700 font-medium">
-                        {formData.customerNetRate
+                        {campaignType === "Programmatic"
+                          ? "$0.00"
+                          : formData.customerNetRate
                           ? `$${formatNumber(
                               formData.customerNetRate * 0.85,
                               2
@@ -1781,10 +1821,14 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
 
                     <div>
                       <label className="block text-sm font-medium text-gray-600 mb-1">
-                        Customer Net Rate
+                        {campaignType === "Programmatic"
+                          ? "Customer Net Rate | PROGRAMMATIC"
+                          : "Customer Net Rate"}
                       </label>
                       <div className="mt-1 block w-full border-2 border-gray-200 rounded-md p-2 bg-gray-100 text-gray-700 font-medium">
-                        {formData.customerNetRate
+                        {campaignType === "Programmatic"
+                          ? "$0.00"
+                          : formData.customerNetRate
                           ? `$${formatNumber(formData.customerNetRate, 2)}`
                           : "$0.00"}
                       </div>

@@ -197,6 +197,7 @@ const CampaignAdUnits: React.FC<CampaignAdUnitsProps> = ({
         existingLines={campaign.adUnits?.length || 0}
         onSave={handleSaveFromForm}
         onCancel={handleCancelForm}
+        campaignType={campaign.campaignType}
       />
     );
   }
