@@ -15,14 +15,17 @@ import PurchaseTypeFilter from "@/components/adops/PurchaseTypeFilter";
 import TraffickerFilter from "@/components/adops/TraffickerFilter";
 import StatsCard from "@/components/adops/StatsCard";
 import TraffickerReport from "@/components/adops/TraffickerReport";
+import TrafficManagement from "@/components/adops/trafficManagement/TrafficManagement";
+import { useRouter } from "next/navigation";
 
 export default function AdOpsPage() {
+  const router = useRouter();
   const { isCollapsed } = useSidebar();
   const [searchTerm, setSearchTerm] = useState("");
   const [showFilters, setShowFilters] = useState(false);
-  const [activeTab, setActiveTab] = useState<"dashboard" | "trafficker">(
-    "dashboard"
-  );
+  const [activeTab, setActiveTab] = useState<
+    "dashboard" | "trafficker" | "traffic"
+  >("traffic");
 
   // Filter states
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
@@ -208,6 +211,16 @@ export default function AdOpsPage() {
 
             {/* Tabs */}
             <div className="flex border-b border-gray-200 mb-6">
+              <button
+                className={`py-2 px-4 font-medium text-sm ${
+                  activeTab === "traffic"
+                    ? "border-b-2 border-orange-500 text-orange-600"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+                onClick={() => setActiveTab("traffic")}
+              >
+                Traffic Management
+              </button>
               <button
                 className={`py-2 px-4 font-medium text-sm ${
                   activeTab === "dashboard"
@@ -435,8 +448,10 @@ export default function AdOpsPage() {
                   <AdOpsTable data={filteredData} />
                 </div>
               </>
-            ) : (
+            ) : activeTab === "trafficker" ? (
               <TraffickerReport />
+            ) : (
+              <TrafficManagement />
             )}
           </div>
         </main>

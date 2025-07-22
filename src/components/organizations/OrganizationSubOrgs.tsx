@@ -22,7 +22,7 @@ interface Organization {
   website?: string;
   contactName?: string;
   contactEmail?: string;
-  status: "Active" | "Inactive" | "In Review";
+  status: "Active" | "Inactive" | "In Review" | "Pending" | "Rejected";
 }
 
 interface SubOrganization extends Organization {

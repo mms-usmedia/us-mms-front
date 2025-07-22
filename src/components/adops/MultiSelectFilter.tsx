@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { Search } from "lucide-react";
 
 interface Option {
   value: string;
@@ -24,7 +25,21 @@ const MultiSelectFilter: React.FC<MultiSelectFilterProps> = ({
   getOptionStyle,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredOptions, setFilteredOptions] = useState<Option[]>(options);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Update filtered options when options or search term changes
+  useEffect(() => {
+    if (searchTerm) {
+      const filtered = options.filter((option) =>
+        option.label.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredOptions(filtered);
+    } else {
+      setFilteredOptions(options);
+    }
+  }, [options, searchTerm]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -96,8 +111,25 @@ const MultiSelectFilter: React.FC<MultiSelectFilterProps> = ({
 
       {isOpen && (
         <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-y-auto">
+          {/* Search input */}
+          <div className="sticky top-0 p-2 bg-white border-b border-gray-100">
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-4 w-4 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500"
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onClick={(e) => e.stopPropagation()}
+              />
+            </div>
+          </div>
+
           <div className="p-2 space-y-1">
-            {options.map((option) => (
+            {filteredOptions.map((option) => (
               <div
                 key={option.value}
                 onClick={() => toggleOption(option.value)}
@@ -111,6 +143,11 @@ const MultiSelectFilter: React.FC<MultiSelectFilterProps> = ({
                 )}
               </div>
             ))}
+            {filteredOptions.length === 0 && (
+              <div className="text-sm text-gray-500 p-2 text-center">
+                No results found
+              </div>
+            )}
           </div>
         </div>
       )}

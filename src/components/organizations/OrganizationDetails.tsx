@@ -30,7 +30,7 @@ interface Organization {
   website?: string;
   contactName?: string;
   contactEmail?: string;
-  status: "Active" | "Inactive" | "In Review";
+  status: "Active" | "Inactive" | "In Review" | "Pending" | "Rejected";
   address?: string;
   city?: string;
   state?: string;
