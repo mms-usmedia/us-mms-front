@@ -76,7 +76,7 @@ interface Organization {
   website?: string;
   contactName?: string;
   contactEmail?: string;
-  status: "Active" | "Inactive" | "In Review";
+  status: "Active" | "Inactive" | "In Review" | "Pending" | "Rejected";
   // Additional fields for detailed view
   address?: string;
   city?: string;
@@ -89,6 +89,9 @@ interface Organization {
   billingCurrency?: string;
   paymentTerms?: string;
   billingAddress?: string;
+  missingInfo?: string[];
+  rejectionReason?: string;
+  submittedDate?: string;
 }
 
 // Import mock data
@@ -120,6 +123,102 @@ const getMockOrganizationById = (id: string): Organization | undefined => {
       billingCurrency: "USD",
       paymentTerms: "Up front",
       billingAddress: "Av. de los Ingenieros 957, Lima, Peru",
+    },
+    // Organización de Publicis Media México para flujo de aprobación
+    {
+      id: "org-001",
+      name: "Publicis Media México",
+      type: "Agency",
+      country: "México",
+      isHolding: false,
+      holdingName: "Publicis",
+      isBigSix: true,
+      isPartOfHolding: true,
+      legalName: "Publicis Media México S.A. de C.V.",
+      taxId: "",
+      website: "www.publicismedia.com/mx",
+      contactName: "Carlos Rodríguez",
+      contactEmail: "carlos.rodriguez@publicis.com",
+      status: "Pending",
+      address: "",
+      city: "Ciudad de México",
+      state: "CDMX",
+      zipCode: "11000",
+      phone: "+52 55 5281 4100",
+      industry: "Advertising",
+      foundedYear: 2000,
+      description:
+        "Agencia de medios líder en México, parte del grupo Publicis.",
+      billingCurrency: "USD",
+      paymentTerms: "",
+      billingAddress: "",
+      missingInfo: ["Tax ID", "Billing Address"],
+      submittedDate: "2024-06-10",
+    },
+    // Organización con estado Pending para flujo de aprobación
+    {
+      id: "org101",
+      name: "MediaCom Argentina",
+      type: "Agency",
+      country: "Argentina",
+      isHolding: false,
+      holdingName: "GroupM",
+      isBigSix: true,
+      isPartOfHolding: true,
+      legalName: "MediaCom Argentina S.A.",
+      taxId: "MCA123456AR",
+      website: "www.mediacom.com/ar",
+      contactName: "Carlos Mendez",
+      contactEmail: "carlos.mendez@mediacom.com",
+      status: "Pending",
+      address: "Av. del Libertador 6350",
+      city: "Buenos Aires",
+      state: "CABA",
+      zipCode: "C1428ART",
+      phone: "+54 11 4789 2000",
+      industry: "Advertising",
+      foundedYear: 2003,
+      description:
+        "Agencia de medios líder en Argentina, parte del grupo GroupM.",
+      billingCurrency: "USD",
+      paymentTerms: "Net 30",
+      billingAddress: "Av. del Libertador 6350, Buenos Aires, Argentina",
+      missingInfo: ["Tax ID", "Payment Terms"],
+    },
+    // Organización con estado Rejected para flujo de aprobación
+    {
+      id: "org102",
+      name: "Grupo Clarín",
+      type: "Publisher",
+      country: "Argentina",
+      isHolding: false,
+      holdingName: "",
+      isBigSix: false,
+      isPartOfHolding: false,
+      legalName: "Grupo Clarín S.A.",
+      taxId: "GCS123456AR",
+      website: "www.grupoclarin.com",
+      contactName: "Martín Fernández",
+      contactEmail: "martin.fernandez@clarin.com",
+      status: "Rejected",
+      address: "Tacuarí 1842",
+      city: "Buenos Aires",
+      state: "CABA",
+      zipCode: "C1139AAN",
+      phone: "+54 11 4309 7500",
+      industry: "Media",
+      foundedYear: 1945,
+      description: "Principal grupo de medios de comunicación de Argentina.",
+      billingCurrency: "USD",
+      paymentTerms: "",
+      billingAddress: "Tacuarí 1842, Buenos Aires, Argentina",
+      missingInfo: [
+        "Payment Terms",
+        "Publisher Rate Card",
+        "Legal Documentation",
+      ],
+      rejectionReason:
+        "Documentación legal incompleta. Se requiere presentar certificado fiscal actualizado y contrato firmado.",
     },
     {
       id: "org002",
@@ -554,6 +653,8 @@ const StatusBadgeLarge = ({ status }: { status: string }) => {
     switch (status) {
       case "Pending":
         return "bg-amber-50 text-amber-700 border-amber-200 shadow-amber-100";
+      case "Rejected":
+        return "bg-red-50 text-red-700 border-red-200 shadow-red-100";
       case "Negotiating":
         return "bg-blue-50 text-blue-700 border-blue-200 shadow-blue-100";
       case "Won":
@@ -604,6 +705,7 @@ const StatusBadgeLarge = ({ status }: { status: string }) => {
         );
       case "Live":
       case "Active":
+      case "Approved":
         return (
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -620,6 +722,7 @@ const StatusBadgeLarge = ({ status }: { status: string }) => {
         );
       case "Closed":
       case "Inactive":
+      case "Rejected":
         return (
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -800,6 +903,97 @@ export default function OrganizationDetailPage() {
                   </div>
                 </div>
               </div>
+
+              {/* Mostrar información de aprobación si el estado es Pending o Rejected */}
+              {(organization.status === "Pending" ||
+                organization.status === "Rejected") && (
+                <div
+                  className={`mt-4 p-4 rounded-lg border-2 ${
+                    organization.status === "Pending"
+                      ? "bg-amber-50 border-amber-200"
+                      : "bg-red-50 border-red-200"
+                  }`}
+                >
+                  <h2 className="text-lg font-semibold mb-2">
+                    {organization.status === "Pending"
+                      ? "Información de aprobación pendiente"
+                      : "Organización rechazada"}
+                  </h2>
+
+                  {organization.submittedDate && (
+                    <div className="mb-3 text-sm">
+                      <span className="font-medium">Fecha de envío:</span>{" "}
+                      {new Date(
+                        organization.submittedDate
+                      ).toLocaleDateString()}
+                    </div>
+                  )}
+
+                  {organization.missingInfo &&
+                    organization.missingInfo.length > 0 && (
+                      <div className="mb-3">
+                        <h3 className="text-sm font-medium mb-1">
+                          Información faltante:
+                        </h3>
+                        <ul className="list-disc list-inside text-sm">
+                          {organization.missingInfo.map((item, index) => (
+                            <li key={index}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                  {organization.status === "Rejected" &&
+                    organization.rejectionReason && (
+                      <div>
+                        <h3 className="text-sm font-medium mb-1">
+                          Motivo de rechazo:
+                        </h3>
+                        <p className="text-sm">
+                          {organization.rejectionReason}
+                        </p>
+                      </div>
+                    )}
+
+                  {organization.status === "Pending" && (
+                    <div className="mt-4 flex space-x-3">
+                      <button
+                        onClick={() => {
+                          // Aquí iría la lógica para aprobar la organización
+                          alert("Organización aprobada");
+                          // En una aplicación real, esto actualizaría el estado en la base de datos
+                          setOrganization({
+                            ...organization,
+                            status: "Active",
+                          });
+                        }}
+                        className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm font-medium"
+                      >
+                        Aprobar
+                      </button>
+                      <button
+                        onClick={() => {
+                          // Aquí iría la lógica para rechazar la organización
+                          const reason = prompt(
+                            "Ingrese el motivo del rechazo:"
+                          );
+                          if (reason) {
+                            // En una aplicación real, esto actualizaría el estado en la base de datos
+                            setOrganization({
+                              ...organization,
+                              status: "Rejected",
+                              rejectionReason: reason,
+                            });
+                          }
+                        }}
+                        className="px-4 py-2 bg-white hover:bg-gray-50 text-red-600 border border-red-600 rounded-md text-sm font-medium"
+                      >
+                        Rechazar
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Navigation tabs */}

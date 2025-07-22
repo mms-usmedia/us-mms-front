@@ -331,7 +331,7 @@ export default function FinanceApprovalsPage() {
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <Link href={`/finance/approvals/${org.id}`}>
+                            <Link href={`/organizations/${org.id}`}>
                               <Button variant="outline" size="sm">
                                 Review
                               </Button>

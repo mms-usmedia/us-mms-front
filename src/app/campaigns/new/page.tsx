@@ -80,7 +80,7 @@ export default function NewCampaignTypePage() {
                   >
                     <div className="border-b border-gray-100 bg-blue-50 p-4">
                       <h3 className="text-lg font-medium text-gray-800 group-hover:text-orange-700 transition-colors">
-                        IO-Based Campaign (Traditional)
+                        IO-Based Campaign
                       </h3>
                     </div>
                     <div className="p-5">
