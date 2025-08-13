@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 // Type for possible campaign statuses
 type StatusType =
   | "Pending"
+  | "Pending Organization Approval"
   | "Negotiating"
   | "Won"
   | "Approved"
@@ -35,6 +36,9 @@ interface Campaign {
   units: number;
   budget: number;
   grossMargin: number;
+  salesperson?: string;
+  trafficker?: string;
+  service?: string;
   owner?: string; // Optional owner field
 }
 
@@ -52,6 +56,10 @@ interface SearchFilterProps {
   onEndDateChange?: (value: string) => void;
   selectedOwner?: string;
   onOwnerChange?: (value: string) => void;
+  selectedService?: string;
+  onServiceChange?: (value: string) => void;
+  selectedTrafficker?: string;
+  onTraffickerChange?: (value: string) => void;
 }
 
 const SearchFilter: React.FC<SearchFilterProps> = ({
@@ -68,6 +76,10 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   onEndDateChange = () => {},
   selectedOwner = "",
   onOwnerChange = () => {},
+  selectedService = "",
+  onServiceChange = () => {},
+  selectedTrafficker = "",
+  onTraffickerChange = () => {},
 }) => {
   // Extract unique organizations from campaigns
   const [organizations, setOrganizations] = useState<string[]>([]);
@@ -86,9 +98,18 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   const [filteredOwners, setFilteredOwners] = useState<string[]>([]);
   const ownerDropdownRef = useRef<HTMLDivElement>(null);
 
+  // Trafficker filter state
+  const [traffickers, setTraffickers] = useState<string[]>([]);
+  const [traffickerSearchTerm, setTraffickerSearchTerm] = useState<string>("");
+  const [showTraffickerDropdown, setShowTraffickerDropdown] =
+    useState<boolean>(false);
+  const traffickerDropdownRef = useRef<HTMLDivElement>(null);
+  const [filteredTraffickers, setFilteredTraffickers] = useState<string[]>([]);
+
   // List of possible statuses
   const statusOptions: StatusType[] = [
     "Pending",
+    "Pending Organization Approval",
     "Negotiating",
     "Won",
     "Approved",
@@ -102,20 +123,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
 
   // Initialize organizations and owners when component mounts or campaigns change
   useEffect(() => {
-    // Sample campaign owners (en una app real, esto vendría de los datos)
-    const sampleOwners = [
-      "John Smith",
-      "Maria Garcia",
-      "David Johnson",
-      "Sofia Rodriguez",
-      "Michael Brown",
-      "Emma Martinez",
-      "James Wilson",
-      "Isabella Lopez",
-      "Robert Taylor",
-      "Olivia Lee",
-    ];
-
     // Get unique organization names
     const uniqueOrganizations = Array.from(
       new Set(campaigns.map((campaign) => campaign.organizationName))
@@ -124,9 +131,27 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     setOrganizations(uniqueOrganizations);
     setFilteredOrganizations(uniqueOrganizations);
 
-    // Set sample owners (in a real app, you would extract from campaigns)
-    setOwners(sampleOwners);
-    setFilteredOwners(sampleOwners);
+    // Extract owners (salespersons) from campaigns
+    const uniqueOwners = Array.from(
+      new Set(
+        campaigns
+          .map((c) => c.salesperson)
+          .filter((x): x is string => Boolean(x))
+      )
+    ).sort();
+    setOwners(uniqueOwners);
+    setFilteredOwners(uniqueOwners);
+
+    // Extract traffickers from campaigns
+    const uniqueTraffickers = Array.from(
+      new Set(
+        campaigns
+          .map((c) => c.trafficker)
+          .filter((x): x is string => Boolean(x))
+      )
+    ).sort();
+    setTraffickers(uniqueTraffickers);
+    setFilteredTraffickers(uniqueTraffickers);
   }, [campaigns]);
 
   // Filter organizations when typing in search field
@@ -152,6 +177,18 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
       setFilteredOwners(owners);
     }
   }, [ownerSearchTerm, owners]);
+
+  // Filter traffickers when typing
+  useEffect(() => {
+    if (traffickerSearchTerm) {
+      const filtered = traffickers.filter((t) =>
+        t.toLowerCase().includes(traffickerSearchTerm.toLowerCase())
+      );
+      setFilteredTraffickers(filtered);
+    } else {
+      setFilteredTraffickers(traffickers);
+    }
+  }, [traffickerSearchTerm, traffickers]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -195,7 +232,10 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     onStartDateChange("");
     onEndDateChange("");
     onOwnerChange("");
+    onServiceChange("");
+    onTraffickerChange("");
     setOwnerSearchTerm("");
+    setTraffickerSearchTerm("");
   };
 
   // Check if there are any active filters
@@ -205,13 +245,17 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     selectedStatus.length > 0 ||
     startDateFilter ||
     endDateFilter ||
-    selectedOwner;
+    selectedOwner ||
+    selectedService ||
+    selectedTrafficker;
 
   // Get color for status badge
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Pending":
         return "bg-amber-50 text-amber-700 border-amber-100";
+      case "Pending Organization Approval":
+        return "bg-yellow-50 text-yellow-700 border-yellow-100";
       case "Negotiating":
         return "bg-blue-50 text-blue-700 border-blue-100";
       case "Won":
@@ -323,7 +367,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
         {/* Advanced filters (hidden by default) */}
         {showFilters && (
           <div className="grid grid-cols-1 gap-4 pt-4 border-t border-gray-100 mt-2">
-            {/* Top row filters: Organization, Date Range, Owner */}
+            {/* Top row filters: Organization, Date Range, Salesperson */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Filter by organization */}
               <div className="relative" ref={dropdownRef}>
@@ -444,14 +488,14 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
                   htmlFor="owner-search"
                   className="block text-sm font-medium text-gray-700 mb-1"
                 >
-                  Campaign Owner
+                  Salesperson
                 </label>
                 <div className="relative">
                   <input
                     type="text"
                     id="owner-search"
                     className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm text-gray-900 bg-gray-50"
-                    placeholder="Select campaign owner"
+                    placeholder="Select salesperson"
                     value={ownerSearchTerm}
                     onChange={(e) => setOwnerSearchTerm(e.target.value)}
                     onFocus={() => setShowOwnerDropdown(true)}
@@ -514,6 +558,117 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
               </div>
             </div>
 
+            {/* Second row filters: Service and Trafficker */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Service filter */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Service
+                </label>
+                <div className="grid grid-cols-1 gap-2">
+                  {[
+                    "Representación Comercial",
+                    "Servicio de Medios (IMB)",
+                    "Prefered Ad Services (PAS)",
+                    "Clearing House",
+                    "Mobile Performance",
+                  ].map((service) => (
+                    <div
+                      key={service}
+                      className={`cursor-pointer rounded-md px-3 py-1.5 text-sm border ${
+                        selectedService === service
+                          ? "bg-orange-50 text-orange-700 border-orange-200"
+                          : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
+                      }`}
+                      onClick={() =>
+                        onServiceChange(
+                          selectedService === service ? "" : service
+                        )
+                      }
+                    >
+                      {service}
+                      {selectedService === service && (
+                        <span className="ml-1.5 inline-block">✓</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Trafficker filter */}
+              <div className="relative" ref={traffickerDropdownRef}>
+                <label
+                  htmlFor="trafficker-search"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Trafficker
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    id="trafficker-search"
+                    className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm text-gray-900 bg-gray-50"
+                    placeholder="Select trafficker"
+                    value={traffickerSearchTerm}
+                    onChange={(e) => setTraffickerSearchTerm(e.target.value)}
+                    onFocus={() => setShowTraffickerDropdown(true)}
+                    readOnly={!!selectedTrafficker}
+                  />
+                  {selectedTrafficker && (
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          onTraffickerChange("");
+                          setTraffickerSearchTerm("");
+                        }}
+                        className="text-gray-400 hover:text-gray-500 focus:outline-none"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {showTraffickerDropdown && !selectedTrafficker && (
+                  <div className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base overflow-auto focus:outline-none sm:text-sm border border-gray-200">
+                    <div className="px-2 py-1 bg-gray-50 text-xs font-medium text-gray-500">
+                      {filteredTraffickers.length} traffickers found
+                    </div>
+                    {filteredTraffickers.length === 0 ? (
+                      <div className="text-gray-500 text-sm px-4 py-2">
+                        No traffickers found
+                      </div>
+                    ) : (
+                      filteredTraffickers.map((t) => (
+                        <div
+                          key={t}
+                          className="cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-gray-50 text-gray-900 text-sm"
+                          onClick={() => {
+                            onTraffickerChange(t);
+                            setTraffickerSearchTerm(t);
+                            setShowTraffickerDropdown(false);
+                          }}
+                        >
+                          {t}
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
             {/* Filter by campaign status */}
             <div>
               <label

@@ -51,8 +51,10 @@ import {
   TableCell,
   TableHead,
   TableHeader,
+  TableFooter,
   TableRow,
 } from "@/components/ui/table";
+import StatusBadge, { StatusType } from "@/components/ui/StatusBadge";
 
 // Componentes de reportes
 import ReportTemplates, {
@@ -146,6 +148,8 @@ export default function ReportsPage() {
   const [selectedServiceTypes, setSelectedServiceTypes] = useState<string[]>(
     []
   );
+  // Custom campaigns: single Service selection for UI pill group
+  const [selectedService, setSelectedService] = useState<string>("");
   const [selectedPurchaseTypes, setSelectedPurchaseTypes] = useState<string[]>(
     []
   );
@@ -1999,29 +2003,39 @@ export default function ReportsPage() {
                             </div>
                             <div>
                               <label className="text-sm font-medium text-gray-700 block mb-1">
-                                Date Range
+                                Service
                               </label>
-                              <div className="grid grid-cols-2 gap-2">
-                                <div>
-                                  <input
-                                    type="date"
-                                    className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm text-gray-900 bg-white"
-                                    placeholder="Start date"
-                                    value={startDate}
-                                    onChange={(e) =>
-                                      setStartDate(e.target.value)
+                              <div className="grid grid-cols-1 gap-2">
+                                {[
+                                  "Representación Comercial",
+                                  "Servicio de Medios (IMB)",
+                                  "Prefered Ad Services (PAS)",
+                                  "Clearing House",
+                                  "Mobile Performance",
+                                ].map((service) => (
+                                  <div
+                                    key={service}
+                                    className={`cursor-pointer rounded-md px-3 py-1.5 text-sm border ${
+                                      selectedService === service
+                                        ? "bg-orange-50 text-orange-700 border-orange-200"
+                                        : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
+                                    }`}
+                                    onClick={() =>
+                                      setSelectedService(
+                                        selectedService === service
+                                          ? ""
+                                          : service
+                                      )
                                     }
-                                  />
-                                </div>
-                                <div>
-                                  <input
-                                    type="date"
-                                    className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm text-gray-900 bg-white"
-                                    placeholder="End date"
-                                    value={endDate}
-                                    onChange={(e) => setEndDate(e.target.value)}
-                                  />
-                                </div>
+                                  >
+                                    {service}
+                                    {selectedService === service && (
+                                      <span className="ml-1.5 inline-block">
+                                        ✓
+                                      </span>
+                                    )}
+                                  </div>
+                                ))}
                               </div>
                             </div>
                             <div>
@@ -2105,13 +2119,13 @@ export default function ReportsPage() {
                             </div>
                             <div>
                               <label className="text-sm font-medium text-gray-700 block mb-1">
-                                Campaign Owner
+                                Salesperson
                               </label>
                               <div className="relative" ref={ownerDropdownRef}>
                                 <input
                                   type="text"
                                   className="w-full h-9 rounded-md border border-gray-200 bg-white px-3 py-1 text-sm shadow-sm transition-colors focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
-                                  placeholder="Search owner..."
+                                  placeholder="Search salesperson..."
                                   value={ownerSearchTerm}
                                   onChange={(e) =>
                                     setOwnerSearchTerm(e.target.value)
@@ -2155,7 +2169,7 @@ export default function ReportsPage() {
                                       ))
                                     ) : (
                                       <div className="px-3 py-2 text-sm text-gray-500">
-                                        No owners found
+                                        No salespersons found
                                       </div>
                                     )}
                                   </div>
@@ -2172,6 +2186,119 @@ export default function ReportsPage() {
                                       <button
                                         className="ml-1.5 text-orange-500 hover:text-orange-700"
                                         onClick={() => toggleOwner(owner)}
+                                      >
+                                        ×
+                                      </button>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                            {/* Date Range filter (moved) */}
+                            <div>
+                              <label className="text-sm font-medium text-gray-700 block mb-1">
+                                Date Range
+                              </label>
+                              <div className="grid grid-cols-2 gap-2">
+                                <div>
+                                  <input
+                                    type="date"
+                                    className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm text-gray-900 bg-white"
+                                    placeholder="Start date"
+                                    value={startDate}
+                                    onChange={(e) =>
+                                      setStartDate(e.target.value)
+                                    }
+                                  />
+                                </div>
+                                <div>
+                                  <input
+                                    type="date"
+                                    className="block w-full px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm text-gray-900 bg-white"
+                                    placeholder="End date"
+                                    value={endDate}
+                                    onChange={(e) => setEndDate(e.target.value)}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            {/* Trafficker filter */}
+                            <div>
+                              <label className="text-sm font-medium text-gray-700 block mb-1">
+                                Trafficker
+                              </label>
+                              <div
+                                className="relative"
+                                ref={traffickerDropdownRef}
+                              >
+                                <input
+                                  type="text"
+                                  className="w-full h-9 rounded-md border border-gray-200 bg-white px-3 py-1 text-sm shadow-sm transition-colors focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
+                                  placeholder="Search trafficker..."
+                                  value={traffickerSearchTerm}
+                                  onChange={(e) =>
+                                    setTraffickerSearchTerm(e.target.value)
+                                  }
+                                  onFocus={() =>
+                                    setShowTraffickerDropdown(true)
+                                  }
+                                />
+                                {selectedTraffickers.length > 0 && (
+                                  <button
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                    onClick={() => {
+                                      setSelectedTraffickers([]);
+                                      setTraffickerSearchTerm("");
+                                    }}
+                                  >
+                                    ×
+                                  </button>
+                                )}
+                                {showTraffickerDropdown && (
+                                  <div className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md border border-gray-200 max-h-60 overflow-auto">
+                                    {filteredTraffickers.length > 0 ? (
+                                      filteredTraffickers.map((t) => (
+                                        <div
+                                          key={t}
+                                          className={`px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 ${
+                                            selectedTraffickers.includes(t)
+                                              ? "bg-orange-50 text-orange-700"
+                                              : ""
+                                          }`}
+                                          onClick={() => {
+                                            toggleTrafficker(t);
+                                            setTraffickerSearchTerm("");
+                                          }}
+                                        >
+                                          {t}
+                                          {selectedTraffickers.includes(t) && (
+                                            <span className="ml-1.5 float-right">
+                                              ✓
+                                            </span>
+                                          )}
+                                        </div>
+                                      ))
+                                    ) : (
+                                      <div className="px-3 py-2 text-sm text-gray-500">
+                                        No traffickers found
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                              {selectedTraffickers.length > 0 && (
+                                <div className="flex flex-wrap gap-1 mt-2">
+                                  {selectedTraffickers.map((t) => (
+                                    <div
+                                      key={t}
+                                      className={`rounded-md px-2 py-1 text-xs flex items-center ${getTraffickerColor(
+                                        t
+                                      )}`}
+                                    >
+                                      {t}
+                                      <button
+                                        className="ml-1.5 text-gray-500 hover:text-gray-700"
+                                        onClick={() => toggleTrafficker(t)}
                                       >
                                         ×
                                       </button>
@@ -3270,8 +3397,8 @@ export default function ReportsPage() {
                   )}
                 </div>
 
-                <div className="bg-white rounded-lg border border-gray-100 shadow-sm overflow-hidden">
-                  <Table>
+                <div className="bg-white rounded-lg border border-gray-100 shadow-sm overflow-x-auto">
+                  <Table className="min-w-[1600px]">
                     <TableHeader>
                       <TableRow>
                         {reportColumns.map((column) => (
@@ -3283,11 +3410,45 @@ export default function ReportsPage() {
                       {reportData.length > 0 ? (
                         reportData.map((row, rowIndex) => (
                           <TableRow key={rowIndex}>
-                            {reportColumns.map((column) => (
-                              <TableCell key={column.id}>
-                                {row[column.key]}
-                              </TableCell>
-                            ))}
+                            {reportColumns.map((column) => {
+                              const value = row[column.key];
+                              const isNumeric = typeof value === "number";
+                              // Campaign name styling and status badge/icon like /campaigns
+                              if (column.key === "name") {
+                                return (
+                                  <TableCell key={column.id}>
+                                    <span
+                                      title={String(value ?? "")}
+                                      className="text-sm font-medium text-orange-600 hover:text-orange-800 hover:underline"
+                                    >
+                                      {String(value ?? "-")}
+                                    </span>
+                                  </TableCell>
+                                );
+                              }
+                              if (column.key === "status") {
+                                return (
+                                  <TableCell key={column.id}>
+                                    <StatusBadge
+                                      status={
+                                        String(value ?? "-") as StatusType
+                                      }
+                                    />
+                                  </TableCell>
+                                );
+                              }
+                              const display = isNumeric
+                                ? new Intl.NumberFormat("en-US", {
+                                    style: "currency",
+                                    currency: "USD",
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  }).format(value as number)
+                                : String(value ?? "-");
+                              return (
+                                <TableCell key={column.id}>{display}</TableCell>
+                              );
+                            })}
                           </TableRow>
                         ))
                       ) : (
@@ -3301,6 +3462,52 @@ export default function ReportsPage() {
                         </TableRow>
                       )}
                     </TableBody>
+                    {reportData.length > 0 &&
+                      selectedModule === "campaigns" && (
+                        <TableFooter>
+                          <TableRow>
+                            {reportColumns.map((column, idx) => {
+                              if (idx === 0) {
+                                return (
+                                  <TableCell
+                                    key={column.id}
+                                    className="font-semibold"
+                                  >
+                                    Total
+                                  </TableCell>
+                                );
+                              }
+
+                              const firstVal = reportData.find(
+                                (r) =>
+                                  r[column.key] !== null &&
+                                  r[column.key] !== undefined
+                              )?.[column.key];
+                              const isNumericCol = typeof firstVal === "number";
+                              if (!isNumericCol) {
+                                return <TableCell key={column.id}></TableCell>;
+                              }
+                              const sum = reportData.reduce((acc, row) => {
+                                const v = Number(row[column.key] ?? 0);
+                                return acc + (isNaN(v) ? 0 : v);
+                              }, 0);
+                              return (
+                                <TableCell
+                                  key={column.id}
+                                  className="font-semibold"
+                                >
+                                  {new Intl.NumberFormat("en-US", {
+                                    style: "currency",
+                                    currency: "USD",
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  }).format(sum)}
+                                </TableCell>
+                              );
+                            })}
+                          </TableRow>
+                        </TableFooter>
+                      )}
                   </Table>
                 </div>
               </>

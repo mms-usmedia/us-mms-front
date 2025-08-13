@@ -141,7 +141,7 @@ const ExportButton: React.FC<ExportButtonProps> = ({
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuLabel>Grouping Options</DropdownMenuLabel>
+        <DropdownMenuLabel>Display Options</DropdownMenuLabel>
         <DropdownMenuItem
           onClick={() => handleExportByGroup("excel", "Campaign")}
           className="cursor-pointer"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -12,9 +12,15 @@ import StatusBadge from "@/components/ui/StatusBadge";
 
 interface AdOpsTableProps {
   data: AdOpsItem[];
+  isEditing?: boolean;
+  onUpdateItem?: (updated: AdOpsItem) => void;
 }
 
-const AdOpsTable = ({ data }: AdOpsTableProps) => {
+const AdOpsTable = ({
+  data,
+  isEditing = false,
+  onUpdateItem,
+}: AdOpsTableProps) => {
   // Format currency
   const formatCurrency = (amount: number) => {
     if (amount === undefined || amount === null) return "-";
@@ -36,6 +42,46 @@ const AdOpsTable = ({ data }: AdOpsTableProps) => {
   const formatPercentage = (value: number | undefined | null) => {
     if (value === undefined || value === null) return "-";
     return `${value.toFixed(2)}%`;
+  };
+
+  // Local edits state per row (only for editable fields)
+  const [rowEdits, setRowEdits] = useState<Record<string, Partial<AdOpsItem>>>(
+    {}
+  );
+
+  const handleChangeNumeric = (
+    id: string,
+    field: keyof Pick<
+      AdOpsItem,
+      "deliveredUnits" | "actualPlatformSpendLocalCurrency"
+    >,
+    value: string
+  ) => {
+    const numeric =
+      value === ""
+        ? ("" as unknown as number)
+        : Number(value.replace(/,/g, ""));
+    setRowEdits((prev) => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        [field]: isNaN(numeric as number)
+          ? (prev[id]?.[field] as number)
+          : (numeric as number),
+      },
+    }));
+  };
+
+  const handleSaveRow = (item: AdOpsItem) => {
+    if (!onUpdateItem) return;
+    const edits = rowEdits[item.id] || {};
+    const updated: AdOpsItem = { ...item, ...edits } as AdOpsItem;
+    onUpdateItem(updated);
+    setRowEdits((prev) => {
+      const copy = { ...prev };
+      delete copy[item.id];
+      return copy;
+    });
   };
 
   // Get product type tag styles
@@ -485,7 +531,27 @@ const AdOpsTable = ({ data }: AdOpsTableProps) => {
                     {formatNumber(item.contractedUnits)}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                    {formatNumber(item.deliveredUnits)}
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        className="w-28 px-2 py-1 border border-gray-200 rounded-md bg-white"
+                        value={
+                          rowEdits[item.id]?.deliveredUnits !== undefined
+                            ? String(rowEdits[item.id]?.deliveredUnits)
+                            : String(item.deliveredUnits)
+                        }
+                        onChange={(e) =>
+                          handleChangeNumeric(
+                            item.id,
+                            "deliveredUnits",
+                            e.target.value
+                          )
+                        }
+                      />
+                    ) : (
+                      formatNumber(item.deliveredUnits)
+                    )}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
                     {formatNumber(item.clicks)}
@@ -509,8 +575,47 @@ const AdOpsTable = ({ data }: AdOpsTableProps) => {
                     {item.pacing}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                    {formatCurrency(item.actualPlatformSpendLocalCurrency)}
+                    {isEditing ? (
+                      <div className="flex items-center space-x-2">
+                        <span className="text-gray-500 text-xs">
+                          {getCurrencySymbol(item.platformCurrency)}
+                        </span>
+                        <input
+                          type="text"
+                          inputMode="decimal"
+                          className="w-32 px-2 py-1 border border-gray-200 rounded-md bg-white"
+                          value={
+                            rowEdits[item.id]
+                              ?.actualPlatformSpendLocalCurrency !== undefined
+                              ? String(
+                                  rowEdits[item.id]
+                                    ?.actualPlatformSpendLocalCurrency
+                                )
+                              : String(item.actualPlatformSpendLocalCurrency)
+                          }
+                          onChange={(e) =>
+                            handleChangeNumeric(
+                              item.id,
+                              "actualPlatformSpendLocalCurrency",
+                              e.target.value
+                            )
+                          }
+                        />
+                      </div>
+                    ) : (
+                      formatCurrency(item.actualPlatformSpendLocalCurrency)
+                    )}
                   </td>
+                  {isEditing && (
+                    <td className="px-6 py-4 text-sm whitespace-nowrap">
+                      <button
+                        className="px-3 py-1.5 rounded-md bg-orange-600 text-white text-xs hover:bg-orange-700"
+                        onClick={() => handleSaveRow(item)}
+                      >
+                        Save
+                      </button>
+                    </td>
+                  )}
                   <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
                     {formatCurrency(item.remainingInvestment)}
                   </td>

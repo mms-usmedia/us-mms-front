@@ -29,6 +29,7 @@ interface Campaign {
   endDate: string;
   status:
     | "Pending"
+    | "Pending Organization Approval"
     | "Negotiating"
     | "Won"
     | "Approved"
@@ -47,8 +48,7 @@ interface Campaign {
 const mockCampaigns: Campaign[] = [
   {
     id: "22043",
-    name:
-      "Banorte_Banorte_Hotsale _Credito Pyme _Linkedin_Mex_Junio25_Linkedin_Jun_Mexico",
+    name: "Banorte_Banorte_Hotsale _Credito Pyme _Linkedin_Mex_Junio25_Linkedin_Jun_Mexico",
     organizationName: "Havas Media-Mexico",
     campaignType: "IO-based",
     organizationType: "Agency",
@@ -61,8 +61,7 @@ const mockCampaigns: Campaign[] = [
   },
   {
     id: "22044",
-    name:
-      "Nintendo_Nintendo_Display Digital_Wetransfer_Static_Bra_Mex_Chi_Col_Per_May_Jun_25_Wetransfer_Jun_Brazil,Chile,Colombia,Mexico,Peru",
+    name: "Nintendo_Nintendo_Display Digital_Wetransfer_Static_Bra_Mex_Chi_Col_Per_May_Jun_25_Wetransfer_Jun_Brazil,Chile,Colombia,Mexico,Peru",
     organizationName: "Omnet-United States-OMG",
     campaignType: "IO-based",
     organizationType: "Agency",
@@ -107,7 +106,7 @@ const mockCampaigns: Campaign[] = [
     organizationType: "Agency",
     startDate: "2025-06-05",
     endDate: "2025-06-30",
-    status: "Pending",
+    status: "Pending Organization Approval",
     units: 380000,
     budget: 110000,
     grossMargin: 17,
@@ -184,9 +183,8 @@ export default function CampaignsListPage() {
   const { user, isLoading, isAuthenticated } = useAuth();
   const { isCollapsed } = useSidebar();
   const [campaigns, setCampaigns] = useState<Campaign[]>(mockCampaigns);
-  const [filteredCampaigns, setFilteredCampaigns] = useState<Campaign[]>(
-    mockCampaigns
-  );
+  const [filteredCampaigns, setFilteredCampaigns] =
+    useState<Campaign[]>(mockCampaigns);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedOrganization, setSelectedOrganization] = useState<string>("");
   const [selectedStatus, setSelectedStatus] = useState<string[]>([]);

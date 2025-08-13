@@ -48,8 +48,13 @@ export interface ExchangeRate {
   fromCurrency: string;
   toCurrency: string;
   rate: number;
+  // Legacy fields kept for compatibility
   date: string;
   updatedBy: string;
+  // History support
+  status?: "active" | "inactive";
+  createdAt?: string;
+  createdBy?: string;
 }
 
 export interface InvoicingPeriod {

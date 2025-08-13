@@ -21,6 +21,7 @@ export interface Campaign {
   endDate: string;
   status:
     | "Pending"
+    | "Pending Organization Approval"
     | "Negotiating"
     | "Won"
     | "Approved"

@@ -528,7 +528,7 @@ const getMockOrganizationById = (id: string): Organization | undefined => {
     {
       id: "org013",
       name: "Carat-Argentina-Dentsu",
-      type: "Agency",
+      type: "Publisher",
       country: "Argentina",
       isHolding: false,
       holdingName: "Dentsu",
@@ -795,6 +795,7 @@ export default function OrganizationDetailPage() {
 
   // Get organization ID from URL parameters
   const organizationId = Array.isArray(params.id) ? params.id[0] : params.id;
+  const isCreating = organizationId === "new";
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -808,6 +809,28 @@ export default function OrganizationDetailPage() {
     if (organizationId) {
       // Here we would load real data from API
       // For now using example data
+      if (isCreating) {
+        // Modo creación: organización vacía y editable, tipo fijo Publisher
+        setOrganization({
+          id: "new",
+          name: "",
+          type: "Publisher",
+          country: "",
+          isHolding: false,
+          holdingName: "",
+          isBigSix: false,
+          isPartOfHolding: false,
+          legalName: "",
+          taxId: "",
+          website: "",
+          contactName: "",
+          contactEmail: "",
+          status: "In Review",
+        });
+        setIsEditingDetails(true);
+        setIsDataLoading(false);
+        return;
+      }
       const organizationData = getMockOrganizationById(organizationId);
       setOrganization(organizationData || null);
       setIsDataLoading(false);
@@ -821,7 +844,7 @@ export default function OrganizationDetailPage() {
         setActiveTab("details");
       }
     }
-  }, [organizationId, activeTab]);
+  }, [organizationId, activeTab, isCreating]);
 
   // Efecto para cambiar de pestaña si se selecciona rates en una organización no-Publisher
   useEffect(() => {
@@ -1093,8 +1116,12 @@ export default function OrganizationDetailPage() {
                       </button>
                       <button
                         onClick={() => {
-                          // Al cancelar, simplemente desactivamos el modo edición
-                          // El componente descartará los cambios cuando cambie de editMode=true a false
+                          // En creación, cancelar debe volver al listado
+                          if (isCreating) {
+                            router.push("/organizations");
+                            return;
+                          }
+                          // En edición normal, simplemente salir del modo edición
                           setIsEditingDetails(false);
                         }}
                         className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md text-sm font-medium flex items-center gap-2 shadow-sm"

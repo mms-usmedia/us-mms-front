@@ -212,19 +212,21 @@ export default function UserForm({ user, onSave, onCancel }: UserFormProps) {
               Account Information
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="username" className="text-gray-700">
-                  Username
-                </Label>
-                <Input
-                  id="username"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  required
-                  className="border-gray-300 focus:border-orange-500 focus:ring-orange-500"
-                />
-              </div>
+              {isEditing && (
+                <div className="space-y-2">
+                  <Label htmlFor="username" className="text-gray-700">
+                    Username
+                  </Label>
+                  <Input
+                    id="username"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleChange}
+                    required={isEditing}
+                    className="border-gray-300 focus:border-orange-500 focus:ring-orange-500"
+                  />
+                </div>
+              )}
               <div className="space-y-2">
                 <Label htmlFor="roles" className="text-gray-700">
                   Roles
@@ -271,107 +273,101 @@ export default function UserForm({ user, onSave, onCancel }: UserFormProps) {
               </div>
             </div>
 
-            {!isEditing && (
-              <div className="mt-4 space-y-2">
-                <Label htmlFor="password" className="text-gray-700">
-                  Password
-                </Label>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  onChange={handleChange}
-                  required={!isEditing}
-                  className="border-gray-300 focus:border-orange-500 focus:ring-orange-500"
-                />
-              </div>
-            )}
+            {/* Remove password input for new user as requested */}
           </div>
 
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <h3 className="text-sm font-medium text-gray-700 mb-3">
-              Permissions
-            </h3>
-            <div className="space-y-3">
-              <div
-                className="flex items-center p-3 rounded-md hover:bg-gray-100 cursor-pointer"
-                onClick={() =>
-                  setFormData((prev) => ({ ...prev, isAdmin: !prev.isAdmin }))
-                }
-              >
+          {isEditing && (
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="text-sm font-medium text-gray-700 mb-3">
+                Permissions
+              </h3>
+              <div className="space-y-3">
                 <div
-                  className={`w-5 h-5 rounded flex items-center justify-center ${
-                    formData.isAdmin
-                      ? "bg-orange-500 border-orange-500"
-                      : "border border-gray-300"
-                  }`}
+                  className="flex items-center p-3 rounded-md hover:bg-gray-100 cursor-pointer"
+                  onClick={() =>
+                    setFormData((prev) => ({ ...prev, isAdmin: !prev.isAdmin }))
+                  }
                 >
-                  {formData.isAdmin && <Check className="h-3 w-3 text-white" />}
+                  <div
+                    className={`w-5 h-5 rounded flex items-center justify-center ${
+                      formData.isAdmin
+                        ? "bg-orange-500 border-orange-500"
+                        : "border border-gray-300"
+                    }`}
+                  >
+                    {formData.isAdmin && (
+                      <Check className="h-3 w-3 text-white" />
+                    )}
+                  </div>
+                  <div className="ml-3">
+                    <span className="font-medium text-gray-800">
+                      Administrator
+                    </span>
+                    <p className="text-xs text-gray-500">
+                      Full access to all system features and settings
+                    </p>
+                  </div>
                 </div>
-                <div className="ml-3">
-                  <span className="font-medium text-gray-800">
-                    Administrator
-                  </span>
-                  <p className="text-xs text-gray-500">
-                    Full access to all system features and settings
-                  </p>
-                </div>
-              </div>
 
-              <div
-                className="flex items-center p-3 rounded-md hover:bg-gray-100 cursor-pointer"
-                onClick={() =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    noLimitAccess: !prev.noLimitAccess,
-                  }))
-                }
-              >
                 <div
-                  className={`w-5 h-5 rounded flex items-center justify-center ${
-                    formData.noLimitAccess
-                      ? "bg-orange-500 border-orange-500"
-                      : "border border-gray-300"
-                  }`}
+                  className="flex items-center p-3 rounded-md hover:bg-gray-100 cursor-pointer"
+                  onClick={() =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      noLimitAccess: !prev.noLimitAccess,
+                    }))
+                  }
                 >
-                  {formData.noLimitAccess && (
-                    <Check className="h-3 w-3 text-white" />
-                  )}
+                  <div
+                    className={`w-5 h-5 rounded flex items-center justify-center ${
+                      formData.noLimitAccess
+                        ? "bg-orange-500 border-orange-500"
+                        : "border border-gray-300"
+                    }`}
+                  >
+                    {formData.noLimitAccess && (
+                      <Check className="h-3 w-3 text-white" />
+                    )}
+                  </div>
+                  <div className="ml-3">
+                    <span className="font-medium text-gray-800">
+                      No access limits
+                    </span>
+                    <p className="text-xs text-gray-500">
+                      User can access all data without restrictions
+                    </p>
+                  </div>
                 </div>
-                <div className="ml-3">
-                  <span className="font-medium text-gray-800">
-                    No access limits
-                  </span>
-                  <p className="text-xs text-gray-500">
-                    User can access all data without restrictions
-                  </p>
-                </div>
-              </div>
 
-              <div
-                className="flex items-center p-3 rounded-md hover:bg-gray-100 cursor-pointer"
-                onClick={() =>
-                  setFormData((prev) => ({ ...prev, active: !prev.active }))
-                }
-              >
                 <div
-                  className={`w-5 h-5 rounded flex items-center justify-center ${
-                    formData.active
-                      ? "bg-orange-500 border-orange-500"
-                      : "border border-gray-300"
-                  }`}
+                  className="flex items-center p-3 rounded-md hover:bg-gray-100 cursor-pointer"
+                  onClick={() =>
+                    setFormData((prev) => ({ ...prev, active: !prev.active }))
+                  }
                 >
-                  {formData.active && <Check className="h-3 w-3 text-white" />}
-                </div>
-                <div className="ml-3">
-                  <span className="font-medium text-gray-800">Active user</span>
-                  <p className="text-xs text-gray-500">
-                    User can log in and access the system
-                  </p>
+                  <div
+                    className={`w-5 h-5 rounded flex items-center justify-center ${
+                      formData.active
+                        ? "bg-orange-500 border-orange-500"
+                        : "border border-gray-300"
+                    }`}
+                  >
+                    {formData.active && (
+                      <Check className="h-3 w-3 text-white" />
+                    )}
+                  </div>
+                  <div className="ml-3">
+                    <span className="font-medium text-gray-800">
+                      Active user
+                    </span>
+                    <p className="text-xs text-gray-500">
+                      User can log in and access the system
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </CardContent>
         <CardFooter className="flex justify-between p-4 bg-gray-50">
           <Button

@@ -38,15 +38,27 @@ export interface RevenueData {
   salesPerson: string;
   billingOffice: string;
   billingCountry: string;
+  market?: string;
   currency: string;
   exchangeRate: string;
+  fxCorporate?: string;
+  fxMonthlyAverage?: string;
   grossRevenue: string;
+  avb?: string;
+  tax?: string;
+  avbThirdParty?: string;
   publisherCost: string;
   hiddenCosts: string;
   netRevenue: string;
   margin: string;
   campaignDescription: string;
   internalNotes: string;
+  hasHUR?: boolean;
+  revenueLocal?: string;
+  publisherCostLocal?: string;
+  avbProvisionLocal?: string;
+  taxAmountLocal?: string;
+  otherProvisionThirdPartyLocal?: string;
 }
 
 interface RevenueTableProps {
@@ -170,13 +182,7 @@ export const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
             scope="col"
             className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
           >
-            Division
-          </th>
-          <th
-            scope="col"
-            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
-          >
-            Campaign ID
+            Billing Country
           </th>
           <th
             scope="col"
@@ -194,13 +200,31 @@ export const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
             scope="col"
             className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
           >
+            Division
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Market
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Salesman
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
             Account
           </th>
           <th
             scope="col"
             className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
           >
-            Part of Holding
+            Part of a Holding
           </th>
           <th
             scope="col"
@@ -212,7 +236,19 @@ export const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
             scope="col"
             className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
           >
-            Advertiser
+            Campaign ID
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            HUR
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Publisher Name
           </th>
           <th
             scope="col"
@@ -224,7 +260,7 @@ export const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
             scope="col"
             className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
           >
-            Publisher
+            Advertiser
           </th>
           <th
             scope="col"
@@ -248,37 +284,43 @@ export const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
             scope="col"
             className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
           >
-            Sales Person
-          </th>
-          <th
-            scope="col"
-            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
-          >
-            Billing Office
-          </th>
-          <th
-            scope="col"
-            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
-          >
-            Billing Country
-          </th>
-          <th
-            scope="col"
-            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
-          >
             Currency
           </th>
           <th
             scope="col"
             className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
           >
-            Exchange Rate
+            FX Corporate
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            FX Montly Average
           </th>
           <th
             scope="col"
             className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider"
           >
-            Gross Revenue
+            To Invoice / Revenue
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            AVB
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Tax
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            AVB 3rd Party
           </th>
           <th
             scope="col"
@@ -290,19 +332,13 @@ export const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
             scope="col"
             className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider"
           >
-            AVBs/Hidden Costs
+            Net Revenue / Margin
           </th>
           <th
             scope="col"
             className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider"
           >
-            Net Revenue
-          </th>
-          <th
-            scope="col"
-            className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider"
-          >
-            Margin %
+            Margin%
           </th>
           <th
             scope="col"
@@ -316,11 +352,50 @@ export const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
           >
             Internal Notes
           </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Revenue in Local Currency
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Publisher Cost in Local Currency
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            AVB Provision in Local Currency
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Tax Amount in Local Currency
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            Amount Other provision 3rd Party in local Currency
+          </th>
         </tr>
       </thead>
       <tbody className="bg-white divide-y divide-gray-200">
         {filteredData.map((row) => (
           <tr key={row.id} className="hover:bg-gray-50 transition-colors">
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              {row.billingCountry}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              {row.month}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              {row.year}
+            </td>
             <td className="px-6 py-4 whitespace-nowrap">
               <span
                 className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getDivisionColor(
@@ -330,14 +405,11 @@ export const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
                 {row.division}
               </span>
             </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
-              {row.campaignId}
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              {row.market || "-"}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-              {row.month}
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-              {row.year}
+              {row.salesPerson}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
               {row.account}
@@ -348,14 +420,28 @@ export const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
               {row.holdingName}
             </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
+              {row.campaignId}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm">
+              {row.hasHUR ? (
+                <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-rose-100 text-rose-800 border border-rose-200">
+                  Yes
+                </span>
+              ) : (
+                <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200">
+                  No
+                </span>
+              )}
+            </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              {row.advertiser}
+              {row.publisher}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
               {row.product}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              {row.publisher}
+              {row.advertiser}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
               {row.publisherProduct}
@@ -379,28 +465,28 @@ export const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
               </span>
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-              {row.salesPerson}
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-              {row.billingOffice}
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-              {row.billingCountry}
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
               {row.currency}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-              {row.exchangeRate}
+              {row.fxCorporate || row.exchangeRate}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              {row.fxMonthlyAverage || row.exchangeRate}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
               {row.grossRevenue}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
-              {row.publisherCost}
+              {row.avb ?? row.hiddenCosts}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
-              {row.hiddenCosts}
+              {row.tax ?? "$0.00"}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
+              {row.avbThirdParty ?? "$0.00"}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
+              {row.publisherCost}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
               {row.netRevenue}
@@ -419,6 +505,21 @@ export const RevenueTable: React.FC<RevenueTableProps> = ({ data }) => {
               title={row.internalNotes}
             >
               {truncateText(row.internalNotes, maxLength)}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
+              {row.revenueLocal || "-"}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
+              {row.publisherCostLocal || "-"}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
+              {row.avbProvisionLocal || "-"}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
+              {row.taxAmountLocal || "-"}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
+              {row.otherProvisionThirdPartyLocal || "-"}
             </td>
           </tr>
         ))}

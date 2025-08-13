@@ -49,6 +49,16 @@ export default function ExchangeRatesManager({
     useState<ExchangeRate[]>(mockExchangeRates);
   const [internalShowForm, setInternalShowForm] = useState(false);
   const [editingRate, setEditingRate] = useState<ExchangeRate | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortField, setSortField] = useState<
+    | "fromCurrency"
+    | "toCurrency"
+    | "rate"
+    | "status"
+    | "createdAt"
+    | "createdBy"
+  >("createdAt");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
 
   // Use either external or internal state for showing the form
   const showForm =
@@ -67,14 +77,35 @@ export default function ExchangeRatesManager({
 
   const handleSaveRate = (rate: Partial<ExchangeRate>) => {
     if (editingRate) {
-      // Update existing rate
-      setExchangeRates(
-        exchangeRates.map((r) =>
-          r.id === editingRate.id
-            ? { ...r, ...rate, date: new Date().toISOString().split("T")[0] }
+      // Create a new historical entry when updating, mark previous active as inactive if same pair
+      const today = new Date().toISOString().split("T")[0];
+      const updatedBy = "current_user";
+      const from = rate.fromCurrency || editingRate.fromCurrency;
+      const to = rate.toCurrency || editingRate.toCurrency;
+
+      // Deactivate previous active for same pair
+      const deactivated: ExchangeRate[] = exchangeRates.map(
+        (r): ExchangeRate =>
+          r.fromCurrency === from &&
+          r.toCurrency === to &&
+          r.status === "active"
+            ? { ...r, status: "inactive" as const }
             : r
-        )
       );
+
+      // Push new version as active
+      const newVersion: ExchangeRate = {
+        id: `e${exchangeRates.length + 1}`,
+        fromCurrency: from,
+        toCurrency: to,
+        rate: rate.rate ?? editingRate.rate,
+        date: today,
+        updatedBy,
+        status: "active",
+        createdAt: new Date().toISOString(),
+        createdBy: updatedBy,
+      };
+      setExchangeRates([...deactivated, newVersion]);
     } else {
       // Create new rate
       const newRate: ExchangeRate = {
@@ -84,11 +115,108 @@ export default function ExchangeRatesManager({
         rate: rate.rate || 0,
         date: new Date().toISOString().split("T")[0],
         updatedBy: "current_user", // In a real implementation, this would come from the auth context
+        status: "active",
+        createdAt: new Date().toISOString(),
+        createdBy: "current_user",
       };
-      setExchangeRates([...exchangeRates, newRate]);
+      // Deactivate previous active for same pair
+      const deactivated: ExchangeRate[] = exchangeRates.map(
+        (r): ExchangeRate =>
+          r.fromCurrency === newRate.fromCurrency &&
+          r.toCurrency === newRate.toCurrency &&
+          r.status === "active"
+            ? { ...r, status: "inactive" as const }
+            : r
+      );
+      setExchangeRates([...deactivated, newRate]);
     }
     setShowForm(false);
     setEditingRate(null);
+  };
+
+  // Derived list with filtering and sorting
+  const visibleRates = React.useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
+    const filtered = exchangeRates.filter((r) => {
+      if (!term) return true;
+      const createdAt = r.createdAt || r.date;
+      return (
+        r.fromCurrency.toLowerCase().includes(term) ||
+        r.toCurrency.toLowerCase().includes(term) ||
+        String(r.rate).toLowerCase().includes(term) ||
+        (r.status || "").toLowerCase().includes(term) ||
+        (r.createdBy || r.updatedBy || "").toLowerCase().includes(term) ||
+        (createdAt || "").toLowerCase().includes(term)
+      );
+    });
+
+    const compare = (a: ExchangeRate, b: ExchangeRate) => {
+      let aVal: string | number | Date;
+      let bVal: string | number | Date;
+      switch (sortField) {
+        case "rate":
+          aVal = a.rate;
+          bVal = b.rate;
+          break;
+        case "fromCurrency":
+          aVal = a.fromCurrency;
+          bVal = b.fromCurrency;
+          break;
+        case "toCurrency":
+          aVal = a.toCurrency;
+          bVal = b.toCurrency;
+          break;
+        case "status":
+          aVal = a.status || "inactive";
+          bVal = b.status || "inactive";
+          break;
+        case "createdBy":
+          aVal = a.createdBy || a.updatedBy || "";
+          bVal = b.createdBy || b.updatedBy || "";
+          break;
+        case "createdAt":
+        default:
+          aVal = a.createdAt || a.date;
+          bVal = b.createdAt || b.date;
+          break;
+      }
+
+      if (sortField === "rate") {
+        return Number(aVal) - Number(bVal);
+      }
+
+      // date comparison
+      if (sortField === "createdAt") {
+        return new Date(aVal).getTime() - new Date(bVal).getTime();
+      }
+
+      // string comparison
+      return String(aVal).localeCompare(String(bVal));
+    };
+
+    filtered.sort((a, b) => {
+      const res = compare(a, b);
+      return sortDirection === "asc" ? res : -res;
+    });
+
+    return filtered;
+  }, [exchangeRates, searchTerm, sortField, sortDirection]);
+
+  const handleSort = (
+    field:
+      | "fromCurrency"
+      | "toCurrency"
+      | "rate"
+      | "status"
+      | "createdAt"
+      | "createdBy"
+  ) => {
+    if (sortField === field) {
+      setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+    } else {
+      setSortField(field);
+      setSortDirection("asc");
+    }
   };
 
   return (
@@ -99,24 +227,72 @@ export default function ExchangeRatesManager({
             <p className="text-sm text-gray-500">Base currency: USD</p>
           </div>
 
+          {/* Search bar */}
+          <div className="bg-white border border-gray-200 rounded-xl p-4">
+            <div className="flex items-center max-w-md">
+              <div className="relative w-full">
+                <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                <Input
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search exchange rates..."
+                  className="pl-9"
+                />
+              </div>
+            </div>
+          </div>
+
           <div className="bg-white shadow-sm border border-gray-200 rounded-xl overflow-x-auto">
             <Table>
               <TableHeader className="bg-gray-50">
                 <TableRow>
-                  <TableHead className="text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                    From
+                  <TableHead
+                    onClick={() => handleSort("fromCurrency")}
+                    className="text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer"
+                  >
+                    From{" "}
+                    {sortField === "fromCurrency" &&
+                      (sortDirection === "asc" ? "↑" : "↓")}
                   </TableHead>
-                  <TableHead className="text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                    To
+                  <TableHead
+                    onClick={() => handleSort("toCurrency")}
+                    className="text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer"
+                  >
+                    To{" "}
+                    {sortField === "toCurrency" &&
+                      (sortDirection === "asc" ? "↑" : "↓")}
                   </TableHead>
-                  <TableHead className="text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                    Rate
+                  <TableHead
+                    onClick={() => handleSort("rate")}
+                    className="text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer"
+                  >
+                    Rate{" "}
+                    {sortField === "rate" &&
+                      (sortDirection === "asc" ? "↑" : "↓")}
                   </TableHead>
-                  <TableHead className="text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                    Last Update
+                  <TableHead
+                    onClick={() => handleSort("status")}
+                    className="text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer"
+                  >
+                    Status{" "}
+                    {sortField === "status" &&
+                      (sortDirection === "asc" ? "↑" : "↓")}
                   </TableHead>
-                  <TableHead className="text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                    Updated by
+                  <TableHead
+                    onClick={() => handleSort("createdAt")}
+                    className="text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer"
+                  >
+                    Created At{" "}
+                    {sortField === "createdAt" &&
+                      (sortDirection === "asc" ? "↑" : "↓")}
+                  </TableHead>
+                  <TableHead
+                    onClick={() => handleSort("createdBy")}
+                    className="text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer"
+                  >
+                    Created by{" "}
+                    {sortField === "createdBy" &&
+                      (sortDirection === "asc" ? "↑" : "↓")}
                   </TableHead>
                   <TableHead className="text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap text-right">
                     Actions
@@ -124,7 +300,7 @@ export default function ExchangeRatesManager({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {exchangeRates.map((rate) => (
+                {visibleRates.map((rate) => (
                   <TableRow
                     key={rate.id}
                     className="hover:bg-orange-50 transition-colors"
@@ -133,9 +309,22 @@ export default function ExchangeRatesManager({
                     <TableCell>{rate.toCurrency}</TableCell>
                     <TableCell>${rate.rate.toFixed(2)}</TableCell>
                     <TableCell>
-                      {new Date(rate.date).toLocaleDateString()}
+                      <span
+                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                          rate.status === "active"
+                            ? "bg-green-100 text-green-800 border border-green-200"
+                            : "bg-gray-100 text-gray-700 border border-gray-200"
+                        }`}
+                      >
+                        {rate.status === "active" ? "Active" : "Inactive"}
+                      </span>
                     </TableCell>
-                    <TableCell>{rate.updatedBy}</TableCell>
+                    <TableCell>
+                      {rate.createdAt
+                        ? new Date(rate.createdAt).toLocaleString()
+                        : new Date(rate.date).toLocaleString()}
+                    </TableCell>
+                    <TableCell>{rate.createdBy || rate.updatedBy}</TableCell>
                     <TableCell className="text-right">
                       <Button
                         variant="ghost"

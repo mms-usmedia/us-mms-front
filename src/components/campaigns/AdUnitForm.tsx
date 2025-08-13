@@ -1177,15 +1177,35 @@ const AdUnitForm: React.FC<AdUnitFormProps> = ({
                         <span className="text-gray-500 font-medium mr-2">
                           $
                         </span>
-                        <div className="flex-1 block border-2 border-gray-200 rounded-md p-2 bg-gray-100 text-gray-700 font-medium">
-                          {formData.publisherOpenRate
-                            ? formatNumber(formData.publisherOpenRate, 2)
-                            : "0.00"}
-                        </div>
+                        <input
+                          type="text"
+                          className="mt-1 block w-full border-2 border-gray-200 focus:border-gray-400 rounded-md p-2 text-gray-900 focus:ring-0 transition-colors font-bold"
+                          value={
+                            formData.publisherOpenRate
+                              ? formatNumberInput(
+                                  formData.publisherOpenRate.toString()
+                                )
+                              : ""
+                          }
+                          onChange={(e) => {
+                            // Permitir números y un punto decimal
+                            const cleanValue = e.target.value
+                              .replace(/[^^\d.]/g, "")
+                              .replace(/[^\d.]/g, "");
+                            // Asegurar que solo haya un punto decimal
+                            const parts = cleanValue.split(".");
+                            const formattedValue =
+                              parts.length > 2
+                                ? parts[0] + "." + parts.slice(1).join("")
+                                : cleanValue;
+                            handleChange(
+                              "publisherOpenRate",
+                              formattedValue ? Number(formattedValue) : 0
+                            );
+                          }}
+                          placeholder="0.00"
+                        />
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Automatically calculated from the system
-                      </p>
                     </div>
 
                     <div className="relative pt-5 pb-3">

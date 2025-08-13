@@ -35,6 +35,8 @@ const StatusBadgeLarge = ({ status }: { status: string }) => {
     switch (status) {
       case "Pending":
         return "bg-amber-50 text-amber-700 border-amber-200 shadow-amber-100";
+      case "Pending Organization Approval":
+        return "bg-yellow-50 text-yellow-700 border-yellow-200 shadow-yellow-100";
       case "Negotiating":
         return "bg-blue-50 text-blue-700 border-blue-200 shadow-blue-100";
       case "Won":
@@ -62,6 +64,21 @@ const StatusBadgeLarge = ({ status }: { status: string }) => {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "Pending":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 mr-2"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+              clipRule="evenodd"
+            />
+          </svg>
+        );
+      case "Pending Organization Approval":
         return (
           <svg
             xmlns="http://www.w3.org/2000/svg"

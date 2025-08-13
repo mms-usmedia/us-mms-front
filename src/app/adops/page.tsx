@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import AdOpsTable from "@/components/adops/AdOpsTable";
-import { mockAdOpsData } from "@/components/adops/mockData";
+import { mockAdOpsData, AdOpsItem } from "@/components/adops/mockData";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import { useSidebar } from "@/contexts/SidebarContext";
@@ -26,6 +26,8 @@ export default function AdOpsPage() {
   const [activeTab, setActiveTab] = useState<
     "dashboard" | "trafficker" | "traffic"
   >("traffic");
+  const [isEditing, setIsEditing] = useState(false);
+  const [tableData, setTableData] = useState<AdOpsItem[]>(mockAdOpsData);
 
   // Filter states
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
@@ -51,7 +53,7 @@ export default function AdOpsPage() {
   // Calculate stats from data
   useEffect(() => {
     // Calculate total investment
-    const investment = mockAdOpsData.reduce(
+    const investment = tableData.reduce(
       (total, item) => total + item.totalInvestmentUsd,
       0
     );
@@ -59,27 +61,23 @@ export default function AdOpsPage() {
 
     // Calculate average delivery percentage
     const avgDelivery =
-      mockAdOpsData.reduce(
-        (total, item) => total + item.deliveryPercentage,
-        0
-      ) / mockAdOpsData.length;
+      tableData.reduce((total, item) => total + item.deliveryPercentage, 0) /
+      (tableData.length || 1);
     setAverageDeliveryPercentage(avgDelivery);
 
     // Count active campaigns
-    const active = mockAdOpsData.filter(
-      (item) => item.status === "Active"
-    ).length;
+    const active = tableData.filter((item) => item.status === "Active").length;
     setActiveCampaigns(active);
 
     // Calculate average CTR
     const avgCtr =
-      mockAdOpsData.reduce((total, item) => total + item.ctr, 0) /
-      mockAdOpsData.length;
+      tableData.reduce((total, item) => total + item.ctr, 0) /
+      (tableData.length || 1);
     setClickThroughRate(avgCtr);
-  }, []);
+  }, [tableData]);
 
   // Filter data based on all filters
-  const filteredData = mockAdOpsData.filter((item) => {
+  const filteredData = tableData.filter((item) => {
     // Search term filter
     const matchesSearch =
       searchTerm === "" ||
@@ -174,8 +172,15 @@ export default function AdOpsPage() {
 
   // Market options
   const marketOptions = Array.from(
-    new Set(mockAdOpsData.map((item) => item.market))
+    new Set(tableData.map((item) => item.market))
   ).sort();
+
+  // Update a single row from the table
+  const handleUpdateItem = (updated: AdOpsItem) => {
+    setTableData((prev) =>
+      prev.map((row) => (row.id === updated.id ? { ...row, ...updated } : row))
+    );
+  };
 
   // Format currency
   const formatCurrency = (amount: number) => {
@@ -339,6 +344,25 @@ export default function AdOpsPage() {
                           </span>
                         )}
                       </button>
+                      <button
+                        className={`flex items-center px-3 py-2.5 rounded-lg shadow-sm border ${
+                          isEditing
+                            ? "bg-orange-600 text-white border-orange-600"
+                            : "bg-white text-orange-600 border-gray-200 hover:bg-gray-50"
+                        }`}
+                        onClick={() => setIsEditing(!isEditing)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5 mr-1"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path d="M17.414 2.586a2 2 0 010 2.828l-8.95 8.95a2 2 0 01-.878.507l-3.358.84a.5.5 0 01-.606-.606l.84-3.358a2 2 0 01.507-.878l8.95-8.95a2 2 0 012.828 0z" />
+                          <path d="M5 13l2 2M11 5l4 4" />
+                        </svg>
+                        {isEditing ? "Done" : "Edit"}
+                      </button>
                       {hasActiveFilters && (
                         <button
                           className="flex items-center px-3 py-2.5 rounded-lg border border-gray-200 shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
@@ -445,7 +469,11 @@ export default function AdOpsPage() {
 
                 {/* Table */}
                 <div className="mt-6">
-                  <AdOpsTable data={filteredData} />
+                  <AdOpsTable
+                    data={filteredData}
+                    isEditing={isEditing}
+                    onUpdateItem={handleUpdateItem}
+                  />
                 </div>
               </>
             ) : activeTab === "trafficker" ? (

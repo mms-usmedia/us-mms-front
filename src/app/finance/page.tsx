@@ -109,10 +109,10 @@ export default function FinancePage() {
             <div className="flex justify-between items-center">
               <div>
                 <h1 className="text-3xl font-bold text-gray-900">
-                  Revenue Report
+                Invoice Recognition
                 </h1>
                 <p className="text-gray-500">
-                  Comprehensive revenue report with detailed financial metrics
+                  Comprehensive report with detailed financial metrics
                   across all divisions
                 </p>
               </div>

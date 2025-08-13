@@ -17,6 +17,7 @@ export interface Campaign {
   endDate: string;
   status:
     | "Pending"
+    | "Pending Organization Approval"
     | "Negotiating"
     | "Won"
     | "Approved"
@@ -30,6 +31,8 @@ export interface Campaign {
   budget: number;
   grossMargin: number;
   // Campos comunes para el detalle
+  currency?: string;
+  exchangeRate?: number;
   salesperson?: string;
   trafficker?: string;
   customer?: string;
@@ -237,6 +240,7 @@ export const modelOptions = ["CPM", "CPC", "CPA", "CPV", "Flat Fee"];
 // Constantes para los estados posibles
 export const statusOptions = [
   "Pending",
+  "Pending Organization Approval",
   "Negotiating",
   "Won",
   "Approved",

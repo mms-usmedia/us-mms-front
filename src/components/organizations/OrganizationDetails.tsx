@@ -110,13 +110,7 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
   };
 
   // Organization types for selector
-  const organizationTypes = [
-    "Agency",
-    "Advertiser",
-    "Publisher",
-    "Holding Agency",
-    "Holding Advertiser",
-  ];
+  const organizationTypes = ["Publisher"];
 
   // Countries for selector
   const countries = [
@@ -267,33 +261,12 @@ const OrganizationDetails: React.FC<OrganizationDetailsProps> = ({
               <div>
                 <p className="text-sm font-medium text-gray-700">Type</p>
                 {isEditing ? (
-                  <div className="relative">
-                    <select
-                      value={editedOrganization.type}
-                      onChange={(e) => handleChange("type", e.target.value)}
-                      className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
-                    >
-                      {organizationTypes.map((type) => (
-                        <option key={type} value={type}>
-                          {type}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none mt-1">
-                      <svg
-                        className="h-5 w-5 text-orange-500"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                  </div>
+                  <input
+                    type="text"
+                    disabled
+                    value={editedOrganization.type}
+                    className="mt-1 text-sm w-full border-2 border-orange-100 rounded p-2 bg-gray-50 text-gray-500"
+                  />
                 ) : (
                   <p className="mt-1 text-sm text-gray-900">
                     <span

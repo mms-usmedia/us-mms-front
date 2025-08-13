@@ -354,6 +354,75 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
             </h2>
             <div className="grid grid-cols-2 gap-4">
               <div>
+                <p className="text-sm font-medium text-gray-700">Currency</p>
+                {isEditing ? (
+                  <div className="relative">
+                    <select
+                      className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
+                      value={editedCampaign.currency || "USD"}
+                      onChange={(e) => handleChange("currency", e.target.value)}
+                    >
+                      {[
+                        "USD",
+                        "MXN",
+                        "BRL",
+                        "ARS",
+                        "CLP",
+                        "COP",
+                        "PEN",
+                        "EUR",
+                        "GBP",
+                      ].map((c) => (
+                        <option key={c} value={c}>
+                          {c}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none mt-1">
+                      <svg
+                        className="h-5 w-5 text-orange-500"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="mt-1 text-sm text-gray-900 font-medium">
+                    {campaign.currency || "USD"}
+                  </p>
+                )}
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-700">
+                  Exchange Rate
+                </p>
+                {isEditing ? (
+                  <input
+                    type="number"
+                    step="0.0001"
+                    className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                    value={editedCampaign.exchangeRate ?? 1}
+                    onChange={(e) =>
+                      handleChange("exchangeRate", Number(e.target.value))
+                    }
+                    placeholder="1.00"
+                  />
+                ) : (
+                  <p className="mt-1 text-sm text-gray-900 font-medium">
+                    {typeof campaign.exchangeRate === "number"
+                      ? campaign.exchangeRate
+                      : 1}
+                  </p>
+                )}
+              </div>
+              <div>
                 <p className="text-sm font-medium text-gray-700">
                   Organization Customer Type
                 </p>
@@ -787,6 +856,75 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                   )}{" "}
                   days
                 </p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-700">Currency</p>
+                {isEditing ? (
+                  <div className="relative">
+                    <select
+                      className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 pr-8 appearance-none cursor-pointer transition-colors focus:ring-0"
+                      value={editedCampaign.currency || "USD"}
+                      onChange={(e) => handleChange("currency", e.target.value)}
+                    >
+                      {[
+                        "USD",
+                        "MXN",
+                        "BRL",
+                        "ARS",
+                        "CLP",
+                        "COP",
+                        "PEN",
+                        "EUR",
+                        "GBP",
+                      ].map((c) => (
+                        <option key={c} value={c}>
+                          {c}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none mt-1">
+                      <svg
+                        className="h-5 w-5 text-orange-500"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="mt-1 text-base text-gray-900 font-semibold">
+                    {campaign.currency || "USD"}
+                  </p>
+                )}
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-700">
+                  Exchange Rate
+                </p>
+                {isEditing ? (
+                  <input
+                    type="number"
+                    step="0.0001"
+                    className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
+                    value={editedCampaign.exchangeRate ?? 1}
+                    onChange={(e) =>
+                      handleChange("exchangeRate", Number(e.target.value))
+                    }
+                    placeholder="1.00"
+                  />
+                ) : (
+                  <p className="mt-1 text-base text-gray-900 font-semibold">
+                    {typeof campaign.exchangeRate === "number"
+                      ? campaign.exchangeRate
+                      : 1}
+                  </p>
+                )}
               </div>
             </div>
           </div>
