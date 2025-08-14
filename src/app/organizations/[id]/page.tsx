@@ -7,6 +7,7 @@ import { useSidebar } from "@/contexts/SidebarContext";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import StatusBadge from "@/components/ui/StatusBadge";
+import RequestMoreInfoModal from "@/components/hur/RequestMoreInfoModal";
 import Link from "next/link";
 
 // Import components
@@ -769,6 +770,8 @@ export default function OrganizationDetailPage() {
   const [showAddContactForm, setShowAddContactForm] = useState(false);
   const [showAddRateForm, setShowAddRateForm] = useState(false);
   const [showAddIncentiveForm, setShowAddIncentiveForm] = useState(false);
+  const [isRequestInfoOpen, setIsRequestInfoOpen] = useState(false);
+  const [isOtherOptionsOpen, setIsOtherOptionsOpen] = useState(false);
 
   // Función global para agregar contacto, disponible para todos los componentes
   useEffect(() => {
@@ -908,6 +911,37 @@ export default function OrganizationDetailPage() {
         {/* Header */}
         <Header userName={user?.name || "User"} />
 
+        {/* Modals */}
+        <RequestMoreInfoModal
+          isOpen={isRequestInfoOpen}
+          onConfirm={(comments) => {
+            console.log("Request More Info sent:", comments);
+            setIsRequestInfoOpen(false);
+          }}
+          onCancel={() => setIsRequestInfoOpen(false)}
+          title="Request Additional Information"
+          description="Please specify what additional information is needed. This will not change the status of the organization."
+          confirmLabel="Send Request"
+          defaultComments={
+            organization?.missingInfo && organization.missingInfo.length > 0
+              ? `Hello, could you please provide the following missing information: \n- ${organization.missingInfo.join(
+                  "\n- "
+                )}\n\nThanks!`
+              : "Hello, could you please provide additional information?\n\nThanks!"
+          }
+        />
+        <RequestMoreInfoModal
+          isOpen={isOtherOptionsOpen}
+          onConfirm={(comments) => {
+            console.log("Other options submitted:", comments);
+            setIsOtherOptionsOpen(false);
+          }}
+          onCancel={() => setIsOtherOptionsOpen(false)}
+          title="Other options"
+          description="Provide any additional instructions or notes."
+          confirmLabel="Submit"
+        />
+
         {/* Main Container */}
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6">
           <div className="container mx-auto transition-all duration-300 ease-in-out">
@@ -927,7 +961,7 @@ export default function OrganizationDetailPage() {
                 </div>
               </div>
 
-              {/* Mostrar información de aprobación si el estado es Pending o Rejected */}
+              {/* Show approval info if status is Pending or Rejected */}
               {(organization.status === "Pending" ||
                 organization.status === "Rejected") && (
                 <div
@@ -939,13 +973,13 @@ export default function OrganizationDetailPage() {
                 >
                   <h2 className="text-lg font-semibold mb-2">
                     {organization.status === "Pending"
-                      ? "Información de aprobación pendiente"
-                      : "Organización rechazada"}
+                      ? "Pending approval information"
+                      : "Organization rejected"}
                   </h2>
 
                   {organization.submittedDate && (
                     <div className="mb-3 text-sm">
-                      <span className="font-medium">Fecha de envío:</span>{" "}
+                      <span className="font-medium">Submitted date:</span>{" "}
                       {new Date(
                         organization.submittedDate
                       ).toLocaleDateString()}
@@ -956,7 +990,7 @@ export default function OrganizationDetailPage() {
                     organization.missingInfo.length > 0 && (
                       <div className="mb-3">
                         <h3 className="text-sm font-medium mb-1">
-                          Información faltante:
+                          Missing information:
                         </h3>
                         <ul className="list-disc list-inside text-sm">
                           {organization.missingInfo.map((item, index) => (
@@ -970,7 +1004,7 @@ export default function OrganizationDetailPage() {
                     organization.rejectionReason && (
                       <div>
                         <h3 className="text-sm font-medium mb-1">
-                          Motivo de rechazo:
+                          Rejection reason:
                         </h3>
                         <p className="text-sm">
                           {organization.rejectionReason}
@@ -979,12 +1013,9 @@ export default function OrganizationDetailPage() {
                     )}
 
                   {organization.status === "Pending" && (
-                    <div className="mt-4 flex space-x-3">
+                    <div className="mt-4 flex flex-wrap gap-3 items-center">
                       <button
                         onClick={() => {
-                          // Aquí iría la lógica para aprobar la organización
-                          alert("Organización aprobada");
-                          // En una aplicación real, esto actualizaría el estado en la base de datos
                           setOrganization({
                             ...organization,
                             status: "Active",
@@ -992,26 +1023,19 @@ export default function OrganizationDetailPage() {
                         }}
                         className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm font-medium"
                       >
-                        Aprobar
+                        Approve
                       </button>
                       <button
-                        onClick={() => {
-                          // Aquí iría la lógica para rechazar la organización
-                          const reason = prompt(
-                            "Ingrese el motivo del rechazo:"
-                          );
-                          if (reason) {
-                            // En una aplicación real, esto actualizaría el estado en la base de datos
-                            setOrganization({
-                              ...organization,
-                              status: "Rejected",
-                              rejectionReason: reason,
-                            });
-                          }
-                        }}
-                        className="px-4 py-2 bg-white hover:bg-gray-50 text-red-600 border border-red-600 rounded-md text-sm font-medium"
+                        onClick={() => setIsRequestInfoOpen(true)}
+                        className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-md text-sm font-medium"
                       >
-                        Rechazar
+                        Request More Info
+                      </button>
+                      <button
+                        onClick={() => setIsOtherOptionsOpen(true)}
+                        className="px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-md text-sm font-medium"
+                      >
+                        Other options
                       </button>
                     </div>
                   )}

@@ -29,6 +29,7 @@ export default function FinancePage() {
   );
   const [filteredData, setFilteredData] = useState(mockRevenueData);
   const [currentPeriod, setCurrentPeriod] = useState("April 2025");
+  const [modifiedAdUnits, setModifiedAdUnits] = useState(false);
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -73,12 +74,18 @@ export default function FinancePage() {
       );
     }
 
+    // Filter by modified ad units (placeholder — no field in mock data yet)
+    if (modifiedAdUnits) {
+      filtered = filtered.filter(() => true);
+    }
+
     setFilteredData(filtered);
   }, [
     searchTerm,
     selectedDivisions,
     selectedServiceTypes,
     selectedPurchaseTypes,
+    modifiedAdUnits,
   ]);
 
   // Render loading state
@@ -109,18 +116,18 @@ export default function FinancePage() {
             <div className="flex justify-between items-center">
               <div>
                 <h1 className="text-3xl font-bold text-gray-900">
-                Invoice Recognition
+                  Revenue Recognition
                 </h1>
                 <p className="text-gray-500">
-                  Comprehensive report with detailed financial metrics
-                  across all divisions
+                  Comprehensive report with detailed financial metrics across
+                  all divisions
                 </p>
               </div>
               <div className="flex items-center gap-2">
                 <Link href="/finance/approvals">
                   <Button variant="outline" className="flex items-center gap-2">
                     <CheckCircle className="h-4 w-4" />
-                    <span>Organization Approvals</span>
+                    <span>Organization Credit Analysis</span>
                     <span className="inline-flex items-center justify-center w-5 h-5 ml-1 text-xs font-semibold text-white bg-orange-500 rounded-full">
                       3
                     </span>
@@ -176,6 +183,8 @@ export default function FinancePage() {
                 setCurrentPeriod(period);
                 console.log("Period changed:", period);
               }}
+              modifiedAdUnits={modifiedAdUnits}
+              onModifiedAdUnitsChange={setModifiedAdUnits}
             />
 
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">

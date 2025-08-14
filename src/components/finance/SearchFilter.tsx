@@ -36,6 +36,8 @@ interface SearchFilterProps {
   onPurchaseTypesChange: (value: string[]) => void;
   data: RevenueData[];
   onPeriodChange: (period: string) => void;
+  modifiedAdUnits: boolean;
+  onModifiedAdUnitsChange: (value: boolean) => void;
 }
 
 const SearchFilter: React.FC<SearchFilterProps> = ({
@@ -49,6 +51,8 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   onPurchaseTypesChange,
   data,
   onPeriodChange,
+  modifiedAdUnits,
+  onModifiedAdUnitsChange,
 }) => {
   const [showFilters, setShowFilters] = useState<boolean>(false);
   const [selectedAccount, setSelectedAccount] = useState<string>("");
@@ -148,6 +152,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     setSelectedAccount("");
     setSelectedAdvertiser("");
     setSelectedPublisher("");
+    onModifiedAdUnitsChange(false);
   };
 
   // Check if there are any active filters
@@ -158,7 +163,8 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     selectedPurchaseTypes.length > 0 ||
     selectedAccount ||
     selectedAdvertiser ||
-    selectedPublisher;
+    selectedPublisher ||
+    modifiedAdUnits;
 
   // Get color for division badge
   const getDivisionColor = (division: string) => {
@@ -253,7 +259,8 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
                   (selectedPurchaseTypes.length > 0 ? 1 : 0) +
                   (selectedAccount ? 1 : 0) +
                   (selectedAdvertiser ? 1 : 0) +
-                  (selectedPublisher ? 1 : 0)}
+                  (selectedPublisher ? 1 : 0) +
+                  (modifiedAdUnits ? 1 : 0)}
               </span>
             )}
           </button>
@@ -383,6 +390,33 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
                         )}
                       </div>
                     ))}
+                  </div>
+                </div>
+
+                {/* Flags */}
+                <div>
+                  <label
+                    htmlFor="modified-ad-units"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Flags
+                  </label>
+                  <div className="flex items-center">
+                    <input
+                      id="modified-ad-units"
+                      type="checkbox"
+                      checked={modifiedAdUnits}
+                      onChange={(e) =>
+                        onModifiedAdUnitsChange(e.target.checked)
+                      }
+                      className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
+                    />
+                    <label
+                      htmlFor="modified-ad-units"
+                      className="ml-2 text-sm text-gray-700"
+                    >
+                      Modified Ad Units
+                    </label>
                   </div>
                 </div>
               </div>

@@ -1,17 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface RequestMoreInfoModalProps {
   isOpen: boolean;
   onConfirm: (comments: string) => void;
   onCancel: () => void;
+  title?: string;
+  description?: string;
+  confirmLabel?: string;
+  defaultComments?: string;
 }
 
 const RequestMoreInfoModal: React.FC<RequestMoreInfoModalProps> = ({
   isOpen,
   onConfirm,
   onCancel,
+  title = "Request Additional Information",
+  description = "Please specify what additional information is needed. This will not change the status of the request.",
+  confirmLabel = "Send Request",
+  defaultComments = "",
 }) => {
   const [comments, setComments] = useState("");
+
+  useEffect(() => {
+    if (isOpen) {
+      setComments(defaultComments || "");
+    }
+  }, [isOpen, defaultComments]);
 
   if (!isOpen) return null;
 
@@ -46,15 +60,12 @@ const RequestMoreInfoModal: React.FC<RequestMoreInfoModalProps> = ({
                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               ></path>
             </svg>
-            Request Additional Information
+            {title}
           </h3>
         </div>
 
         <div className="p-5">
-          <p className="mb-4 text-sm text-gray-600">
-            Please specify what additional information is needed. This will not
-            change the status of the HUR request.
-          </p>
+          <p className="mb-4 text-sm text-gray-600">{description}</p>
           <div className="mb-4">
             <textarea
               className="w-full px-3 py-2 text-gray-700 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-600 transition-all"
@@ -82,7 +93,7 @@ const RequestMoreInfoModal: React.FC<RequestMoreInfoModalProps> = ({
                   : "bg-orange-300 text-white cursor-not-allowed"
               }`}
             >
-              Send Request
+              {confirmLabel}
             </button>
           </div>
         </div>

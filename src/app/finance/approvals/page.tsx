@@ -178,7 +178,7 @@ export default function FinanceApprovalsPage() {
                 Back to Finance
               </Link>
               <h1 className="text-3xl font-bold text-gray-900">
-                Organization Approvals
+                Organization Credit Analysis
               </h1>
               <p className="text-gray-500">
                 Review and approve new organizations before they can be used in
