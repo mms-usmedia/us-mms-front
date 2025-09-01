@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useMemo, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import Sidebar from "@/components/layout/Sidebar";
@@ -8,9 +8,28 @@ import Header from "@/components/layout/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { mockCampaigns } from "@/components/campaigns/mockData";
-import { Campaign, AdUnit } from "@/components/campaigns/types";
+import {
+  Campaign,
+  AdUnit,
+  samplePublishers,
+} from "@/components/campaigns/types";
 
 // Componente interno que usa useSearchParams
 function HURRequestContent() {
@@ -29,6 +48,96 @@ function HURRequestContent() {
   );
   const [justification, setJustification] = useState("");
 
+  // Tipo de modificación seleccionado
+  const [modificationType, setModificationType] = useState<
+    | "adUnitAmounts"
+    | "cio"
+    | "customerBillingOffice"
+    | "billingPartyPublisher"
+    | "exchangeRate"
+    | "campaignDates"
+    | "avbLocalTaxes"
+  >("adUnitAmounts");
+
+  // Estados para cada tipo de modificación
+  const [cioFile, setCioFile] = useState<File | null>(null);
+  const [editedCustomer, setEditedCustomer] = useState<string>("");
+  const [editedBillingOffice, setEditedBillingOffice] = useState<string>("");
+  const [editedBillingParty, setEditedBillingParty] = useState<string>("");
+  const [newPublisherForSelected, setNewPublisherForSelected] =
+    useState<string>("");
+  const [editedExchangeRate, setEditedExchangeRate] = useState<number | "">("");
+  const [editedStartDate, setEditedStartDate] = useState<string>("");
+  const [editedEndDate, setEditedEndDate] = useState<string>("");
+  const [adUnitAVB, setAdUnitAVB] = useState<{ [key: string]: number }>({});
+  const [adUnitLocalTaxes, setAdUnitLocalTaxes] = useState<{
+    [key: string]: number;
+  }>({});
+
+  // Derived options for dropdowns
+  const customerOptions = useMemo(() => {
+    const setVals = new Set<string>();
+    mockCampaigns.forEach((c) => {
+      if (c.customer) setVals.add(c.customer);
+    });
+    return Array.from(setVals);
+  }, []);
+
+  const billingOfficeOptions = useMemo(() => {
+    const setVals = new Set<string>();
+    mockCampaigns.forEach((c) => {
+      if (c.billingOffice) setVals.add(c.billingOffice);
+    });
+    return Array.from(setVals);
+  }, []);
+
+  const billingPartyOptions = useMemo(() => {
+    const setVals = new Set<string>();
+    mockCampaigns.forEach((c) => {
+      if (c.billingParty) setVals.add(c.billingParty);
+    });
+    return Array.from(setVals);
+  }, []);
+
+  // Customer combobox state
+  const [customerSearchTerm, setCustomerSearchTerm] = useState("");
+  const [customerMenuOpen, setCustomerMenuOpen] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [isDragActive, setIsDragActive] = useState(false);
+
+  const handleOpenFileDialog = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      setCioFile(e.dataTransfer.files[0]);
+      e.dataTransfer.clearData();
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragActive(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragActive(false);
+  };
+
+  // Resetear búsqueda de customer cuando se cierra el menú
+  useEffect(() => {
+    if (!customerMenuOpen) {
+      setCustomerSearchTerm("");
+    }
+  }, [customerMenuOpen]);
+
   // Load campaign data when component mounts
   useEffect(() => {
     if (campaignId) {
@@ -39,11 +148,27 @@ function HURRequestContent() {
         // Inicializar los precios actuales de las ad units
         if (campaign.adUnits) {
           const initialPrices: { [key: string]: number } = {};
+          const initialAVB: { [key: string]: number } = {};
+          const initialLocalTaxes: { [key: string]: number } = {};
           campaign.adUnits.forEach((unit) => {
             initialPrices[unit.id] = unit.customerInvestment;
+            initialAVB[unit.id] = unit.agencyCommission || 0;
+            initialLocalTaxes[unit.id] = unit.localTaxes || 0;
           });
           setAdUnitPrices(initialPrices);
+          setAdUnitAVB(initialAVB);
+          setAdUnitLocalTaxes(initialLocalTaxes);
         }
+
+        // Inicializar campos campaña
+        setEditedCustomer(campaign.customer || "");
+        setEditedBillingOffice(campaign.billingOffice || "");
+        setEditedBillingParty(campaign.billingParty || "");
+        setEditedExchangeRate(
+          typeof campaign.exchangeRate === "number" ? campaign.exchangeRate : ""
+        );
+        setEditedStartDate(campaign.startDate || "");
+        setEditedEndDate(campaign.endDate || "");
       } else {
         // Si no se encuentra la campaña, redirigir a la lista de campañas
         router.push("/campaigns");
@@ -111,19 +236,61 @@ function HURRequestContent() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Preparar los datos de líneas seleccionadas
+    // Construir payload según tipo de modificación
     const selectedLines =
       selectedCampaign?.adUnits
         ?.filter((unit) => selectedAdUnits.includes(unit.id))
         .map((unit) => unit.line) || [];
 
-    // Preparar los datos de publishers IO numbers
-    const publisherIOs = new Set<string>();
-    selectedCampaign?.adUnits
-      ?.filter((unit) => selectedAdUnits.includes(unit.id))
-      .forEach((unit) => {
-        publisherIOs.add(unit.publisher);
-      });
+    const payload: any = {
+      campaignId,
+      modificationType,
+      justification,
+    };
+
+    if (modificationType === "adUnitAmounts") {
+      payload.adUnits =
+        selectedCampaign?.adUnits
+          ?.filter((u) => selectedAdUnits.includes(u.id))
+          .map((u) => ({ id: u.id, newAmount: adUnitPrices[u.id] })) || [];
+    }
+
+    if (modificationType === "avbLocalTaxes") {
+      payload.adUnits =
+        selectedCampaign?.adUnits
+          ?.filter((u) => selectedAdUnits.includes(u.id))
+          .map((u) => ({
+            id: u.id,
+            agencyCommission: adUnitAVB[u.id] ?? u.agencyCommission ?? 0,
+            localTaxes: adUnitLocalTaxes[u.id] ?? u.localTaxes ?? 0,
+          })) || [];
+    }
+
+    if (modificationType === "billingPartyPublisher") {
+      payload.billingParty = editedBillingParty;
+      payload.applyPublisherToAdUnits = selectedAdUnits;
+      payload.newPublisher = newPublisherForSelected || undefined;
+    }
+
+    if (modificationType === "customerBillingOffice") {
+      payload.customer = editedCustomer;
+      payload.billingOffice = editedBillingOffice;
+    }
+
+    if (modificationType === "exchangeRate") {
+      payload.exchangeRate = editedExchangeRate;
+    }
+
+    if (modificationType === "campaignDates") {
+      payload.startDate = editedStartDate;
+      payload.endDate = editedEndDate;
+    }
+
+    if (modificationType === "cio") {
+      payload.cioFile = cioFile
+        ? { name: cioFile.name, size: cioFile.size }
+        : null;
+    }
 
     // En una aplicación real, esto haría una llamada a la API para crear la solicitud HUR
     // Por ahora, simularemos una presentación exitosa
@@ -207,6 +374,63 @@ function HURRequestContent() {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Left column - Campaign Information */}
                 <div className="lg:col-span-2 space-y-6">
+                  {/* Selector de tipo de modificación */}
+                  <Card className="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100">
+                    <div className="bg-orange-50 border-b border-orange-100 px-4 py-3">
+                      <h2 className="text-base font-medium text-orange-600 flex items-center">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5 mr-2 text-orange-500"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path d="M10 3a1 1 0 01.894.553l.447.894.988.144a1 1 0 01.555 1.705l-.715.697.169.983a1 1 0 01-1.451 1.054L10 8.347l-.887.467a1 1 0 01-1.451-1.054l.169-.983-.715-.697a1 1 0 01.555-1.705l.988-.144.447-.894A1 1 0 0110 3z" />
+                        </svg>
+                        What do you want to modify?
+                      </h2>
+                    </div>
+                    <CardContent className="p-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Modification type
+                          </label>
+                          <Select
+                            value={modificationType}
+                            onValueChange={(v) =>
+                              setModificationType(v as typeof modificationType)
+                            }
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select an option" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="adUnitAmounts">
+                                Ad Units Amounts
+                              </SelectItem>
+                              <SelectItem value="avbLocalTaxes">
+                                % AVB and Local Taxes
+                              </SelectItem>
+                              <SelectItem value="billingPartyPublisher">
+                                Billing Party and Publisher
+                              </SelectItem>
+                              <SelectItem value="customerBillingOffice">
+                                Customer and Billing Office
+                              </SelectItem>
+                              <SelectItem value="exchangeRate">
+                                Exchange Rate
+                              </SelectItem>
+                              <SelectItem value="campaignDates">
+                                Campaign Dates
+                              </SelectItem>
+                              <SelectItem value="cio">Attach CIO</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
                   <Card className="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100">
                     <div className="bg-orange-50 border-b border-orange-100 px-4 py-3">
                       <h2 className="text-base font-medium text-orange-600 flex items-center">
@@ -263,44 +487,670 @@ function HURRequestContent() {
                     </CardContent>
                   </Card>
 
-                  {/* HUR Justification */}
-                  <Card className="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100">
-                    <div className="bg-orange-50 border-b border-orange-100 px-4 py-3">
-                      <h2 className="text-base font-medium text-orange-600 flex items-center">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 mr-2 text-orange-500"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                        </svg>
-                        HUR Justification
-                      </h2>
-                    </div>
-                    <CardContent className="p-6">
-                      <div>
-                        <label
-                          htmlFor="justification"
-                          className="block text-sm font-medium text-gray-700 mb-1"
-                        >
-                          Justification *
-                        </label>
-                        <textarea
-                          id="justification"
-                          rows={4}
-                          value={justification}
-                          onChange={(e) => setJustification(e.target.value)}
-                          placeholder="Explain clearly what, why and what for you are requesting this HUR (change)."
-                          className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500"
-                          required
-                        />
+                  {/* Secciones condicionales según tipo de modificación */}
+                  {modificationType === "cio" && (
+                    <Card className="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100">
+                      <div className="bg-orange-50 border-b border-orange-100 px-4 py-3">
+                        <h2 className="text-base font-medium text-orange-600 flex items-center">
+                          Attach new CIO
+                        </h2>
                       </div>
-                    </CardContent>
-                  </Card>
+                      <CardContent className="p-6">
+                        <div
+                          onDrop={handleDrop}
+                          onDragOver={handleDragOver}
+                          onDragLeave={handleDragLeave}
+                          onClick={handleOpenFileDialog}
+                          className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
+                            isDragActive
+                              ? "border-orange-500 bg-orange-50"
+                              : "border-gray-300 bg-gray-50 hover:bg-gray-100"
+                          }`}
+                        >
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            onChange={(e) =>
+                              setCioFile(e.target.files?.[0] || null)
+                            }
+                            className="hidden"
+                          />
+                          <div className="flex flex-col items-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
+                              className="w-10 h-10 text-orange-500 mb-3"
+                            >
+                              <path d="M12 16l4-5h-3V4h-2v7H8l4 5z" />
+                              <path d="M20 18H4v-2H2v2a2 2 0 002 2h16a2 2 0 002-2v-2h-2v2z" />
+                            </svg>
+                            <p className="text-sm text-gray-700 font-medium">
+                              Drag and drop to upload CIO
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              or click to browse files
+                            </p>
+                          </div>
+                        </div>
+                        {cioFile && (
+                          <p className="text-sm text-gray-600 mt-2">
+                            File: {cioFile.name} (
+                            {Math.round(cioFile.size / 1024)} KB)
+                          </p>
+                        )}
+                      </CardContent>
+                    </Card>
+                  )}
 
-                  {/* Ad Unit Selection */}
-                  {selectedCampaign.adUnits && (
+                  {modificationType === "customerBillingOffice" && (
+                    <Card className="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100">
+                      <div className="bg-orange-50 border-b border-orange-100 px-4 py-3">
+                        <h2 className="text-base font-medium text-orange-600 flex items-center">
+                          Customer and Billing Office
+                        </h2>
+                      </div>
+                      <CardContent className="p-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              Customer
+                            </label>
+                            <DropdownMenu
+                              open={customerMenuOpen}
+                              onOpenChange={setCustomerMenuOpen}
+                            >
+                              <DropdownMenuTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  className="w-full justify-between"
+                                >
+                                  {editedCustomer || "Select customer"}
+                                  <svg
+                                    className="w-4 h-4 ml-2"
+                                    viewBox="0 0 20 20"
+                                    fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      fillRule="evenodd"
+                                      d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                                      clipRule="evenodd"
+                                    />
+                                  </svg>
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent className="w-72 p-2">
+                                <div
+                                  className="p-2"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <Input
+                                    placeholder="Search customer..."
+                                    value={customerSearchTerm}
+                                    onChange={(e) =>
+                                      setCustomerSearchTerm(e.target.value)
+                                    }
+                                    onKeyDown={(e) => e.stopPropagation()}
+                                    autoFocus
+                                  />
+                                </div>
+                                <DropdownMenuSeparator />
+                                <div className="max-h-64 overflow-auto">
+                                  {customerOptions
+                                    .filter((c) =>
+                                      c
+                                        .toLowerCase()
+                                        .includes(
+                                          customerSearchTerm.toLowerCase()
+                                        )
+                                    )
+                                    .map((c) => (
+                                      <DropdownMenuItem
+                                        key={c}
+                                        onClick={() => {
+                                          setEditedCustomer(c);
+                                          setCustomerMenuOpen(false);
+                                        }}
+                                      >
+                                        {c}
+                                      </DropdownMenuItem>
+                                    ))}
+                                </div>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              Billing Office
+                            </label>
+                            <Select
+                              value={editedBillingOffice}
+                              onValueChange={(v) => setEditedBillingOffice(v)}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select billing office" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {billingOfficeOptions.map((opt) => (
+                                  <SelectItem key={opt} value={opt}>
+                                    {opt}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {modificationType === "billingPartyPublisher" && (
+                    <Card className="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100">
+                      <div className="bg-orange-50 border-b border-orange-100 px-4 py-3">
+                        <h2 className="text-base font-medium text-orange-600 flex items-center">
+                          Billing Party and Publisher
+                        </h2>
+                      </div>
+                      <CardContent className="p-6 space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              Billing Party (campaign)
+                            </label>
+                            <Select
+                              value={editedBillingParty}
+                              onValueChange={(v) => setEditedBillingParty(v)}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select billing party" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {billingPartyOptions.map((opt) => (
+                                  <SelectItem key={opt} value={opt}>
+                                    {opt}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              New Publisher (applies to selected Ad Units)
+                            </label>
+                            <Select
+                              value={newPublisherForSelected}
+                              onValueChange={(v) =>
+                                setNewPublisherForSelected(v)
+                              }
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select publisher" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {samplePublishers.map((p) => (
+                                  <SelectItem key={p.id} value={p.name}>
+                                    {p.name}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {modificationType === "exchangeRate" && (
+                    <Card className="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100">
+                      <div className="bg-orange-50 border-b border-orange-100 px-4 py-3">
+                        <h2 className="text-base font-medium text-orange-600 flex items-center">
+                          Exchange Rate
+                        </h2>
+                      </div>
+                      <CardContent className="p-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              Exchange Rate
+                            </label>
+                            <Input
+                              type="number"
+                              step="0.0001"
+                              value={editedExchangeRate}
+                              onChange={(e) =>
+                                setEditedExchangeRate(
+                                  e.target.value === ""
+                                    ? ""
+                                    : parseFloat(e.target.value)
+                                )
+                              }
+                            />
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {modificationType === "campaignDates" && (
+                    <Card className="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100">
+                      <div className="bg-orange-50 border-b border-orange-100 px-4 py-3">
+                        <h2 className="text-base font-medium text-orange-600 flex items-center">
+                          Campaign Dates
+                        </h2>
+                      </div>
+                      <CardContent className="p-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              Start Date
+                            </label>
+                            <Input
+                              type="date"
+                              value={editedStartDate}
+                              onChange={(e) =>
+                                setEditedStartDate(e.target.value)
+                              }
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              End Date
+                            </label>
+                            <Input
+                              type="date"
+                              value={editedEndDate}
+                              onChange={(e) => setEditedEndDate(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* HUR Justification (rendered here for non AdUnit modes) */}
+                  {modificationType !== "adUnitAmounts" &&
+                    modificationType !== "avbLocalTaxes" && (
+                      <Card className="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100">
+                        <div className="bg-orange-50 border-b border-orange-100 px-4 py-3">
+                          <h2 className="text-base font-medium text-orange-600 flex items-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 mr-2 text-orange-500"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                            </svg>
+                            HUR Justification
+                          </h2>
+                        </div>
+                        <CardContent className="p-6">
+                          <div>
+                            <label
+                              htmlFor="justification"
+                              className="block text-sm font-medium text-gray-700 mb-1"
+                            >
+                              Justification *
+                            </label>
+                            <textarea
+                              id="justification"
+                              rows={4}
+                              value={justification}
+                              onChange={(e) => setJustification(e.target.value)}
+                              placeholder="Explain clearly what, why and what for you are requesting this HUR (change)."
+                              className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500"
+                              required
+                            />
+                          </div>
+                        </CardContent>
+                      </Card>
+                    )}
+
+                  {/* Ad Unit Selection - Modo montos */}
+                  {selectedCampaign.adUnits &&
+                    modificationType === "adUnitAmounts" && (
+                      <Card className="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100">
+                        <div className="bg-orange-50 border-b border-orange-100 px-4 py-3">
+                          <h2 className="text-base font-medium text-orange-600 flex items-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 mr-2 text-orange-500"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z" />
+                            </svg>
+                            Select Ad Units to Modify
+                          </h2>
+                        </div>
+                        <CardContent className="p-6">
+                          <div className="mb-4 flex justify-between items-center">
+                            <Button
+                              type="button"
+                              onClick={handleSelectAllAdUnits}
+                              variant="outline"
+                              className="text-orange-600 border-orange-300 hover:bg-orange-50"
+                            >
+                              {selectedAdUnits.length ===
+                              selectedCampaign.adUnits.length
+                                ? "Deselect All Ad Units"
+                                : "Select All Ad Units"}
+                            </Button>
+                            <div className="text-sm text-gray-500">
+                              {selectedAdUnits.length} of{" "}
+                              {selectedCampaign.adUnits.length} ad units
+                              selected
+                            </div>
+                          </div>
+
+                          <div className="overflow-x-auto">
+                            <table className="min-w-full divide-y divide-gray-200">
+                              <thead className="bg-gray-50">
+                                <tr>
+                                  <th
+                                    scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                  >
+                                    Select
+                                  </th>
+                                  <th
+                                    scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                  >
+                                    Line
+                                  </th>
+                                  <th
+                                    scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                  >
+                                    Publisher
+                                  </th>
+                                  <th
+                                    scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                  >
+                                    Format
+                                  </th>
+                                  <th
+                                    scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                  >
+                                    Current Amount
+                                  </th>
+                                  <th
+                                    scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                  >
+                                    New Amount
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody className="bg-white divide-y divide-gray-200">
+                                {selectedCampaign.adUnits.map((adUnit) => (
+                                  <tr
+                                    key={adUnit.id}
+                                    onClick={(e) => {
+                                      // Solo activar el toggle si no se hizo clic en el input o en el checkbox
+                                      if (
+                                        e.target instanceof HTMLInputElement ||
+                                        e.target instanceof HTMLButtonElement
+                                      ) {
+                                        return;
+                                      }
+                                      handleAdUnitToggle(adUnit.id);
+                                    }}
+                                    className={`cursor-pointer hover:bg-gray-50 ${
+                                      selectedAdUnits.includes(adUnit.id)
+                                        ? "bg-orange-50"
+                                        : ""
+                                    }`}
+                                  >
+                                    <td
+                                      className="px-6 py-4 whitespace-nowrap"
+                                      onClick={(e) => e.stopPropagation()}
+                                    >
+                                      <input
+                                        type="checkbox"
+                                        checked={selectedAdUnits.includes(
+                                          adUnit.id
+                                        )}
+                                        onChange={() =>
+                                          handleAdUnitToggle(adUnit.id)
+                                        }
+                                        className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
+                                      />
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                      {adUnit.line}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                      {adUnit.publisher}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                      {adUnit.format} - {adUnit.size}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                      {formatCurrency(
+                                        adUnit.customerInvestment
+                                      )}
+                                    </td>
+                                    <td
+                                      className="px-6 py-4 whitespace-nowrap"
+                                      onClick={(e) => e.stopPropagation()}
+                                    >
+                                      <Input
+                                        type="number"
+                                        value={
+                                          adUnitPrices[adUnit.id] ||
+                                          adUnit.customerInvestment
+                                        }
+                                        onChange={(e) =>
+                                          handlePriceChange(
+                                            adUnit.id,
+                                            parseFloat(e.target.value)
+                                          )
+                                        }
+                                        disabled={
+                                          !selectedAdUnits.includes(adUnit.id)
+                                        }
+                                        className="w-32"
+                                      />
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+
+                          {/* Totals */}
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 pt-6 border-t border-gray-100">
+                            <div className="bg-gray-50 p-4 rounded-lg">
+                              <p className="text-sm font-medium text-gray-500 mb-1">
+                                Current Total Amount
+                              </p>
+                              <p className="text-lg font-semibold text-gray-900">
+                                {formatCurrency(totals.current)}
+                              </p>
+                            </div>
+                            <div className="bg-gray-50 p-4 rounded-lg">
+                              <p className="text-sm font-medium text-gray-500 mb-1">
+                                New Total Amount
+                              </p>
+                              <p className="text-lg font-semibold text-green-600">
+                                {formatCurrency(totals.new)}
+                              </p>
+                            </div>
+                            <div className="bg-gray-50 p-4 rounded-lg">
+                              <p className="text-sm font-medium text-gray-500 mb-1">
+                                Difference
+                              </p>
+                              <p
+                                className={`text-lg font-semibold ${
+                                  totals.new - totals.current > 0
+                                    ? "text-green-600"
+                                    : totals.new - totals.current < 0
+                                    ? "text-red-600"
+                                    : "text-gray-900"
+                                }`}
+                              >
+                                {formatCurrency(totals.new - totals.current)}
+                              </p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    )}
+
+                  {/* Ad Unit Selection - Modo AVB y Local Taxes */}
+                  {selectedCampaign.adUnits &&
+                    modificationType === "avbLocalTaxes" && (
+                      <Card className="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100">
+                        <div className="bg-orange-50 border-b border-orange-100 px-4 py-3">
+                          <h2 className="text-base font-medium text-orange-600 flex items-center">
+                            Select Ad Units and adjust % AVB and Local Taxes
+                          </h2>
+                        </div>
+                        <CardContent className="p-6">
+                          <div className="mb-4 flex justify-between items-center">
+                            <Button
+                              type="button"
+                              onClick={handleSelectAllAdUnits}
+                              variant="outline"
+                              className="text-orange-600 border-orange-300 hover:bg-orange-50"
+                            >
+                              {selectedAdUnits.length ===
+                              selectedCampaign.adUnits.length
+                                ? "Deselect All Ad Units"
+                                : "Select All Ad Units"}
+                            </Button>
+                            <div className="text-sm text-gray-500">
+                              {selectedAdUnits.length} of{" "}
+                              {selectedCampaign.adUnits.length} ad units
+                              selected
+                            </div>
+                          </div>
+                          <div className="overflow-x-auto">
+                            <table className="min-w-full divide-y divide-gray-200">
+                              <thead className="bg-gray-50">
+                                <tr>
+                                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Select
+                                  </th>
+                                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Line
+                                  </th>
+                                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Publisher
+                                  </th>
+                                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Format
+                                  </th>
+                                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    % AVB
+                                  </th>
+                                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    % Local Taxes
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody className="bg-white divide-y divide-gray-200">
+                                {selectedCampaign.adUnits.map((adUnit) => (
+                                  <tr
+                                    key={adUnit.id}
+                                    onClick={(e) => {
+                                      if (
+                                        e.target instanceof HTMLInputElement ||
+                                        e.target instanceof HTMLButtonElement
+                                      ) {
+                                        return;
+                                      }
+                                      handleAdUnitToggle(adUnit.id);
+                                    }}
+                                    className={`cursor-pointer hover:bg-gray-50 ${
+                                      selectedAdUnits.includes(adUnit.id)
+                                        ? "bg-orange-50"
+                                        : ""
+                                    }`}
+                                  >
+                                    <td
+                                      className="px-6 py-4 whitespace-nowrap"
+                                      onClick={(e) => e.stopPropagation()}
+                                    >
+                                      <input
+                                        type="checkbox"
+                                        checked={selectedAdUnits.includes(
+                                          adUnit.id
+                                        )}
+                                        onChange={() =>
+                                          handleAdUnitToggle(adUnit.id)
+                                        }
+                                        className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
+                                      />
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                      {adUnit.line}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                      {adUnit.publisher}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                      {adUnit.format} - {adUnit.size}
+                                    </td>
+                                    <td
+                                      className="px-6 py-4 whitespace-nowrap"
+                                      onClick={(e) => e.stopPropagation()}
+                                    >
+                                      <Input
+                                        type="number"
+                                        value={adUnitAVB[adUnit.id] ?? 0}
+                                        onChange={(e) =>
+                                          setAdUnitAVB((prev) => ({
+                                            ...prev,
+                                            [adUnit.id]: parseFloat(
+                                              e.target.value
+                                            ),
+                                          }))
+                                        }
+                                        disabled={
+                                          !selectedAdUnits.includes(adUnit.id)
+                                        }
+                                        className="w-24"
+                                      />
+                                    </td>
+                                    <td
+                                      className="px-6 py-4 whitespace-nowrap"
+                                      onClick={(e) => e.stopPropagation()}
+                                    >
+                                      <Input
+                                        type="number"
+                                        value={adUnitLocalTaxes[adUnit.id] ?? 0}
+                                        onChange={(e) =>
+                                          setAdUnitLocalTaxes((prev) => ({
+                                            ...prev,
+                                            [adUnit.id]: parseFloat(
+                                              e.target.value
+                                            ),
+                                          }))
+                                        }
+                                        disabled={
+                                          !selectedAdUnits.includes(adUnit.id)
+                                        }
+                                        className="w-24"
+                                      />
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    )}
+
+                  {/* HUR Justification (rendered after AdUnit sections for consistency) */}
+                  {(modificationType === "adUnitAmounts" ||
+                    modificationType === "avbLocalTaxes") && (
                     <Card className="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100">
                       <div className="bg-orange-50 border-b border-orange-100 px-4 py-3">
                         <h2 className="text-base font-medium text-orange-600 flex items-center">
@@ -310,181 +1160,28 @@ function HURRequestContent() {
                             viewBox="0 0 20 20"
                             fill="currentColor"
                           >
-                            <path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z" />
+                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                           </svg>
-                          Select Ad Units to Modify
+                          HUR Justification
                         </h2>
                       </div>
                       <CardContent className="p-6">
-                        <div className="mb-4 flex justify-between items-center">
-                          <Button
-                            type="button"
-                            onClick={handleSelectAllAdUnits}
-                            variant="outline"
-                            className="text-orange-600 border-orange-300 hover:bg-orange-50"
+                        <div>
+                          <label
+                            htmlFor="justification"
+                            className="block text-sm font-medium text-gray-700 mb-1"
                           >
-                            {selectedAdUnits.length ===
-                            selectedCampaign.adUnits.length
-                              ? "Deselect All Ad Units"
-                              : "Select All Ad Units"}
-                          </Button>
-                          <div className="text-sm text-gray-500">
-                            {selectedAdUnits.length} of{" "}
-                            {selectedCampaign.adUnits.length} ad units selected
-                          </div>
-                        </div>
-
-                        <div className="overflow-x-auto">
-                          <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
-                              <tr>
-                                <th
-                                  scope="col"
-                                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                  Select
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                  Line
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                  Publisher
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                  Format
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                  Current Amount
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                  New Amount
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
-                              {selectedCampaign.adUnits.map((adUnit) => (
-                                <tr
-                                  key={adUnit.id}
-                                  onClick={(e) => {
-                                    // Solo activar el toggle si no se hizo clic en el input o en el checkbox
-                                    if (
-                                      e.target instanceof HTMLInputElement ||
-                                      e.target instanceof HTMLButtonElement
-                                    ) {
-                                      return;
-                                    }
-                                    handleAdUnitToggle(adUnit.id);
-                                  }}
-                                  className={`cursor-pointer hover:bg-gray-50 ${
-                                    selectedAdUnits.includes(adUnit.id)
-                                      ? "bg-orange-50"
-                                      : ""
-                                  }`}
-                                >
-                                  <td
-                                    className="px-6 py-4 whitespace-nowrap"
-                                    onClick={(e) => e.stopPropagation()}
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      checked={selectedAdUnits.includes(
-                                        adUnit.id
-                                      )}
-                                      onChange={() =>
-                                        handleAdUnitToggle(adUnit.id)
-                                      }
-                                      className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
-                                    />
-                                  </td>
-                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {adUnit.line}
-                                  </td>
-                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {adUnit.publisher}
-                                  </td>
-                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {adUnit.format} - {adUnit.size}
-                                  </td>
-                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {formatCurrency(adUnit.customerInvestment)}
-                                  </td>
-                                  <td
-                                    className="px-6 py-4 whitespace-nowrap"
-                                    onClick={(e) => e.stopPropagation()}
-                                  >
-                                    <Input
-                                      type="number"
-                                      value={
-                                        adUnitPrices[adUnit.id] ||
-                                        adUnit.customerInvestment
-                                      }
-                                      onChange={(e) =>
-                                        handlePriceChange(
-                                          adUnit.id,
-                                          parseFloat(e.target.value)
-                                        )
-                                      }
-                                      disabled={
-                                        !selectedAdUnits.includes(adUnit.id)
-                                      }
-                                      className="w-32"
-                                    />
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-
-                        {/* Totals */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 pt-6 border-t border-gray-100">
-                          <div className="bg-gray-50 p-4 rounded-lg">
-                            <p className="text-sm font-medium text-gray-500 mb-1">
-                              Current Total Amount
-                            </p>
-                            <p className="text-lg font-semibold text-gray-900">
-                              {formatCurrency(totals.current)}
-                            </p>
-                          </div>
-                          <div className="bg-gray-50 p-4 rounded-lg">
-                            <p className="text-sm font-medium text-gray-500 mb-1">
-                              New Total Amount
-                            </p>
-                            <p className="text-lg font-semibold text-green-600">
-                              {formatCurrency(totals.new)}
-                            </p>
-                          </div>
-                          <div className="bg-gray-50 p-4 rounded-lg">
-                            <p className="text-sm font-medium text-gray-500 mb-1">
-                              Difference
-                            </p>
-                            <p
-                              className={`text-lg font-semibold ${
-                                totals.new - totals.current > 0
-                                  ? "text-green-600"
-                                  : totals.new - totals.current < 0
-                                  ? "text-red-600"
-                                  : "text-gray-900"
-                              }`}
-                            >
-                              {formatCurrency(totals.new - totals.current)}
-                            </p>
-                          </div>
+                            Justification *
+                          </label>
+                          <textarea
+                            id="justification"
+                            rows={4}
+                            value={justification}
+                            onChange={(e) => setJustification(e.target.value)}
+                            placeholder="Explain clearly what, why and what for you are requesting this HUR (change)."
+                            className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500"
+                            required
+                          />
                         </div>
                       </CardContent>
                     </Card>
@@ -524,7 +1221,10 @@ function HURRequestContent() {
                           disabled={
                             isSubmitting ||
                             !justification ||
-                            selectedAdUnits.length === 0
+                            ((modificationType === "adUnitAmounts" ||
+                              modificationType === "avbLocalTaxes" ||
+                              modificationType === "billingPartyPublisher") &&
+                              selectedAdUnits.length === 0)
                           }
                         >
                           {isSubmitting
