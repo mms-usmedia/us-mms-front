@@ -487,7 +487,7 @@ const TraffickerCampaignsTable = ({
                       onClick={() => onCampaignClick?.(campaign)}
                       className="text-orange-600 hover:text-orange-900 text-sm font-medium"
                     >
-                      Create Report
+                      Report History
                     </button>
                   </td>
                 </tr>
@@ -713,20 +713,26 @@ const TraffickerReport = () => {
     );
   };
 
+  // Abrir vista de reporte para una campaña dada (misma vista que "View")
+  const openReportForCampaign = (campaignId: string) => {
+    const campaign = mockCampaigns.find((c) => c.id === campaignId);
+    if (campaign) {
+      setSelectedCampaign(campaign);
+      setStartDate(campaign.startDate);
+      setEndDate(campaign.endDate);
+      setReportLines(
+        mockReportLines.filter((line) => line.campaignId === campaignId)
+      );
+      setIsCreatingReport(true);
+    }
+  };
+
   // Manejar la visualización de un reporte existente
   const handleViewReport = (reportId: string) => {
     // En una implementación real, cargaríamos el reporte desde la API
     // Por ahora, simulamos cargar un reporte
-    const campaign = mockCampaigns.find((c) => c.id === "24147");
-    if (campaign) {
-      setSelectedCampaign(campaign);
-      setStartDate("2025-07-01");
-      setEndDate("2025-07-31");
-      setReportLines(
-        mockReportLines.filter((line) => line.campaignId === "24147")
-      );
-      setIsCreatingReport(true);
-    }
+    // Mapear reportId -> campaignId (mock): usamos 24147 como ejemplo
+    openReportForCampaign("24147");
   };
 
   // Vista principal - lista de campañas o historial
@@ -790,7 +796,7 @@ const TraffickerReport = () => {
             <div className="mt-6">
               <TraffickerCampaignsTable
                 campaigns={filteredCampaigns}
-                onCampaignClick={handleCampaignClick}
+                onCampaignClick={(c) => openReportForCampaign(c.id)}
               />
             </div>
           </>

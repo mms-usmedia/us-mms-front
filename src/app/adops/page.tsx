@@ -207,7 +207,7 @@ export default function AdOpsPage() {
           <div className="container mx-auto px-6 py-6 max-w-full">
             <div className="mb-6">
               <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                Campaign Management
+                Campaing Adops - Traffic Management
               </h1>
               <p className="text-gray-600">
                 Monitor and control all your campaign operations
@@ -244,7 +244,7 @@ export default function AdOpsPage() {
                 }`}
                 onClick={() => setActiveTab("trafficker")}
               >
-                Trafficker Reports
+                Delivery Reports
               </button>
             </div>
 

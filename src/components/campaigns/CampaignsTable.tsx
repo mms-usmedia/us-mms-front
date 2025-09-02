@@ -27,6 +27,7 @@ export interface Campaign {
     | "Approved"
     | "Materials & Creatives OK"
     | "Implementation"
+    | "Delivery"
     | "Live"
     | "Closed"
     | "HUR"

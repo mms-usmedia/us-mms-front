@@ -20,7 +20,7 @@ interface ReportHistoryItem {
   advertiser: string;
   createdDate: string;
   createdBy: string;
-  status: "Completed";
+  status: "Delivery";
 }
 
 interface TraffickerReportHistoryProps {
@@ -36,7 +36,7 @@ const mockReportHistory: ReportHistoryItem[] = [
     advertiser: "Samsung",
     createdDate: "2023-07-15",
     createdBy: "Ana García",
-    status: "Completed",
+    status: "Delivery",
   },
   {
     id: "2",
@@ -46,7 +46,7 @@ const mockReportHistory: ReportHistoryItem[] = [
     advertiser: "BBVA",
     createdDate: "2023-07-10",
     createdBy: "Ana García",
-    status: "Completed",
+    status: "Delivery",
   },
   {
     id: "3",
@@ -56,14 +56,14 @@ const mockReportHistory: ReportHistoryItem[] = [
     advertiser: "Banorte",
     createdDate: "2023-07-05",
     createdBy: "Roberto Sánchez",
-    status: "Completed",
+    status: "Delivery",
   },
 ];
 
-// Componente personalizado para el status badge con color verde para Completed
+// Componente personalizado para el status badge con color para Delivery
 const CompletedStatusBadge: React.FC<{ status: string }> = ({ status }) => {
   return (
-    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border shadow-sm bg-green-50 text-green-700 border-green-100 shadow-green-100 flex-shrink-0">
+    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border shadow-sm bg-cyan-50 text-cyan-700 border-cyan-100 shadow-cyan-100 flex-shrink-0">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-3.5 w-3.5 mr-1"

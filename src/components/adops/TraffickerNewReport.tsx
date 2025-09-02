@@ -59,7 +59,7 @@ const mockClosedCampaigns: Campaign[] = [
     organizationType: "Agency",
     startDate: "2025-06-30",
     endDate: "2025-07-01",
-    status: "Closed",
+    status: "Delivery",
     units: 320000,
     budget: 75000,
     grossMargin: 18,
@@ -72,7 +72,7 @@ const mockClosedCampaigns: Campaign[] = [
     organizationType: "Agency",
     startDate: "2025-04-01",
     endDate: "2025-06-30",
-    status: "Closed",
+    status: "Delivery",
     units: 450000,
     budget: 125000,
     grossMargin: 22,
@@ -85,7 +85,7 @@ const mockClosedCampaigns: Campaign[] = [
     organizationType: "Agency",
     startDate: "2025-04-15",
     endDate: "2025-06-15",
-    status: "Closed",
+    status: "Delivery",
     units: 680000,
     budget: 200000,
     grossMargin: 20,
@@ -109,7 +109,7 @@ const mockAdUnits: AdUnit[] = [
     customerNetRate: 4.2,
     startDate: "2025-07-03",
     endDate: "2025-07-31",
-    status: "Closed",
+    status: "Delivery",
     units: 1212909,
     impressions: 1212909,
     clicks: 3245,
@@ -132,7 +132,7 @@ const mockAdUnits: AdUnit[] = [
     customerNetRate: 3.8,
     startDate: "2025-08-01",
     endDate: "2025-08-31",
-    status: "Closed",
+    status: "Delivery",
     units: 592794,
     impressions: 592794,
     clicks: 1850,
@@ -155,7 +155,7 @@ const mockAdUnits: AdUnit[] = [
     customerNetRate: 4.5,
     startDate: "2025-07-03",
     endDate: "2025-07-31",
-    status: "Closed",
+    status: "Delivery",
     units: 270874,
     impressions: 270874,
     clicks: 980,
@@ -178,7 +178,7 @@ const mockAdUnits: AdUnit[] = [
     customerNetRate: 4.0,
     startDate: "2025-08-02",
     endDate: "2025-08-31",
-    status: "Closed",
+    status: "Delivery",
     units: 111775,
     impressions: 111775,
     clicks: 420,
@@ -201,7 +201,7 @@ const mockAdUnits: AdUnit[] = [
     customerNetRate: 4.3,
     startDate: "2025-07-03",
     endDate: "2025-07-31",
-    status: "Closed",
+    status: "Delivery",
     units: 270874,
     impressions: 270874,
     clicks: 950,
@@ -725,18 +725,14 @@ const TraffickerNewReport = () => {
                           <td className="px-4 py-3 whitespace-nowrap text-sm">
                             <span
                               className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                unit.status === "Approved"
-                                  ? "bg-green-100 text-green-800"
-                                  : unit.status === "Pending"
-                                  ? "bg-amber-100 text-amber-800"
-                                  : unit.status === "Live"
-                                  ? "bg-violet-100 text-violet-800"
-                                  : unit.status === "Implementation"
+                                unit.status === "Delivery"
                                   ? "bg-cyan-100 text-cyan-800"
                                   : "bg-gray-100 text-gray-800"
                               }`}
                             >
-                              {unit.status}
+                              {unit.status === "Closed"
+                                ? "Delivery"
+                                : unit.status}
                             </span>
                           </td>
                         </tr>

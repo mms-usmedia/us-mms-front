@@ -10,6 +10,7 @@ export type StatusType =
   | "Approved"
   | "Materials & Creatives OK"
   | "Implementation"
+  | "Delivery"
   | "Live"
   | "Closed"
   | "HUR"
@@ -43,6 +44,8 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
       case "Materials & Creatives OK":
         return "bg-teal-50 text-teal-700 border-teal-100 shadow-teal-100";
       case "Implementation":
+        return "bg-cyan-50 text-cyan-700 border-cyan-100 shadow-cyan-100";
+      case "Delivery":
         return "bg-cyan-50 text-cyan-700 border-cyan-100 shadow-cyan-100";
       case "Live":
         return "bg-orange-50 text-orange-700 border-orange-100 shadow-orange-100";
@@ -172,6 +175,21 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
             <path
               fillRule="evenodd"
               d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
+              clipRule="evenodd"
+            />
+          </svg>
+        );
+      case "Delivery":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-3.5 w-3.5 mr-1"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
               clipRule="evenodd"
             />
           </svg>
