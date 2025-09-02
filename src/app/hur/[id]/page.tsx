@@ -353,10 +353,10 @@ export default function HURDetailPage() {
                       </div>
                       <div className="bg-gray-50 p-4 rounded-lg">
                         <p className="text-sm font-medium text-gray-500 mb-1">
-                          Billing Office
+                          Category
                         </p>
                         <p className="text-base font-medium text-gray-900">
-                          {hurRequest.billingOffice}
+                          {hurRequest.category || "—"}
                         </p>
                       </div>
                     </div>
@@ -379,6 +379,14 @@ export default function HURDetailPage() {
                   </div>
                   <CardContent className="p-6">
                     <div className="space-y-6">
+                      <div>
+                        <p className="text-sm font-medium text-gray-500 mb-1">
+                          Category
+                        </p>
+                        <p className="text-base text-gray-900 mt-1 p-3 bg-gray-50 rounded-lg border border-gray-100">
+                          {hurRequest.category || "—"}
+                        </p>
+                      </div>
                       <div>
                         <p className="text-sm font-medium text-gray-500 mb-1">
                           Justification
@@ -421,45 +429,50 @@ export default function HURDetailPage() {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6 border-t border-gray-100">
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                          <p className="text-sm font-medium text-gray-500 mb-1">
-                            Current Amount
-                          </p>
-                          <p className="text-lg font-semibold text-gray-900">
-                            {formatCurrency(hurRequest.currentAmount)}
-                          </p>
-                        </div>
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                          <p className="text-sm font-medium text-gray-500 mb-1">
-                            New Amount
-                          </p>
-                          <p className="text-lg font-semibold text-green-600">
-                            {formatCurrency(hurRequest.newAmount)}
-                          </p>
-                        </div>
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                          <p className="text-sm font-medium text-gray-500 mb-1">
-                            Difference
-                          </p>
-                          <p
-                            className={`text-lg font-semibold ${
-                              hurRequest.newAmount - hurRequest.currentAmount >
-                              0
-                                ? "text-green-600"
-                                : hurRequest.newAmount -
-                                    hurRequest.currentAmount <
+                      {typeof hurRequest.currentAmount === "number" &&
+                        typeof hurRequest.newAmount === "number" && (
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6 border-t border-gray-100">
+                            <div className="bg-gray-50 p-4 rounded-lg">
+                              <p className="text-sm font-medium text-gray-500 mb-1">
+                                Current Amount
+                              </p>
+                              <p className="text-lg font-semibold text-gray-900">
+                                {formatCurrency(hurRequest.currentAmount)}
+                              </p>
+                            </div>
+                            <div className="bg-gray-50 p-4 rounded-lg">
+                              <p className="text-sm font-medium text-gray-500 mb-1">
+                                New Amount
+                              </p>
+                              <p className="text-lg font-semibold text-green-600">
+                                {formatCurrency(hurRequest.newAmount)}
+                              </p>
+                            </div>
+                            <div className="bg-gray-50 p-4 rounded-lg">
+                              <p className="text-sm font-medium text-gray-500 mb-1">
+                                Difference
+                              </p>
+                              <p
+                                className={`text-lg font-semibold ${
+                                  (hurRequest.newAmount || 0) -
+                                    (hurRequest.currentAmount || 0) >
                                   0
-                                ? "text-red-600"
-                                : "text-gray-900"
-                            }`}
-                          >
-                            {formatCurrency(
-                              hurRequest.newAmount - hurRequest.currentAmount
-                            )}
-                          </p>
-                        </div>
-                      </div>
+                                    ? "text-green-600"
+                                    : (hurRequest.newAmount || 0) -
+                                        (hurRequest.currentAmount || 0) <
+                                      0
+                                    ? "text-red-600"
+                                    : "text-gray-900"
+                                }`}
+                              >
+                                {formatCurrency(
+                                  (hurRequest.newAmount || 0) -
+                                    (hurRequest.currentAmount || 0)
+                                )}
+                              </p>
+                            </div>
+                          </div>
+                        )}
                     </div>
                   </CardContent>
                 </Card>

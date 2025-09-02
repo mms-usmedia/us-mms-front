@@ -327,29 +327,7 @@ const ProgrammaticCampaignDetails: React.FC<
                   </p>
                 )}
               </div>
-              <div>
-                <p className="text-sm font-medium text-gray-700">
-                  Exchange Rate
-                </p>
-                {isEditing ? (
-                  <input
-                    type="number"
-                    step="0.0001"
-                    className="mt-1 text-sm w-full border-2 border-orange-100 focus:border-orange-300 rounded p-2 bg-white text-gray-900 transition-colors focus:ring-0"
-                    value={editedCampaign.exchangeRate ?? 1}
-                    onChange={(e) =>
-                      handleChange("exchangeRate", Number(e.target.value))
-                    }
-                    placeholder="1.00"
-                  />
-                ) : (
-                  <p className="mt-1 text-sm text-gray-900 font-medium">
-                    {typeof campaign.exchangeRate === "number"
-                      ? campaign.exchangeRate
-                      : 1}
-                  </p>
-                )}
-              </div>
+              {/* Exchange Rate removed from Campaign Information (now only in Campaign Summary) */}
               <div>
                 <p className="text-sm font-medium text-gray-700">
                   Organization Type

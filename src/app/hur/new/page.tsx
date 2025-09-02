@@ -10,10 +10,12 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
+  SelectGroup,
   SelectTrigger,
   SelectContent,
   SelectItem,
   SelectValue,
+  SelectLabel,
 } from "@/components/ui/select";
 import {
   DropdownMenu,
@@ -73,6 +75,87 @@ function HURRequestContent() {
   const [adUnitLocalTaxes, setAdUnitLocalTaxes] = useState<{
     [key: string]: number;
   }>({});
+
+  // HUR category selector
+  const [hurCategory, setHurCategory] = useState<string>("");
+  const hurCategoryGroups = useMemo(
+    () => [
+      {
+        label: "AD CAMPAIGN CONTACTS DETAILS",
+        options: [
+          {
+            value: "contacts_change_billing_office",
+            label: "Change Billing Office (Finance)",
+          },
+          {
+            value: "contacts_change_billing_party",
+            label: "Change Billing Party (Finance)",
+          },
+          {
+            value: "contacts_change_account",
+            label: "Change Account (Finance)",
+          },
+          {
+            value: "contacts_change_advertiser",
+            label: "Change Advertiser (Finance)",
+          },
+        ],
+      },
+      {
+        label: "AD CAMPAIGN INFORMATION",
+        options: [
+          {
+            value: "info_change_dates_finance",
+            label: "Change Dates (Start and End Dates) (Finance)",
+          },
+        ],
+      },
+      {
+        label: "AD UNITS",
+        options: [
+          {
+            value: "units_change_publisher_commissions",
+            label: "Change Publisher Commission/Taxes/Others (Finance)",
+          },
+          {
+            value: "units_change_publisher_rate",
+            label: "Change Publisher Rate (Finance)",
+          },
+          {
+            value: "units_change_customer_rate",
+            label: "Change Customer Rate (Finance)",
+          },
+          {
+            value: "units_change_customer_commissions",
+            label: "Change Customer Commission/Taxes/AVB/Others (Finance)",
+          },
+          {
+            value: "units_calculator_error",
+            label: "Calculator error (Finance)",
+          },
+          {
+            value: "units_change_impressions_billed",
+            label: "Change Impressions when it affects billed amount (Finance)",
+          },
+          {
+            value: "units_change_impressions_not_billed",
+            label:
+              "Change Impressions where it does not affect billed amount (AdOps)",
+          },
+          {
+            value: "units_change_dates_adops",
+            label: "Change Dates (Start and End Dates) (AdOps)",
+          },
+          {
+            value: "units_change_buying_model",
+            label: "Change Buying Model (AdOps)",
+          },
+          { value: "units_change_format", label: "Change Format (AdOps)" },
+        ],
+      },
+    ],
+    []
+  );
 
   // Derived options for dropdowns
   const customerOptions = useMemo(() => {
@@ -242,9 +325,28 @@ function HURRequestContent() {
         ?.filter((unit) => selectedAdUnits.includes(unit.id))
         .map((unit) => unit.line) || [];
 
-    const payload: any = {
+    const payload: {
+      campaignId: string | null;
+      modificationType: typeof modificationType;
+      hurCategory: string;
+      justification: string;
+    } & Partial<{
+      adUnits:
+        | { id: string; newAmount: number | undefined }[]
+        | { id: string; agencyCommission: number; localTaxes: number }[];
+      billingParty: string;
+      applyPublisherToAdUnits: string[];
+      newPublisher?: string;
+      customer: string;
+      billingOffice: string;
+      exchangeRate: number | "";
+      startDate: string;
+      endDate: string;
+      cioFile: { name: string; size: number } | null;
+    }> = {
       campaignId,
       modificationType,
+      hurCategory,
       justification,
     };
 
@@ -424,6 +526,34 @@ function HURRequestContent() {
                                 Campaign Dates
                               </SelectItem>
                               <SelectItem value="cio">Attach CIO</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            HUR category
+                          </label>
+                          <Select
+                            value={hurCategory}
+                            onValueChange={setHurCategory}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a category" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {hurCategoryGroups.map((group) => (
+                                <SelectGroup key={group.label}>
+                                  <SelectLabel>{group.label}</SelectLabel>
+                                  {group.options.map((opt) => (
+                                    <SelectItem
+                                      key={opt.value}
+                                      value={opt.value}
+                                    >
+                                      {opt.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectGroup>
+                              ))}
                             </SelectContent>
                           </Select>
                         </div>
@@ -1221,6 +1351,7 @@ function HURRequestContent() {
                           disabled={
                             isSubmitting ||
                             !justification ||
+                            !hurCategory ||
                             ((modificationType === "adUnitAmounts" ||
                               modificationType === "avbLocalTaxes" ||
                               modificationType === "billingPartyPublisher") &&

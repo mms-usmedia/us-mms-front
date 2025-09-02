@@ -74,7 +74,7 @@ const HURTable: React.FC<HURTableProps> = ({ data }) => {
 
   return (
     <div className="bg-white shadow-sm border border-gray-200 rounded-xl overflow-x-auto">
-      <div className="min-w-[1200px]">
+      <div className="min-w-[1000px]">
         <Table>
           <TableHeader className="bg-gray-50">
             <TableRow>
@@ -90,8 +90,8 @@ const HURTable: React.FC<HURTableProps> = ({ data }) => {
               <TableHead className="w-[100px] text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
                 Period
               </TableHead>
-              <TableHead className="w-[150px] text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                Billing Office
+              <TableHead className="w-[220px] text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                Category
               </TableHead>
               <TableHead className="w-[150px] text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
                 Request Date
@@ -99,15 +99,7 @@ const HURTable: React.FC<HURTableProps> = ({ data }) => {
               <TableHead className="w-[150px] text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
                 Requester
               </TableHead>
-              <TableHead className="w-[150px] text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                Current Amount
-              </TableHead>
-              <TableHead className="w-[150px] text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                New Amount
-              </TableHead>
-              <TableHead className="w-[150px] text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                Difference
-              </TableHead>
+
               <TableHead className="w-[150px] text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
                 Status
               </TableHead>
@@ -144,7 +136,7 @@ const HURTable: React.FC<HURTableProps> = ({ data }) => {
                   {request.month}/{request.year}
                 </TableCell>
                 <TableCell className="whitespace-nowrap">
-                  {request.billingOffice}
+                  {request.category || "—"}
                 </TableCell>
                 <TableCell className="whitespace-nowrap">
                   {formatDate(request.requestDate)}
@@ -152,21 +144,7 @@ const HURTable: React.FC<HURTableProps> = ({ data }) => {
                 <TableCell className="whitespace-nowrap">
                   {request.requester}
                 </TableCell>
-                <TableCell>{formatCurrency(request.currentAmount)}</TableCell>
-                <TableCell>{formatCurrency(request.newAmount)}</TableCell>
-                <TableCell>
-                  <span
-                    className={
-                      request.newAmount - request.currentAmount > 0
-                        ? "text-green-600"
-                        : request.newAmount - request.currentAmount < 0
-                        ? "text-red-600"
-                        : ""
-                    }
-                  >
-                    {formatCurrency(request.newAmount - request.currentAmount)}
-                  </span>
-                </TableCell>
+
                 <TableCell className="whitespace-nowrap">
                   <HURStatusBadge status={request.status} />
                 </TableCell>

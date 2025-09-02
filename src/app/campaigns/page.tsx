@@ -176,6 +176,20 @@ const mockCampaigns: Campaign[] = [
     budget: 65000,
     grossMargin: 20,
   },
+  // New campaign with HUR history example
+  {
+    id: "22099",
+    name: "Acme Corp_Display Refresh_Fandom_Jul_Mexico",
+    organizationName: "Acme Corp",
+    campaignType: "IO-based",
+    organizationType: "Agency",
+    startDate: "2025-07-01",
+    endDate: "2025-07-31",
+    status: "HUR",
+    units: 300000,
+    budget: 90000,
+    grossMargin: 18,
+  },
 ];
 
 export default function CampaignsListPage() {

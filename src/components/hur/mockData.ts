@@ -21,14 +21,15 @@ export interface HURRequest {
   campaignName: string;
   campaignId: string;
   billingOffice: string;
+  category?: string;
   status: HURStatus;
   requestedBy: string;
   requester: string;
   assignedTo?: string;
   month: string;
   year: string;
-  currentAmount: number;
-  newAmount: number;
+  currentAmount?: number;
+  newAmount?: number;
   lineNumbers: string[];
   publisherIONumbers: string[];
   comments?: string;
@@ -55,6 +56,7 @@ export const mockHURRequests: HURRequest[] = [
     campaignName: "Yakult_Campaña anual_WeTransfer_Jun_Mexico",
     campaignId: "CAM-2023-001",
     billingOffice: "Mexico City",
+    category: "Change Customer Rate (Finance)",
     status: "Review",
     requestedBy: "Carlos Mendez",
     requester: "Carlos Mendez",
@@ -78,14 +80,15 @@ export const mockHURRequests: HURRequest[] = [
     campaignName: "Coca-Cola Summer Campaign 2023",
     campaignId: "CAM-2023-002",
     billingOffice: "Miami",
+    category:
+      "Change Impressions where it does not affect billed amount (AdOps)",
     status: "More Info",
     requestedBy: "John Smith",
     requester: "John Smith",
     assignedTo: "Maria Rodriguez",
     month: "07",
     year: "2023",
-    currentAmount: 75000,
-    newAmount: 72500,
+    // No amounts relevant for this category
     lineNumbers: ["L-004", "L-005"],
     publisherIONumbers: ["IO-YT-2023-002"],
     comments:
@@ -109,14 +112,14 @@ export const mockHURRequests: HURRequest[] = [
     campaignName: "Nike Fall Collection 2023",
     campaignId: "CAM-2023-003",
     billingOffice: "Mexico",
+    category: "Change Dates (Start and End Dates) (AdOps)",
     status: "Approved",
     requestedBy: "Emma Johnson",
     requester: "Emma Johnson",
     assignedTo: "Luis Gonzalez",
     month: "09",
     year: "2023",
-    currentAmount: 120000,
-    newAmount: 120000,
+    // No amounts changed
     lineNumbers: ["L-006", "L-007", "L-008", "L-009"],
     publisherIONumbers: ["IO-FB-2023-003", "IO-FB-2023-004"],
     approver: "Luis Gonzalez",
@@ -135,6 +138,7 @@ export const mockHURRequests: HURRequest[] = [
     campaignName: "Samsung Galaxy Launch 2023",
     campaignId: "CAM-2023-004",
     billingOffice: "Miami",
+    category: "Change Publisher Rate (Finance)",
     status: "Remove Invoice",
     requestedBy: "Kim Lee",
     requester: "Kim Lee",
@@ -161,6 +165,7 @@ export const mockHURRequests: HURRequest[] = [
     campaignName: "Apple AirPods Campaign 2023",
     campaignId: "CAM-2023-005",
     billingOffice: "Mexico",
+    category: "Change Publisher Commission/Taxes/Others (Finance)",
     status: "Not Approved",
     requestedBy: "Sarah Williams",
     requester: "Sarah Williams",
@@ -189,14 +194,14 @@ export const mockHURRequests: HURRequest[] = [
     campaignName: "EA Sports FIFA 2024 Launch",
     campaignId: "CAM-2023-006",
     billingOffice: "Mexico",
+    category: "Change Buying Model (AdOps)",
     status: "Completed",
     requestedBy: "Javier Fernandez",
     requester: "Javier Fernandez",
     assignedTo: "Ana Torres",
     month: "11",
     year: "2023",
-    currentAmount: 85000,
-    newAmount: 90000,
+    // No direct amounts shown
     lineNumbers: ["L-013", "L-014", "L-015"],
     publisherIONumbers: ["IO-TW-2023-007", "IO-TW-2023-008"],
     approver: "Ana Torres",

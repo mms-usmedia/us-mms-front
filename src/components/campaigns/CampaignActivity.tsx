@@ -130,6 +130,79 @@ const CampaignActivity: React.FC<CampaignActivityProps> = ({ campaign }) => {
             </div>
           </div>
         </div>
+
+        {/* Dynamic activity feed, including HUR changes */}
+        {campaign.activityHistory && campaign.activityHistory.length > 0 && (
+          <div className="relative space-y-8 mt-10">
+            {campaign.activityHistory.map((evt) => (
+              <div key={evt.id} className="relative flex items-center group">
+                <div className="h-9 w-9 rounded-full bg-orange-600 flex items-center justify-center ring-8 ring-white shadow-sm group-hover:shadow-md transition-all">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 text-white"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M13 7H7v6h6V7z" />
+                  </svg>
+                </div>
+                <div className="ml-6 min-w-0 flex-1 bg-white p-4 rounded-lg shadow-sm border border-gray-100 group-hover:shadow-md transition-all">
+                  <div className="text-sm font-medium text-gray-900">
+                    {evt.type === "hur_change" ? (
+                      <>
+                        HUR change
+                        {evt.hurCategory ? (
+                          <span className="ml-2 text-xs text-gray-600 bg-gray-100 px-2 py-0.5 rounded-full border border-gray-200">
+                            {evt.hurCategory}
+                          </span>
+                        ) : null}
+                      </>
+                    ) : (
+                      evt.description || "Activity"
+                    )}
+                  </div>
+                  <div className="mt-1 text-sm text-gray-500 flex flex-wrap items-center gap-2">
+                    <span className="font-medium text-gray-700">
+                      {evt.user}
+                    </span>
+                    <span className="mx-2 text-gray-300">•</span>
+                    <time className="text-gray-700">
+                      {formatDate(evt.date)}
+                    </time>
+                  </div>
+                  {(evt.fieldChanged || evt.previousValue || evt.newValue) && (
+                    <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                        <p className="text-xs font-medium text-gray-500 mb-1">
+                          Field
+                        </p>
+                        <p className="text-sm text-gray-900">
+                          {evt.fieldChanged || "—"}
+                        </p>
+                      </div>
+                      <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                        <p className="text-xs font-medium text-gray-500 mb-1">
+                          Original
+                        </p>
+                        <p className="text-sm text-gray-900">
+                          {evt.previousValue || "—"}
+                        </p>
+                      </div>
+                      <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                        <p className="text-xs font-medium text-gray-500 mb-1">
+                          Updated
+                        </p>
+                        <p className="text-sm text-gray-900">
+                          {evt.newValue || "—"}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

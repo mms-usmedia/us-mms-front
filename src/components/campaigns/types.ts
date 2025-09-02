@@ -64,6 +64,8 @@ export interface Campaign {
   paymentTerms?: string;
   targetMarket?: string;
   isCrossBorder?: boolean;
+  // Activity history (e.g., HUR changes)
+  activityHistory?: CampaignActivityEvent[];
 }
 
 export interface AdUnit {
@@ -90,6 +92,24 @@ export interface AdUnit {
   publisherNetCost?: number; // Costo neto para el publisher
   publisherOpenRate?: number; // Tarifa abierta que pagamos al publisher
   publisherCommission?: number; // Comisión opcional del publisher (porcentaje)
+}
+
+export type CampaignActivityEventType =
+  | "created"
+  | "status_changed"
+  | "edited"
+  | "hur_change";
+
+export interface CampaignActivityEvent {
+  id: string;
+  type: CampaignActivityEventType;
+  date: string;
+  user: string;
+  description?: string;
+  hurCategory?: string;
+  fieldChanged?: string;
+  previousValue?: string;
+  newValue?: string;
 }
 
 export interface Document {
