@@ -135,11 +135,13 @@ const TrafficManagement: React.FC = () => {
     setSelectedCampaign(null);
   };
 
-  // Create status options for StatusFilter
+  // Create status options for StatusFilter (ordered)
   const statusOptions = [
-    { value: "Materials & Creatives OK", label: "Awaiting Action" },
-    { value: "Implementation", label: "In Progress" },
+    { value: "Materials Send", label: "Materials Send" },
+    { value: "Material Received", label: "Material Received" },
+    { value: "Implementing", label: "Implementing" },
     { value: "Live", label: "Live" },
+    { value: "Delivery", label: "Delivery" },
     { value: "Closed", label: "Closed" },
   ];
 

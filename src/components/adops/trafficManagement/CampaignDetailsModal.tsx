@@ -28,12 +28,16 @@ const CampaignDetailsModal: React.FC<CampaignDetailsModalProps> = ({
   // Get status badge styles
   const getStatusBadgeStyles = (status: string) => {
     switch (status) {
-      case "Materials & Creatives OK":
+      case "Materials Send":
         return "bg-blue-100 text-blue-800 border-blue-200";
-      case "Implementation":
+      case "Material Received":
+        return "bg-indigo-100 text-indigo-800 border-indigo-200";
+      case "Implementing":
         return "bg-amber-100 text-amber-800 border-amber-200";
       case "Live":
         return "bg-green-100 text-green-800 border-green-200";
+      case "Delivery":
+        return "bg-cyan-100 text-cyan-800 border-cyan-200";
       case "Closed":
         return "bg-gray-100 text-gray-800 border-gray-200";
       default:
@@ -65,16 +69,25 @@ const CampaignDetailsModal: React.FC<CampaignDetailsModalProps> = ({
   // Determine which status buttons to show based on current status
   const renderStatusButtons = () => {
     switch (campaign.status) {
-      case "Materials & Creatives OK":
+      case "Materials Send":
+        return (
+          <Button
+            className="bg-indigo-600 hover:bg-indigo-700 text-white"
+            onClick={() => onStatusChange(campaign.id, "Material Received")}
+          >
+            Mark Material Received
+          </Button>
+        );
+      case "Material Received":
         return (
           <Button
             className="bg-amber-600 hover:bg-amber-700 text-white"
-            onClick={() => onStatusChange(campaign.id, "Implementation")}
+            onClick={() => onStatusChange(campaign.id, "Implementing")}
           >
-            Start Implementation
+            Start Implementing
           </Button>
         );
-      case "Implementation":
+      case "Implementing":
         return (
           <Button
             className="bg-green-600 hover:bg-green-700 text-white"
@@ -84,6 +97,15 @@ const CampaignDetailsModal: React.FC<CampaignDetailsModalProps> = ({
           </Button>
         );
       case "Live":
+        return (
+          <Button
+            className="bg-cyan-600 hover:bg-cyan-700 text-white"
+            onClick={() => onStatusChange(campaign.id, "Delivery")}
+          >
+            Move to Delivery
+          </Button>
+        );
+      case "Delivery":
         return (
           <Button
             className="bg-gray-600 hover:bg-gray-700 text-white"

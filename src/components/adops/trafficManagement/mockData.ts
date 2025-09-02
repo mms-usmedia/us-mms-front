@@ -13,7 +13,13 @@ export interface TrafficCampaign {
   };
   startDate: string;
   endDate: string;
-  status: "Materials & Creatives OK" | "Implementation" | "Live" | "Closed";
+  status:
+    | "Materials Send"
+    | "Material Received"
+    | "Implementing"
+    | "Live"
+    | "Delivery"
+    | "Closed";
   priority: "High" | "Medium" | "Low";
   trafficker: string;
   documents: {
@@ -41,7 +47,7 @@ export const mockTrafficCampaigns: TrafficCampaign[] = [
     },
     startDate: "2025-04-06",
     endDate: "2025-05-10",
-    status: "Materials & Creatives OK",
+    status: "Material Received",
     priority: "High",
     trafficker: "Octavio Martinez",
     documents: {
@@ -67,7 +73,7 @@ export const mockTrafficCampaigns: TrafficCampaign[] = [
     },
     startDate: "2025-04-10",
     endDate: "2025-04-12",
-    status: "Materials & Creatives OK",
+    status: "Materials Send",
     priority: "High",
     trafficker: "Laura Gómez",
     documents: {
@@ -92,7 +98,7 @@ export const mockTrafficCampaigns: TrafficCampaign[] = [
     },
     startDate: "2024-06-01",
     endDate: "2024-08-31",
-    status: "Implementation",
+    status: "Implementing",
     priority: "Medium",
     trafficker: "Miguel Ángel Rodríguez",
     documents: {
@@ -170,7 +176,7 @@ export const mockTrafficCampaigns: TrafficCampaign[] = [
     },
     startDate: "2024-06-10",
     endDate: "2024-07-31",
-    status: "Materials & Creatives OK",
+    status: "Materials Send",
     priority: "Medium",
     trafficker: "Ana Torres",
     documents: {
@@ -196,7 +202,7 @@ export const mockTrafficCampaigns: TrafficCampaign[] = [
     },
     startDate: "2024-05-20",
     endDate: "2024-07-20",
-    status: "Implementation",
+    status: "Implementing",
     priority: "High",
     trafficker: "Roberto Sánchez",
     documents: {

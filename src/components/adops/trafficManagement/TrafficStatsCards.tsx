@@ -8,13 +8,13 @@ interface TrafficStatsCardsProps {
 }
 
 const TrafficStatsCards: React.FC<TrafficStatsCardsProps> = ({ data }) => {
-  // Count campaigns by status
-  const pendingCount = data.filter(
-    (campaign) => campaign.status === "Materials & Creatives OK"
+  // Count campaigns by status (updated statuses)
+  const materialsSendCount = data.filter(
+    (campaign) => campaign.status === "Materials Send"
   ).length;
 
-  const implementationCount = data.filter(
-    (campaign) => campaign.status === "Implementation"
+  const implementingCount = data.filter(
+    (campaign) => campaign.status === "Implementing"
   ).length;
 
   const liveCount = data.filter(
@@ -23,8 +23,7 @@ const TrafficStatsCards: React.FC<TrafficStatsCardsProps> = ({ data }) => {
 
   const issuesCount = data.filter(
     (campaign) =>
-      campaign.status === "Materials & Creatives OK" &&
-      !campaign.documents.creativeAssets
+      campaign.status === "Materials Send" && !campaign.documents.creativeAssets
   ).length;
 
   return (
@@ -34,8 +33,10 @@ const TrafficStatsCards: React.FC<TrafficStatsCardsProps> = ({ data }) => {
           <Clock className="h-6 w-6 text-blue-500" />
         </div>
         <div>
-          <p className="text-sm font-medium text-gray-500">Pending</p>
-          <h3 className="text-2xl font-bold text-gray-900">{pendingCount}</h3>
+          <p className="text-sm font-medium text-gray-500">Materials Send</p>
+          <h3 className="text-2xl font-bold text-gray-900">
+            {materialsSendCount}
+          </h3>
         </div>
       </Card>
 
@@ -44,9 +45,9 @@ const TrafficStatsCards: React.FC<TrafficStatsCardsProps> = ({ data }) => {
           <FileCheck className="h-6 w-6 text-amber-500" />
         </div>
         <div>
-          <p className="text-sm font-medium text-gray-500">Implementation</p>
+          <p className="text-sm font-medium text-gray-500">Implementing</p>
           <h3 className="text-2xl font-bold text-gray-900">
-            {implementationCount}
+            {implementingCount}
           </h3>
         </div>
       </Card>
