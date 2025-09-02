@@ -1754,6 +1754,30 @@ export default function ReportsPage() {
                       </CardHeader>
                       <CardContent className="pt-4">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                          {/* Organizations */}
+                          <div
+                            className="border border-gray-200 rounded-lg p-6 flex flex-col items-center justify-center hover:border-orange-500 hover:bg-orange-50/30 hover:shadow-sm transition-all cursor-pointer"
+                            onClick={() => handleModuleSelect("organizations")}
+                          >
+                            <div className="bg-indigo-100 p-3 rounded-full mb-3">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-8 w-8 text-indigo-500"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1 1h-2a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            </div>
+                            <h3 className="text-lg font-medium text-gray-900">
+                              Organizations
+                            </h3>
+                          </div>
+
                           {/* Campaigns */}
                           <div
                             className="border border-gray-200 rounded-lg p-6 flex flex-col items-center justify-center hover:border-orange-500 hover:bg-orange-50/30 hover:shadow-sm transition-all cursor-pointer"
@@ -1771,30 +1795,6 @@ export default function ReportsPage() {
                             </div>
                             <h3 className="text-lg font-medium text-gray-900">
                               Campaigns
-                            </h3>
-                          </div>
-
-                          {/* Finance */}
-                          <div
-                            className="border border-gray-200 rounded-lg p-6 flex flex-col items-center justify-center hover:border-orange-500 hover:bg-orange-50/30 hover:shadow-sm transition-all cursor-pointer"
-                            onClick={() => handleModuleSelect("finance")}
-                          >
-                            <div className="bg-green-100 p-3 rounded-full mb-3">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-8 w-8 text-green-500"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                            </div>
-                            <h3 className="text-lg font-medium text-gray-900">
-                              Finance
                             </h3>
                           </div>
 
@@ -1822,6 +1822,30 @@ export default function ReportsPage() {
                             </h3>
                           </div>
 
+                          {/* Finance */}
+                          <div
+                            className="border border-gray-200 rounded-lg p-6 flex flex-col items-center justify-center hover:border-orange-500 hover:bg-orange-50/30 hover:shadow-sm transition-all cursor-pointer"
+                            onClick={() => handleModuleSelect("finance")}
+                          >
+                            <div className="bg-green-100 p-3 rounded-full mb-3">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-8 w-8 text-green-500"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            </div>
+                            <h3 className="text-lg font-medium text-gray-900">
+                              Finance
+                            </h3>
+                          </div>
+
                           {/* HUR */}
                           <div
                             className="border border-gray-200 rounded-lg p-6 flex flex-col items-center justify-center hover:border-orange-500 hover:bg-orange-50/30 hover:shadow-sm transition-all cursor-pointer"
@@ -1843,30 +1867,6 @@ export default function ReportsPage() {
                             </div>
                             <h3 className="text-lg font-medium text-gray-900">
                               HUR
-                            </h3>
-                          </div>
-
-                          {/* Organizations */}
-                          <div
-                            className="border border-gray-200 rounded-lg p-6 flex flex-col items-center justify-center hover:border-orange-500 hover:bg-orange-50/30 hover:shadow-sm transition-all cursor-pointer"
-                            onClick={() => handleModuleSelect("organizations")}
-                          >
-                            <div className="bg-indigo-100 p-3 rounded-full mb-3">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-8 w-8 text-indigo-500"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1 1h-2a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                            </div>
-                            <h3 className="text-lg font-medium text-gray-900">
-                              Organizations
                             </h3>
                           </div>
                         </div>
