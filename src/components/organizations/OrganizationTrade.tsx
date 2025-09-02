@@ -48,6 +48,7 @@ const OrganizationTrade: React.FC<OrganizationTradeProps> = ({
   const [incentiveToDelete, setIncentiveToDelete] = useState<string | null>(
     null
   );
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
   // Filter states
   const [searchTerm, setSearchTerm] = useState("");
@@ -168,6 +169,24 @@ const OrganizationTrade: React.FC<OrganizationTradeProps> = ({
       setShowDeleteModal(false);
       setIncentiveToDelete(null);
     }
+  };
+
+  const handleDuplicateIncentive = (incentive: TradeIncentive) => {
+    const newId = `inc${Math.random().toString(36).substr(2, 9)}`;
+    const nowIso = new Date().toISOString();
+
+    const cloned: TradeIncentive = {
+      ...incentive,
+      id: newId,
+      createdAt: nowIso,
+      updatedAt: nowIso,
+      // Deep copy tiers if present to avoid shared references
+      ...(incentive.tiers
+        ? { tiers: incentive.tiers.map((t) => ({ ...t })) }
+        : {}),
+    };
+
+    setIncentives((prev) => [...prev, cloned]);
   };
 
   const handleSaveIncentive = (formData: Partial<TradeIncentive>) => {
@@ -495,6 +514,43 @@ const OrganizationTrade: React.FC<OrganizationTradeProps> = ({
                                 />
                               </svg>
                             </button>
+                            <div className="relative">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setOpenMenuId((prev) =>
+                                    prev === incentive.id ? null : incentive.id
+                                  );
+                                }}
+                                className="text-gray-500 hover:text-gray-700 p-1.5 rounded-full hover:bg-gray-100 transition-colors"
+                                title="More actions"
+                                aria-haspopup="menu"
+                                aria-expanded={openMenuId === incentive.id}
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-5 w-5"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                >
+                                  <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                              </button>
+                              {openMenuId === incentive.id && (
+                                <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+                                  <button
+                                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDuplicateIncentive(incentive);
+                                      setOpenMenuId(null);
+                                    }}
+                                  >
+                                    Duplicar
+                                  </button>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
