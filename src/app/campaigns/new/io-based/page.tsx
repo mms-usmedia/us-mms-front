@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import Link from "next/link";
@@ -125,9 +125,7 @@ export default function NewIOBasedCampaignPage() {
 
           // Crear nuevos documentos
           const newDocuments = Array.from(files).map((file) => ({
-            id: Math.random()
-              .toString(36)
-              .substring(2, 9),
+            id: Math.random().toString(36).substring(2, 9),
             name: file.name,
             type: file.type,
             size: file.size,

@@ -1,8 +1,9 @@
 // /src/app/login/page.tsx
 "use client";
 
-import React, { useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
+import React, { useState, useEffect } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import LoginCarousel from "@/components/auth/LoginCarousel";
 import Image from "next/image";
 
@@ -23,15 +24,33 @@ const carouselItems = [
 ];
 
 export default function LoginPage() {
-  const { loginWithGoogle, isLoading: authLoading } = useAuth();
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  // Redirigir si ya está autenticado
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/dashboard");
+    }
+  }, [status, router]);
+
   const handleGoogleLogin = async () => {
     setIsLoading(true);
+    setError("");
+
     try {
-      await loginWithGoogle();
-      // La redirección se maneja en el contexto de autenticación
+      const result = await signIn("google", {
+        callbackUrl: "/dashboard",
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError(
+          "No se pudo iniciar sesión con Google. Por favor, inténtalo de nuevo."
+        );
+      }
     } catch (err) {
       setError(
         err instanceof Error
@@ -93,7 +112,7 @@ export default function LoginPage() {
             type="button"
             onClick={handleGoogleLogin}
             className="w-full flex items-center justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white hover:bg-gray-50 text-sm font-medium text-gray-700 transition duration-150 ease-in-out mb-4"
-            disabled={isLoading || authLoading}
+            disabled={isLoading || status === "loading"}
           >
             <svg
               width="20"
@@ -120,7 +139,7 @@ export default function LoginPage() {
                 fill="#EB4335"
               />
             </svg>
-            {isLoading || authLoading
+            {isLoading || status === "loading"
               ? "Iniciando sesión..."
               : "Iniciar sesión con Google"}
           </button>

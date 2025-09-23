@@ -17,7 +17,7 @@ import InvoicingPeriodsManager from "@/components/settings/InvoicingPeriodsManag
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { useSidebar } from "@/contexts/SidebarContext";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";

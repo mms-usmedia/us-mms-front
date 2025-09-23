@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import { Button } from "@/components/ui/button";
@@ -159,7 +159,7 @@ export default function HURDetailPage() {
       comments: comments,
       moreInfoRequestedBy: user?.name || "Current User",
       moreInfoRequestDate: currentDateTime,
-      moreInfoRequestedByRole: user?.role || "User", // Add role if available
+      moreInfoRequestedByRole: user?.roles?.[0] || "User", // Add role if available
       moreInfoRequestedByEmail: user?.email || "user@example.com", // Add email if available
       // Note: We're not changing the status here, just adding the comment
     });
